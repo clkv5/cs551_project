@@ -1,0 +1,74 @@
+<!DOCTYPE html> 
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<title>SternerLearn</title> 
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+	<link rel="stylesheet" href="stylesheet.css" />
+	
+	<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+</head> 
+
+	
+<body> 
+
+<div data-role="page">
+
+	<div data-role="header">
+		<h1>SternerLearn</h1>
+		<a href="login.html" data-icon="arrow-u">Log In</a>
+		<a href="register.html" data-icon="arrow-u">Register</a>
+	</div><!-- /header -->
+	
+	<div class="content">
+		<h2>SternerLearn</h2>
+		
+		<p>This application is designed to be used by parents to monitor their 
+		child's performance and behavior.</p>
+		<p>Both the parent and child download the application on their 
+		Android devices. They each create accounts and then they are linked.</p>
+		
+		<h3>Students</h3>
+		<p>The student will only be able to view their assignments and attendance,
+		and to receive notifications of upcoming assignments and tests.</p>
+		<p>There will be a secondary password to prevent the child from uninstalling
+		the application without their parent's permission.</p>
+		
+		<h3>Parents</h3>
+		<p>Parents can also view their child's assignments and attendance. 
+		However, the parent will also gain access to data on the child's phone.
+		As the student misses or fails assignments, skips class, or is late for class,
+		the parent will gain more features.</p>
+		<p>At Level 1, the parent will only be able to see the assignments and attendance.</p>
+		<p>At Level 2, the parent will also be able to block applications on the child's device.</p>
+		<p>At Level 3, the parent will also be able to track the child's location using the GPS coordinates of the device.</p>
+		<p>At Level 4, the parent will also be able to view the child's text messages.</p>
+		
+		<h3>Teachers</h3>
+		<p>The teachers will not have access to any confidential information that the parents do,
+		but they will be the ones uploading new assignments and marking attendance.</p>
+		
+		<h3>And hey, a video!</h3>
+		<p>If you don't control your child they will turn into something like this, that
+		laughs at pure destruction.</p>
+		
+		<a href="#popupVideo" data-rel="popup" data-position-to="window" data-role="button" data-theme="b" data-inline="true">Launch video player</a>			
+
+		<div data-role="popup" id="popupVideo" data-overlay-theme="a" data-theme="d" data-tolerance="15,15" class="ui-content">
+			<iframe width="497" height="298" src="http://www.youtube.com/embed/RP4abiHdQpc" frameborder="0" allowfullscreen></iframe>
+		</div>
+
+	</div>
+	
+	<div data-role="footer" data-theme="d">
+	</div><!-- /footer -->
+	
+</div>
+
+
+
+</body>
+</html>

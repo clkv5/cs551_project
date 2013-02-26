@@ -1,0 +1,73 @@
+<!DOCTYPE html> 
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<title>Register</title> 
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+	<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+</head> 
+
+	
+<body> 
+
+
+
+<!-- Start of first page: #one -->
+<div data-role="page" id="one">
+
+	<div data-role="header">
+		<a href="" data-rel="back" data-icon="back">Back</a>
+		<h1>Register</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" >	
+		<div data-role="fieldcontain">
+			<label for="fn">First Name:</label>
+			<input type="text" name="fn" id="fn" value=""  />
+
+			<label for="ln">Last Name:</label>
+			<input type="text" name="ln" id="ln" value=""  />
+			
+			<label for="name">Username:</label>
+			<input type="text" name="name" id="name" value=""  />
+			
+			<label for="lu">Link with user:</label>
+			<input type="text" name="lu" id="lu" value=""  />			
+			
+			<label for="pw">Password:</label>
+			<input type="password" name="pw" id="pw" value=""  />		
+
+			<label for="cpw">Confirm Password:</label>
+			<input type="password" name="cpw" id="cpw" value=""  />	
+			
+			<fieldset data-role="controlgroup">
+				<legend>Choose an account type:</legend>
+					<input type="radio" name="radio-choice-1" id="radio-choice-1" value="choice-1" checked="checked" />
+					<label for="radio-choice-1">Student</label>
+
+					<input type="radio" name="radio-choice-1" id="radio-choice-2" value="choice-2"  />
+					<label for="radio-choice-2">Parent</label>
+
+					<input type="radio" name="radio-choice-1" id="radio-choice-3" value="choice-3"  />
+					<label for="radio-choice-3">Teacher</label>
+			</fieldset>
+			
+
+			
+		</div>
+		
+		<a href="account.html" data-role="button" data-inline="true">Submit (not functioning yet)</a>
+	</div><!-- /content -->
+	
+	<div data-role="footer" data-theme="d">
+	</div><!-- /footer -->
+</div><!-- /page one -->
+
+
+
+
+</body>
+</html>

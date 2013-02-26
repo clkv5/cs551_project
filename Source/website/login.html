@@ -1,0 +1,114 @@
+<!DOCTYPE html> 
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<title>Login</title> 
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+	<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+	
+	
+<script type="text/javascript">
+	$(document).bind('pageinit', function(e)
+	{
+		$('.rrr').bind('click', function(n)
+		{
+			//n.preventDefault();
+				
+			
+			
+			
+			
+			//alert( '{user=' + $('#name').val() + '&password=' + $('#pw').val() + ' }' );
+			
+			// Not sure why this isn't working
+			var webMethod = "http://170.224.169.101/aspnet_client/cs551/WebService.asmx/Login";
+			var parameters = "{'user': '" + $('#name').val() + "', 'password': '" + $('#pw').val() + "'}";			
+			
+			var datum = {
+				user : $('#name').val(),
+				password: $('#pw').val() };
+				
+				
+			$.ajax({
+				type: "POST",
+				contentType: "text/html; charset=utf-8",
+				//cache: false,
+				url: "http://170.224.169.101/aspnet_client/cs551/WebService.asmx/Login",
+				//url: "http://170.224.169.101/aspnet_client/cs551/WebService.asmx/Login?user=student&password=pass1",
+				
+				data: datum,
+				dataType: "text/xml; charset=utf-8",
+				success: AjaxSuccess,
+				error: AjaxError
+			}); // end of ajax  
+			
+			/*
+			$.ajax({
+					type: "POST",
+					url: webMethod,
+					data: parameters,
+					contentType: "application/json; charset=utf-8",
+					dataType: "json",
+					success: AjaxSuccess,
+					error: AjaxError
+				});		*/
+		});
+	});
+	
+	function AjaxSuccess(msg)
+	{
+		alert('yay');
+	}
+	
+	function AjaxFail(msg)
+	{
+		alert('noo');
+	}
+	
+	function AjaxError(xhr, status, error)
+	{
+		alert('error.');
+	}	
+</script>	
+	
+</head> 
+
+
+	
+<body> 
+
+
+
+<!-- Start of first page: #one -->
+<div data-role="page">
+
+	<div data-role="header">
+		<a href="" data-rel="back" data-icon="back">Back</a>
+		<h1>Log In</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" >	
+		<div data-role="fieldcontain">
+			<label for="name">Username:</label>
+			<input type="text" name="name" id="name"  />
+			
+			<label for="pw">Password:</label>
+			<input type="password" name="pw" id="pw"  />			
+		</div>
+		
+		<a href="account.html" data-role="button" data-inline="true" class="rrr">Submit</a>
+	</div><!-- /content -->
+	
+	<div data-role="footer" data-theme="d">
+	</div><!-- /footer -->
+</div><!-- /page one -->
+
+
+
+
+</body>
+</html>
+
