@@ -10,7 +10,7 @@ using System.Web.Services;
 [WebService(Namespace = "http://tempuri.org/")]
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
 [System.Web.Script.Services.ScriptService]
-public class WebService : System.Web.Services.WebService {
+public class AccountService : System.Web.Services.WebService {
 
 
     /*************************************************************
@@ -37,7 +37,7 @@ public class WebService : System.Web.Services.WebService {
     };
 
 
-    public WebService ()
+    public AccountService ()
     {
     }
 
@@ -46,7 +46,7 @@ public class WebService : System.Web.Services.WebService {
     *************************************************************/
 
     [WebMethod]
-    public string Register( string name, string email, string password, string passwordRepeat, int type )
+    public string Register( string name, string email, string password, string passwordRepeat, int type, string realName )
     {
         /* Check user doesn't exist in database */
         if( AccountExists( email ) )
@@ -62,10 +62,25 @@ public class WebService : System.Web.Services.WebService {
 
         /* Add new account */
         int id = generateNewID( ID_TYPE.ACCOUNT_ID );
-        SqlCommand writeCmd = new SqlCommand("INSERT INTO Accounts(id, accountType, linkedID, emailAddress, userName, password) " +
-                                              " values('"+ id + "','" + type + "','" + -1 + "','" + email + "','" + name + "','" + password + "')", conn);
+        SqlCommand writeCmd = new SqlCommand("INSERT INTO Accounts " +
+                                              " values('"+ id + "','" + type + "','" + -1 + "','" + email + "','" + name + "','" + password + "','" + realName + "')", conn);
         writeCmd.ExecuteNonQuery();
         writeCmd.Dispose();
+
+        // If it's a student account, also add them to the Students table
+        if (ACCOUNT_TYPE.STUDENT == (ACCOUNT_TYPE)type)
+        {
+            // 'using' disposes of the command afterward
+            using (SqlCommand cmd = new SqlCommand("INSERT INTO Students(id)" +
+                                              "VALUES('"+ id + "')"
+                                              , conn))
+            {
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+
         conn.Close();
 
         // Note:  This should return additional information to help link accounts as a parent
@@ -215,8 +230,10 @@ public class WebService : System.Web.Services.WebService {
         return type;
     }
 
-
-    protected int generateNewID( ID_TYPE type )
+    /*************************************************************
+     *  Public Helper Methods
+     *************************************************************/
+    public int generateNewID( ID_TYPE type )
     {
         /* Local variables */
         string[] dbRef = 
