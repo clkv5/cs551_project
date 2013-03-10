@@ -42,14 +42,14 @@ public class AccountService : System.Web.Services.WebService {
     }
 
     /*************************************************************
-     *  Service Methods
+     *  Web Service Methods
     *************************************************************/
 
     [WebMethod]
-    public string Register( string name, string email, string password, string passwordRepeat, int type, string realName )
+    public string Register( string name, string email, string password, string passwordRepeat, int type )
     {
         /* Check user doesn't exist in database */
-        if( AccountExists( email ) )
+        if( accountExists( email ) )
             return "Error registering:  An account already exists with the given email.";
 
         /* Check user credentials */
@@ -63,23 +63,18 @@ public class AccountService : System.Web.Services.WebService {
         /* Add new account */
         int id = generateNewID( ID_TYPE.ACCOUNT_ID );
         SqlCommand writeCmd = new SqlCommand("INSERT INTO Accounts " +
-                                              " values('"+ id + "','" + type + "','" + -1 + "','" + email + "','" + name + "','" + password + "','" + realName + "')", conn);
+                                              " values('"+ id + "','" + type + "','" + -1 + "','" + email + "','" + name + "','" + password + "')", conn);
         writeCmd.ExecuteNonQuery();
         writeCmd.Dispose();
 
-        // If it's a student account, also add them to the Students table
+        /* If it's a student account, also add them to the Students table */
         if (ACCOUNT_TYPE.STUDENT == (ACCOUNT_TYPE)type)
         {
-            // 'using' disposes of the command afterward
-            using (SqlCommand cmd = new SqlCommand("INSERT INTO Students(id)" +
-                                              "VALUES('"+ id + "')"
-                                              , conn))
+            using (SqlCommand cmd = new SqlCommand("INSERT INTO Students(id)" + "VALUES('"+ id + "')", conn) )
             {
-
                 cmd.ExecuteNonQuery();
             }
         }
-
 
         conn.Close();
 
@@ -92,12 +87,11 @@ public class AccountService : System.Web.Services.WebService {
     public string Login(string email, string password)
     {
         /* Check user exists */
-        if (  !AccountExists( email )  )
+        if ( !accountExists( email ) )
             return "Error logging in:  Invalid email.";
 
         /* Check user credentials */
-        string pass = getPassword( email );
-        if ( password != pass )
+        if( !checkCredentials(email, password) )
             return "Error logging in:  Invalid password.";
 
         return "Login Successful";
@@ -105,14 +99,15 @@ public class AccountService : System.Web.Services.WebService {
 
 
     [WebMethod]
-    public string LinkAccounts( string parentEmail, string studentEmail )
+    public string LinkAccounts( string parentEmail, string parentPassword, string studentEmail, string studentPassword )
     {
 
         /* Check users exist in database */
-        if (   !AccountExists(parentEmail)
-            || !AccountExists(studentEmail)
-           )
-            return "Error:  an account does not exist.";
+        if( !accountExists(parentEmail) )
+            return "Error:  parent account does not exist.";
+        if (!accountExists(studentEmail) )
+            return "Error:  student account does not exist.";
+            
 
         /* Check user credentials */
         int type = getAccountType(parentEmail);
@@ -122,6 +117,11 @@ public class AccountService : System.Web.Services.WebService {
         if ( (ACCOUNT_TYPE)type != ACCOUNT_TYPE.STUDENT )
             return "Error:  second account must be student type";
 
+        if( !checkCredentials(parentEmail, parentPassword) )
+            return "Error:  invalid parent password";
+        if( !checkCredentials(studentEmail, studentPassword) )
+            return "Error:  invalid student passwor";
+
         //TODO:  add security to enforce that links aren't formed to other parents' children
 
         /* Connect to database */
@@ -130,110 +130,29 @@ public class AccountService : System.Web.Services.WebService {
 
         /* Link student to parent */
         int linkID = getAccountID(parentEmail);
-        SqlCommand linkStudent = new SqlCommand("UPDATE Accounts SET linkedID='" + linkID + "' WHERE emailAddress='" + studentEmail + "'", conn);
-        linkStudent.ExecuteNonQuery();
-        linkStudent.Dispose();
+        using (SqlCommand linkStudent = new SqlCommand("UPDATE Accounts SET linkedID='" + linkID + "' WHERE emailAddress='" + studentEmail + "'", conn))
+        {
+            linkStudent.ExecuteNonQuery();
+            linkStudent.Dispose();
+        }
 
         /* Linke parent to student */
         linkID = getAccountID(studentEmail);
-        SqlCommand linkParent = new SqlCommand("UPDATE Accounts SET linkedID='" + linkID + "' WHERE emailAddress='" + parentEmail + "'", conn);
-        linkParent.ExecuteNonQuery();
-        linkParent.Dispose();
+        using (SqlCommand linkParent = new SqlCommand("UPDATE Accounts SET linkedID='" + linkID + "' WHERE emailAddress='" + parentEmail + "'", conn))
+        {
+            linkParent.ExecuteNonQuery();
+            linkParent.Dispose();
+        }
 
         conn.Close();
-
         return "Accounts linked successfully.";
     }
 
 
     /*************************************************************
-     *  Protected Methods
-     *************************************************************/
-
-    protected bool AccountExists(string email)
-    {
-        /* Connect to database */
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
-        conn.Open();
-
-        /* Check users exist in database */
-        SqlCommand scanUsers = new SqlCommand("SELECT count(*) FROM Accounts WHERE emailAddress='" + email + "'", conn);
-        int count = Convert.ToInt32(scanUsers.ExecuteScalar());
-        scanUsers.Dispose();
-        conn.Close();
-
-        if (count == 0)
-            return false;
-        return true;
-    }
-
-    protected string getPassword(string email)
-    {
-        /* Connect to database */
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
-        conn.Open();
-
-        /* Get account info  */
-        SqlCommand getInfo = new SqlCommand("SELECT * FROM Accounts WHERE emailAddress='" + email + "'", conn);
-        SqlDataReader reader = getInfo.ExecuteReader();
-
-        /* Read password */
-        reader.Read();
-        string pass = reader["password"].ToString();
-        reader.Close();
-        reader.Dispose();
-        getInfo.Dispose();
-        conn.Close();
-
-        return pass;
-    }
-
-    protected int getAccountID(string email)
-    {
-        /* Connect to database */
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
-        conn.Open();
-
-        /* Get account info  */
-        SqlCommand getInfo = new SqlCommand("SELECT * FROM Accounts WHERE emailAddress='" + email + "'", conn);
-        SqlDataReader reader = getInfo.ExecuteReader();
-
-        /* Read ID */
-        reader.Read();
-        int id = (int)reader["id"];
-        reader.Close();
-        reader.Dispose();
-        getInfo.Dispose();
-        conn.Close();
-
-        return id;
-    }
-
-    protected int getAccountType(string email)
-    {
-        /* Connect to database */
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
-        conn.Open();
-
-        /* Get account info  */
-        SqlCommand getInfo = new SqlCommand("SELECT * FROM Accounts WHERE emailAddress='" + email + "'", conn);
-        SqlDataReader reader = getInfo.ExecuteReader();
-
-        /* Read account type */
-        reader.Read();
-        int type = (int)reader["accountType"];
-        reader.Close();
-        reader.Dispose();
-        getInfo.Dispose();
-        conn.Close();
-
-        return type;
-    }
-
-    /*************************************************************
-     *  Public Helper Methods
-     *************************************************************/
-    public int generateNewID( ID_TYPE type )
+    *  Public Helper Methods
+    *************************************************************/
+    public int generateNewID(ID_TYPE type)
     {
         /* Local variables */
         string[] dbRef = 
@@ -253,22 +172,151 @@ public class AccountService : System.Web.Services.WebService {
 
         /* Acquire meta data */
         string idStr = dbRef[(int)type];
-        SqlCommand getMeta = new SqlCommand("SELECT " + idStr + " FROM Meta", conn);
-        SqlDataReader reader = getMeta.ExecuteReader();
-        reader.Read();
-        int idNum = (int)reader[ idStr ];
-        reader.Dispose();
-        reader.Close();
-        getMeta.Dispose();
+        int    idNum;
+
+        using (SqlCommand getMeta = new SqlCommand("SELECT " + idStr + " FROM Meta", conn) )
+        {
+            SqlDataReader reader = getMeta.ExecuteReader();
+            reader.Read();
+            idNum = (int)reader[idStr];
+            reader.Dispose();
+            reader.Close();
+        }
 
         /* Update meta data */
         idNum++;
-        SqlCommand setMeta = new SqlCommand("UPDATE Meta SET " + idStr + "='" + idNum + "'" , conn);
-        setMeta.ExecuteNonQuery();
-        setMeta.Dispose();
+        using (SqlCommand setMeta = new SqlCommand("UPDATE Meta SET " + idStr + "='" + idNum + "'", conn))
+        {
+            setMeta.ExecuteNonQuery();
+        }
 
         conn.Close();
         return idNum;
+    }
+
+
+    /*************************************************************
+     *  Protected Methods
+     *************************************************************/
+
+    protected bool accountExists(string email)
+    {
+        /* Connect to database */
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        conn.Open();
+
+        /* Check users exist in database */
+        int count;
+        using (SqlCommand scanUsers = new SqlCommand("SELECT count(*) FROM Accounts WHERE emailAddress='" + email + "'", conn))
+        {
+            count = Convert.ToInt32(scanUsers.ExecuteScalar());
+        }
+
+        conn.Close();
+        if (count == 0)
+            return false;
+        return true;
+    }
+
+    protected bool checkCredentials(string email, string password)
+    {
+        string pass = getPassword(email);
+        if (pass != password)
+            return false;
+
+        return true;
+    }
+
+    protected string getPassword(string email)
+    {
+        /* Connect to database */
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        conn.Open();
+
+        /* Get account info  */
+        string pass;
+        using (SqlCommand getInfo = new SqlCommand("SELECT * FROM Accounts WHERE emailAddress='" + email + "'", conn))
+        {
+            SqlDataReader reader = getInfo.ExecuteReader();
+
+            /* Read password */
+            reader.Read();
+            pass = reader["password"].ToString();
+            reader.Close();
+            reader.Dispose();
+        }
+
+        conn.Close();
+        return pass;
+    }
+
+    protected int getAccountID(string email)
+    {
+        /* Connect to database */
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        conn.Open();
+
+        /* Get account info  */
+        int id;
+        using (SqlCommand getInfo = new SqlCommand("SELECT * FROM Accounts WHERE emailAddress='" + email + "'", conn))
+        {
+            SqlDataReader reader = getInfo.ExecuteReader();
+
+            /* Read ID */
+            reader.Read();
+            id = (int)reader["id"];
+            reader.Close();
+            reader.Dispose();
+        }
+
+        conn.Close();
+        return id;
+    }
+
+    protected int getLinkedID(string email)
+    {
+        /* Connect to database */
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        conn.Open();
+
+        /* Get account info  */
+        int id;
+        using (SqlCommand getInfo = new SqlCommand("SELECT * FROM Accounts WHERE emailAddress='" + email + "'", conn))
+        {
+            SqlDataReader reader = getInfo.ExecuteReader();
+
+            /* Read ID */
+            reader.Read();
+            id = (int)reader["linkedID"];
+            reader.Close();
+            reader.Dispose();
+        }
+
+        conn.Close();
+        return id;
+    }
+
+    protected int getAccountType(string email)
+    {
+        /* Connect to database */
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        conn.Open();
+
+        /* Get account info  */
+        int type;
+        using (SqlCommand getInfo = new SqlCommand("SELECT * FROM Accounts WHERE emailAddress='" + email + "'", conn))
+        {
+            SqlDataReader reader = getInfo.ExecuteReader();
+
+            /* Read account type */
+            reader.Read();
+            type = (int)reader["accountType"];
+            reader.Close();
+            reader.Dispose();
+        }
+
+        conn.Close();
+        return type;
     }
 
 }

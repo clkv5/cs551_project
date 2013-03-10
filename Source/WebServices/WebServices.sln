@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebServices", ".", "{81AC79F2-5F99-4A73-AC5E-E4BFEC7033B3}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebServices", ".", "{E2978634-95B8-4EEA-AE59-ECB495BEB305}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/WebServices"
@@ -26,8 +26,8 @@ Global
 		Debug|Any CPU = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{81AC79F2-5F99-4A73-AC5E-E4BFEC7033B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{81AC79F2-5F99-4A73-AC5E-E4BFEC7033B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2978634-95B8-4EEA-AE59-ECB495BEB305}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2978634-95B8-4EEA-AE59-ECB495BEB305}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
