@@ -15,95 +15,31 @@ using System.Web.Script.Services;
 [Serializable]
 public class Assignment
 {
+    public Assignment
+        (
+        SqlDataReader aReader   // SQL Data reader for a row from the Assignment table
+        )
+    {
+        int? assignID = aReader["assignmentID"] as int?;
+        int? courseID = aReader["courseID"] as int?;
+        string name = aReader["name"] as string;
+        string description = aReader["description"] as string;
+        float? totalPoints = aReader["totalPoints"] as float?;
+        DateTime? dueDate = aReader["dueDate"] as DateTime?;
+        bool? isTest = aReader["isTest"] as bool?;
+
+        mAssignment = assignID.HasValue ? assignID.Value : -1;
+        mCourseID = courseID.HasValue ? courseID.Value : -1;
+        mName = name;
+        mDescription = description;
+        mPoints = totalPoints.HasValue ? totalPoints.Value : 0.0F;
+        mDueDate = dueDate.HasValue ? dueDate.Value : DateTime.Now;
+        mIsTest = isTest.HasValue ? isTest.Value : true;
+    }
+
+    // Do not use default constructor!
     public Assignment()
     {
-        mAssignment = -1;
-        mCourseID = -1;
-        mName = "";
-        mDescription = "";
-        mPoints = 0.0F;
-        mDueDate = DateTime.Now;
-        mIsTest = true;
-    }
-
-    public Assignment
-        (
-        int aAssignment,
-        int aCourseID,
-        string aName,
-        string aDesc,
-        float aPoints,
-        DateTime aDate,
-        bool aTest
-        )
-    {
-        mAssignment = aAssignment;
-        mCourseID = aCourseID;
-        mName = aName;
-        mDescription = aDesc;
-        mPoints = aPoints;
-        mDueDate = aDate;
-        mIsTest = aTest;
-    }
-
-    // Handle nullable input
-    public Assignment
-        (
-        int? aAssignment,
-        int? aCourseID,
-        string aName,
-        string aDesc,
-        float? aPoints,
-        DateTime? aDate,
-        bool? aTest
-        )
-    {
-        if (aAssignment.HasValue)
-        {
-            mAssignment = aAssignment.Value;
-        }
-        else
-        {
-            mAssignment = -1;
-        }
-
-        if (aCourseID.HasValue)
-        {
-            mCourseID = aCourseID.Value;
-        }
-        else
-        {
-            mCourseID = -1;
-        }
-        mName = aName;
-        mDescription = aDesc;
-
-        if (aPoints.HasValue)
-        {
-            mPoints = aPoints.Value;
-        }
-        else
-        {
-            mPoints = 0.0F;
-        }
-
-        if (aDate.HasValue)
-        {
-            mDueDate = aDate.Value;
-        }
-        else
-        {
-            mDueDate = DateTime.Now;
-        }
-
-        if (aTest.HasValue)
-        {
-            mIsTest = aTest.Value;
-        }
-        else
-        {
-            mIsTest = true;
-        }
     }
 
 	// Correspond to C# equivalents of the Assignments columns
@@ -119,6 +55,7 @@ public class Assignment
 [Serializable]
 public class Infraction
 {
+    // TODO: Convert to take an SqlDataReader like Assignment
     public Infraction()
     {
         mInfractionID = -1;
@@ -172,6 +109,7 @@ public class Infraction
 [Serializable]
 public class Grade
 {
+    // TODO: Convert to take an SqlDataReader like Assignment
     public Grade()
     {
         mGradeID = -1;
@@ -218,10 +156,13 @@ public class Grade
     public int mGradeID;
     public int mAssignmentID;
     public int mStudentID;
+
+    // TODO: Need to make sure that the Assignments.totalPoints and Grades.pointsEarned are the same type
     public double mPointsEarned;
     public DateTime mDateSubmitted;
 }
 
+// TODO: Add a "Course" object
 
 /// <summary>
 /// Summary description for StudentDataService
@@ -251,6 +192,9 @@ public class StudentDataService : System.Web.Services.WebService
     }
 
     [WebMethod]
+    // TODO: Make it possible to extend the number of classes
+    // Do this by adding numClasses to the Meta table
+    // Setting that adds "class1...numClasses" to the Students table (init to NULL)
     public bool addClass
         (
         int aTeacherID,		// Teacher ID to verify and to have teaching the class
@@ -448,15 +392,7 @@ public class StudentDataService : System.Web.Services.WebService
         SqlDataReader reader = assignCmd.ExecuteReader();
         while (reader.Read())
         {
-            int? assignID = reader["assignmentID"] as int?;
-            int? courseID = reader["courseID"] as int?;
-            string name = reader["name"] as string;
-            string description = reader["description"] as string;
-            float? totalPoints = reader["totalPoints"] as float?;
-            DateTime? dueDate = reader["dueDate"] as DateTime?;
-            bool? isTest = reader["isTest"] as bool?;
-
-            Assignment assign = new Assignment(assignID, courseID, name, description, totalPoints, dueDate, isTest);
+            Assignment assign = new Assignment(reader);
             assignments.Add(assign);
         }
 
@@ -581,7 +517,7 @@ public class StudentDataService : System.Web.Services.WebService
             int infractionID = generateID(AccountService.ID_TYPE.INFRACTION_ID);
 
             // Add the assignment
-            // TODO: Add time field to infractions
+            // TODO: Add time field to infractions (seriously)
             success = generateGenericInsertCommand(conn,
                                                     "Infractions",
                                                     infractionID.ToString(),
