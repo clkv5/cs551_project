@@ -106,7 +106,8 @@ public class Assignment
         }
     }
 
-    public int mAssignment;
+	// Correspond to C# equivalents of the Assignments columns
+    public int mAssignment;		
     public int mCourseID;
     public string mName;
     public string mDescription;
@@ -160,6 +161,7 @@ public class Infraction
         mDate = aDate.HasValue ? aDate.Value : DateTime.Now;
     }
 
+	// Correspond to C# equivalents of the Infractions columns
     public int mInfractionID;
     public int mStudentID;
     public StudentDataService.INFRACTION_TYPE mInfractionType;
@@ -212,6 +214,7 @@ public class Grade
         mDateSubmitted = aDate.HasValue ? aDate.Value : DateTime.Now;
     }
 
+	// Correspond to C# equivalents of the Grades columns
     public int mGradeID;
     public int mAssignmentID;
     public int mStudentID;
@@ -250,9 +253,9 @@ public class StudentDataService : System.Web.Services.WebService
     [WebMethod]
     public bool addClass
         (
-        int aTeacherID,
-        string aPassword,
-        string aClassName
+        int aTeacherID,		// Teacher ID to verify and to have teaching the class
+        string aPassword,	// Teacher's password
+        string aClassName	// Name of the class to add
         )
     {
         SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
@@ -280,10 +283,10 @@ public class StudentDataService : System.Web.Services.WebService
     [WebMethod]
     public bool addStudentToClass
         (
-        int aTeacherID,
-        string aPassword,
-        int aClassID,
-        int aStudentID
+        int aTeacherID,		// Teacher ID used to verify
+        string aPassword,	// Teacher's password
+        int aClassID,		// Class ID to add student to
+        int aStudentID		// Student to add
         )
     {
         SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
@@ -348,7 +351,7 @@ public class StudentDataService : System.Web.Services.WebService
     // TODO: This may want to get the names of them instead of the IDs (maybe?)
     public List<int> getClasses
         (
-        int aStudentID
+        int aStudentID	// Student ID to get classes for
         )
     {
 
@@ -387,15 +390,14 @@ public class StudentDataService : System.Web.Services.WebService
     [WebMethod]
     public bool addAssignment
         (
-        int aTeacherID,
-        string aPassword,
-        int aClassID,
-        int aStudentID,
-        float aTotalPoints,
-        bool aTest,
-        DateTime aDateDue,
-        string aName,
-        string aDescription
+        int aTeacherID,		// Teacher ID to verify
+        string aPassword,	// Password for teacher to verify
+        int aClassID,		// Class ID to add assignment to
+        float aTotalPoints, // Total points the assignment will be worth
+        bool aTest,			// Is it a test?
+        DateTime aDateDue,	// Date it is due
+        string aName,		// Name of the assignment
+        string aDescription	// Description of the assignment
         )
     {
         SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
@@ -430,7 +432,7 @@ public class StudentDataService : System.Web.Services.WebService
     [WebMethod]
     public List<Assignment> getAssignments
         (
-        int aClassID
+        int aClassID	// Class ID to get assignments for
         )
     {
         List<Assignment> assignments = new List<Assignment>();
@@ -470,12 +472,12 @@ public class StudentDataService : System.Web.Services.WebService
     // TODO: Make addGrades for more convenience?
     public bool addGrade
         (
-        int aTeacherID,
-        string aPassword,
-        int aStudentID,
-        int aAssignmentID,
-        double aPointsReceived,
-        DateTime aDateSubmitted
+        int aTeacherID,				// Teacher ID to verify
+        string aPassword,			// Password for teacher to verify
+        int aStudentID,				// Student ID to add grade for
+        int aAssignmentID,			// Assignment ID to add grade to
+        double aPointsReceived,		// Points the student received
+        DateTime aDateSubmitted		// Date the student submitted it
         )
     {
         SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
@@ -505,8 +507,8 @@ public class StudentDataService : System.Web.Services.WebService
     [WebMethod]
     public List<Grade> getGrades
         (
-        int aStudentID,
-        int aClassID
+        int aStudentID,	// Student ID to get grades for
+        int aClassID	// class ID to get grades for
         )
     {
         List<Grade> grades = new List<Grade>();
@@ -561,12 +563,12 @@ public class StudentDataService : System.Web.Services.WebService
     // TODO: Infractions in ParentalManagement?
     public bool addInfraction
         (
-        int aTeacherID,
-        string aPassword,
-        int aStudentID,
-        INFRACTION_TYPE aInfractionType,
-        string aDescription,
-        DateTime aDate
+        int aTeacherID,						// Teacher ID to verify
+        string aPassword,					// Password to verify
+        int aStudentID,						// Student ID to add infraction to
+        INFRACTION_TYPE aInfractionType,	// Type of infraction
+        string aDescription,				// Description of infraction
+        DateTime aDate						// Date the infraction occurred
         )
     {
         SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
@@ -598,7 +600,7 @@ public class StudentDataService : System.Web.Services.WebService
     [WebMethod]
     public List<Infraction> getInfractions
         (
-        int aStudentID
+        int aStudentID	// Student ID to get infractions for
         )
     {
         // TODO
@@ -611,7 +613,7 @@ public class StudentDataService : System.Web.Services.WebService
     [WebMethod]
     public int getParentID
         (
-        int aStudentID
+        int aStudentID	// Student ID to get the parent for
         )
     {
         return getLinkedID(aStudentID, AccountService.ACCOUNT_TYPE.STUDENT);
@@ -620,7 +622,7 @@ public class StudentDataService : System.Web.Services.WebService
     [WebMethod]
     public int getStudentID
         (
-        int aParentID
+        int aParentID	// Parent ID to get student for
         )
     {
         return getLinkedID(aParentID, AccountService.ACCOUNT_TYPE.PARENT);
@@ -668,9 +670,9 @@ public class StudentDataService : System.Web.Services.WebService
 
     protected bool verifyTeacher
         (
-        int aTeacherID,
-        string aPassword,
-        SqlConnection aConnection	//!< Connection to use. Caller must open and close it
+        int aTeacherID,				// Teacher ID to verify
+        string aPassword,			// Teacher's password
+        SqlConnection aConnection	// Connection to use. Caller must open and close it
         )
     {
         // Find teacher email using the ID
@@ -699,8 +701,8 @@ public class StudentDataService : System.Web.Services.WebService
     // Returns whether the write was successful
     protected bool generateGenericInsertCommand
         (
-        SqlConnection aConnection,
-        params string[] aList
+        SqlConnection aConnection,	// Connection to execute command with
+        params string[] aList		// Variable length list of parameters
         )
     {
         int count = aList.Length;
@@ -719,7 +721,7 @@ public class StudentDataService : System.Web.Services.WebService
 
     protected int generateID
         (
-        AccountService.ID_TYPE aID
+        AccountService.ID_TYPE aID	// ID type to generate 
         )
     {
         AccountService accountService = new AccountService();
