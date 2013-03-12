@@ -48,10 +48,10 @@ public class AccountService : System.Web.Services.WebService {
     [WebMethod]
     public string Register
 		(
-		string name,			// Username of the account holder
 		string email,			// Email address
 		string password,		// Password
 		string passwordRepeat,	// Password confirmation
+        string realName,        // Real name
 		int type				// Type of account to create
 		)
     {
@@ -70,7 +70,7 @@ public class AccountService : System.Web.Services.WebService {
         /* Add new account */
         int id = generateNewID( ID_TYPE.ACCOUNT_ID );
         SqlCommand writeCmd = new SqlCommand("INSERT INTO Accounts " +
-                                              " values('"+ id + "','" + type + "','" + -1 + "','" + email + "','" + name + "','" + password + "')", conn);
+                                              " values('" + id + "','" + type + "','" + -1 + "','" + email + "','" + password + "','" + realName + "')", conn);
         writeCmd.ExecuteNonQuery();
         writeCmd.Dispose();
 
