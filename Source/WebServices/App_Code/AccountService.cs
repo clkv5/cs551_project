@@ -46,7 +46,14 @@ public class AccountService : System.Web.Services.WebService {
     *************************************************************/
 
     [WebMethod]
-    public string Register( string name, string email, string password, string passwordRepeat, int type )
+    public string Register
+		(
+		string name,			// Username of the account holder
+		string email,			// Email address
+		string password,		// Password
+		string passwordRepeat,	// Password confirmation
+		int type				// Type of account to create
+		)
     {
         /* Check user doesn't exist in database */
         if( accountExists( email ) )
@@ -84,7 +91,11 @@ public class AccountService : System.Web.Services.WebService {
 
 
     [WebMethod]
-    public string Login(string email, string password)
+    public string Login
+		(
+		string email,		// Email address for the account
+		string password		// Password
+		)
     {
         /* Check user exists */
         if ( !accountExists( email ) )
@@ -99,7 +110,13 @@ public class AccountService : System.Web.Services.WebService {
 
 
     [WebMethod]
-    public string LinkAccounts( string parentEmail, string parentPassword, string studentEmail, string studentPassword )
+    public string LinkAccounts
+		(
+		string parentEmail,		// Email address for the parent's account to link
+		string parentPassword,	// Password for the parent
+		string studentEmail,	// Email address for the student's account to link
+		string studentPassword	// Password for the student
+		)
     {
 
         /* Check users exist in database */
@@ -152,7 +169,10 @@ public class AccountService : System.Web.Services.WebService {
     /*************************************************************
     *  Public Helper Methods
     *************************************************************/
-    public int generateNewID(ID_TYPE type)
+    public int generateNewID
+		(
+		ID_TYPE type	// Type of table (corresponding with an enum value) to generate an ID for
+		)
     {
         /* Local variables */
         string[] dbRef = 
@@ -199,7 +219,10 @@ public class AccountService : System.Web.Services.WebService {
      *  Protected Methods
      *************************************************************/
 
-    protected bool accountExists(string email)
+    protected bool accountExists
+        (
+        string email    // Email address to check
+        )
     {
         /* Connect to database */
         SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
@@ -218,7 +241,11 @@ public class AccountService : System.Web.Services.WebService {
         return true;
     }
 
-    protected bool checkCredentials(string email, string password)
+    protected bool checkCredentials
+        (
+        string email,       // Email address to check
+        string password     // Password to check
+        )
     {
         string pass = getPassword(email);
         if (pass != password)
@@ -227,7 +254,10 @@ public class AccountService : System.Web.Services.WebService {
         return true;
     }
 
-    protected string getPassword(string email)
+    protected string getPassword
+        (
+        string email    // Email address to get password for
+        )
     {
         /* Connect to database */
         SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
@@ -250,7 +280,10 @@ public class AccountService : System.Web.Services.WebService {
         return pass;
     }
 
-    protected int getAccountID(string email)
+    protected int getAccountID
+        (
+        string email    // Email address to check
+        )
     {
         /* Connect to database */
         SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
@@ -273,7 +306,10 @@ public class AccountService : System.Web.Services.WebService {
         return id;
     }
 
-    protected int getLinkedID(string email)
+    protected int getLinkedID
+        (
+        string email    // Email address to access
+        )
     {
         /* Connect to database */
         SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
@@ -296,7 +332,10 @@ public class AccountService : System.Web.Services.WebService {
         return id;
     }
 
-    protected int getAccountType(string email)
+    protected int getAccountType
+        (
+        string email    // Email address to check
+        )
     {
         /* Connect to database */
         SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
