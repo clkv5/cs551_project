@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SternerLearn</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="emailHint">Email address</string>
+    <string name="passwordHint">Password</string>
+    <string name="login">Log In</string>
+    <string name="register">Register</string>
+    <string name="title_activity_main_menu">USERNAME</string>
+    <string name="title_activity_register">Register</string>
+    <string name="replace">to be replaced dynamically</string>
+    <string name="repeatPassword">Confirm password</string>
+    <string name="realName">First and last name</string>
+
+</resources>
