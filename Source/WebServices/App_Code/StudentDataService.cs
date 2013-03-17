@@ -24,7 +24,7 @@ public class Assignment
         int? courseID = aReader["courseID"] as int?;
         string name = aReader["name"] as string;
         string description = aReader["description"] as string;
-        float? totalPoints = aReader["totalPoints"] as float?;
+        double? totalPoints = aReader["totalPoints"] as double?;
         DateTime? dueDate = aReader["dueDate"] as DateTime?;
         bool? isTest = aReader["isTest"] as bool?;
 
@@ -47,7 +47,7 @@ public class Assignment
     public int mCourseID;
     public string mName;
     public string mDescription;
-    public float mPoints;
+    public double mPoints;
     public DateTime mDueDate;
     public bool mIsTest;
 }
@@ -55,47 +55,27 @@ public class Assignment
 [Serializable]
 public class Infraction
 {
-    // TODO: Convert to take an SqlDataReader like Assignment
-    public Infraction()
-    {
-        mInfractionID = -1;
-        mStudentID = -1;
-        mInfractionType = StudentDataService.INFRACTION_TYPE.INFRACTION_COUNT;
-        mDescription = "";
-        mDate = DateTime.Now;
-    }
-
     public Infraction
         (
-        int aInfractionID,
-        int aStudentID,
-        StudentDataService.INFRACTION_TYPE aInfractionType,
-        string aDesc,
-        DateTime aDate
+        SqlDataReader aReader   // Reader to database to get info from
         )
     {
-        mInfractionID = aInfractionID;
-        mStudentID = aStudentID;
-        mInfractionType = aInfractionType;
-        mDescription = aDesc;
-        mDate = aDate;
-    }
+        int? aInfractionID = aReader["infractionID"] as int?;
+        int? aStudentID = aReader["studentID"] as int?;
+        StudentDataService.INFRACTION_TYPE? aInfractionType = aReader["infractionType"] as StudentDataService.INFRACTION_TYPE?;
+        string aDesc = aReader["description"] as string;
+        DateTime? aDate = aReader["date"] as DateTime?;
 
-    // Handle nullable input
-    public Infraction
-        (
-        int? aInfractionID,
-        int? aStudentID,
-        StudentDataService.INFRACTION_TYPE? aInfractionType,
-        string aDesc,
-        DateTime? aDate
-        )
-    {
         mInfractionID = aInfractionID.HasValue ? aInfractionID.Value : -1;
         mStudentID = aStudentID.HasValue ? aStudentID.Value : -1;
         mInfractionType = aInfractionType.HasValue ? aInfractionType.Value : StudentDataService.INFRACTION_TYPE.INFRACTION_COUNT;
         mDescription = aDesc;
         mDate = aDate.HasValue ? aDate.Value : DateTime.Now;
+    }
+
+    // Do not use default constructor!
+    public Infraction()
+    {
     }
 
 	// Correspond to C# equivalents of the Infractions columns
@@ -109,42 +89,17 @@ public class Infraction
 [Serializable]
 public class Grade
 {
-    // TODO: Convert to take an SqlDataReader like Assignment
-    public Grade()
-    {
-        mGradeID = -1;
-        mAssignmentID = -1;
-        mStudentID = -1;
-        mPointsEarned = 0.0F;
-        mDateSubmitted = DateTime.Now;
-    }
-
     public Grade
         (
-        int aGradeID,
-        int aAssignmentID,
-        int aStudentID,
-        double aPoints,
-        DateTime aDate
+        SqlDataReader aReader   // Reader to get data from
         )
     {
-        mGradeID = aGradeID;
-        mAssignmentID = aAssignmentID;
-        mStudentID = aStudentID;
-        mPointsEarned = aPoints;
-        mDateSubmitted = aDate;
-    }
+        int? aGradeID = aReader["gradeID"] as int?;
+        int? aAssignmentID = aReader["assignmentID"] as int?;
+        int? aStudentID = aReader["studentID"] as int?;
+        double? aPoints = aReader["pointsEarned"] as double?;
+        DateTime? aDate = aReader["dateSubmitted"] as DateTime?;
 
-    // Handle nullable input
-    public Grade
-        (
-        int? aGradeID,
-        int? aAssignmentID,
-        int? aStudentID,
-        double? aPoints,
-        DateTime? aDate
-        )
-    {
         mGradeID = aGradeID.HasValue ? aGradeID.Value : -1;
         mAssignmentID = aAssignmentID.HasValue ? aAssignmentID.Value : -1;
         mStudentID = aStudentID.HasValue ? aStudentID.Value : -1;
@@ -152,17 +107,47 @@ public class Grade
         mDateSubmitted = aDate.HasValue ? aDate.Value : DateTime.Now;
     }
 
+    // Do not use default constructor!
+    public Grade()
+    {
+    }
+
 	// Correspond to C# equivalents of the Grades columns
     public int mGradeID;
     public int mAssignmentID;
     public int mStudentID;
-
-    // TODO: Need to make sure that the Assignments.totalPoints and Grades.pointsEarned are the same type
     public double mPointsEarned;
     public DateTime mDateSubmitted;
 }
 
-// TODO: Add a "Course" object
+[Serializable]
+public class Course
+{
+    public Course
+        (
+        SqlDataReader aReader   // Reader to get data from
+        )
+    {
+        int? aCourseID = aReader["courseID"] as int?;
+        int? aStaffID = aReader["staffID"] as int?;
+        string aClassName = aReader["className"] as string;
+
+        mCourseID = aCourseID.HasValue ? aCourseID.Value : -1;
+        mStaffID = aStaffID.HasValue ? aStaffID.Value : -1;
+        mClassName = aClassName;
+    }
+
+    // Do not use default constructor!
+    public Course()
+    {
+    }
+
+    // Correspond to C# equivalents of the Course columns
+    public int mCourseID;
+    public int mStaffID;
+    public string mClassName;
+
+}
 
 /// <summary>
 /// Summary description for StudentDataService
@@ -292,8 +277,7 @@ public class StudentDataService : System.Web.Services.WebService
 
 
     [WebMethod]
-    // TODO: This may want to get the names of them instead of the IDs (maybe?)
-    public List<int> getClasses
+    public List<Course> getClasses
         (
         int aStudentID	// Student ID to get classes for
         )
@@ -326,9 +310,30 @@ public class StudentDataService : System.Web.Services.WebService
 
         }
 
+        // Now get the class names
+        List<Course> courses = new List<Course>();
+
+        for (int i = 0; i < classes.Count; i++)
+        {
+            string query2 = "SELECT * " +
+                            "FROM Courses " +
+                            "WHERE courseID = " + classes[i];
+            using (SqlCommand cmd = new SqlCommand(query2, conn))
+            {
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Course assign = new Course(reader);
+                    courses.Add(assign);
+                }
+
+                reader.Dispose();
+            }
+        }
+
         conn.Close();
 
-        return classes;
+        return courses;
     }
 
     [WebMethod]
@@ -476,13 +481,7 @@ public class StudentDataService : System.Web.Services.WebService
                 // Make sure the assignment is for this class
                 if( classAssignments.Contains( (int)reader["assignmentID"] ) )
                 {
-                    int? assignID = reader["gradeID"] as int?;
-                    int? courseID = reader["assignmentID"] as int?;
-                    int? studentID = reader["studentID"] as int?;
-                    double? pointsEarned = reader["pointsEarned"] as double?;
-                    DateTime? dateSubmitted = reader["dateSubmitted"] as DateTime?;
-
-                    Grade grade = new Grade(assignID, courseID, studentID, pointsEarned, dateSubmitted);
+                    Grade grade = new Grade(reader);
                     grades.Add(grade);
                 }
             }
@@ -496,7 +495,6 @@ public class StudentDataService : System.Web.Services.WebService
     }
 
     [WebMethod]
-    // TODO: Infractions in ParentalManagement?
     public bool addInfraction
         (
         int aTeacherID,						// Teacher ID to verify
@@ -517,12 +515,11 @@ public class StudentDataService : System.Web.Services.WebService
             int infractionID = generateID(AccountService.ID_TYPE.INFRACTION_ID);
 
             // Add the assignment
-            // TODO: Add time field to infractions (seriously)
             success = generateGenericInsertCommand(conn,
                                                     "Infractions",
                                                     infractionID.ToString(),
                                                     aStudentID.ToString(),
-                                                    aInfractionType.ToString(),
+                                                    ((int)aInfractionType).ToString(),
                                                     aDescription,
                                                     aDate.ToString());
 
@@ -539,10 +536,28 @@ public class StudentDataService : System.Web.Services.WebService
         int aStudentID	// Student ID to get infractions for
         )
     {
-        // TODO
         List<Infraction> infractions = new List<Infraction>();
-        Infraction tmp = new Infraction(1, 1, INFRACTION_TYPE.INFRACTION_ABSENT, "", DateTime.Now);
-        infractions.Add(tmp);
+
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        conn.Open();
+
+        SqlCommand assignCmd = new SqlCommand("SELECT * " +
+                                             "FROM Infractions " +
+                                             "WHERE studentID = " + aStudentID
+                                            , conn);
+
+        SqlDataReader reader = assignCmd.ExecuteReader();
+        while (reader.Read())
+        {
+            Infraction assign = new Infraction(reader);
+            infractions.Add(assign);
+        }
+
+        reader.Dispose();
+        assignCmd.Dispose();
+
+        conn.Close();
+
         return infractions;
     }
 
