@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.sternerlearn.MainActivity"
+            android:name="com.sternerlearn.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,12 +23,68 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.sternerlearn.MainMenu"
+            android:name="com.sternerlearn.ParentMainMenu"
             android:label="@string/title_activity_main_menu" >
         </activity>
         <activity
             android:name="com.sternerlearn.RegisterActivity"
             android:label="@string/title_activity_register" >
+        </activity>
+        <activity
+            android:name="com.sternerlearn.AssignmentsActivity"
+            android:label="@string/title_activity_assignments" >
+        </activity>
+        <activity
+            android:name="com.sternerlearn.NotImplemented"
+            android:label="@string/title_activity_not_implemented" >
+        </activity>
+        <activity
+            android:name="com.sternerlearn.StudentMainMenu"
+            android:label="@string/title_activity_student_main_menu" >
+        </activity>
+        <activity
+            android:name="com.sternerlearn.TeacherMainMenu"
+            android:label="@string/title_activity_teacher_main_menu" >
+        </activity>
+        <activity
+            android:name="com.sternerlearn.GradesActivity"
+            android:label="@string/title_activity_grades"
+            android:parentActivityName="android.app.ListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="android.app.ListActivity" />
+        </activity>
+        <activity
+            android:name="com.sternerlearn.ClassesActivity"
+            android:label="@string/title_activity_classes"
+            android:parentActivityName="android.app.ListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="android.app.ListActivity" />
+        </activity>
+        <activity
+            android:name="com.sternerlearn.InfractionsActivity"
+            android:label="@string/title_activity_infractions"
+            android:parentActivityName="android.app.ListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="android.app.ListActivity" />
+        </activity>
+        <activity
+            android:name="com.sternerlearn.LinkAccountsActivity"
+            android:label="@string/title_activity_link_accounts" >
+        </activity>
+        <activity
+            android:name="com.sternerlearn.ParentalControlActivity"
+            android:label="@string/title_activity_parental_control"
+            android:parentActivityName="android.app.ListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="android.app.ListActivity" />
+        </activity>
+        <activity
+            android:name="com.sternerlearn.MyListActivity"
+            android:label="@string/title_activity_my_list" >
         </activity>
     </application>
 

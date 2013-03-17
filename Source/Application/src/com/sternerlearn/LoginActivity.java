@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 
-public class MainActivity extends Activity {
+public class LoginActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
     }
 
 
@@ -27,7 +27,12 @@ public class MainActivity extends Activity {
     	View aView
     	)
     {
-    	startActivity(new Intent(this, MainMenu.class));
+    	// Need to attempt to log them in
+    	// If it succeeds, then send the account type to the MainMenu
+    	// TODO: Need to retrieve account type when logging in
+    	// If it fails give them a Toast
+    	
+    	startActivity(new Intent(this, ParentMainMenu.class));
     }
     
     public void handleRegister( View aView )

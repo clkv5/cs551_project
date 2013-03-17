@@ -13,5 +13,19 @@
     <string name="replace">to be replaced dynamically</string>
     <string name="repeatPassword">Confirm password</string>
     <string name="realName">First and last name</string>
+    <string name="accountType0">Guardian</string>
+    <string name="accountType1">Student</string>
+    <string name="accountType2">Teacher</string>
+    <string name="title_activity_assignments">Assignments</string>
+    <string name="title_activity_not_implemented">Not Implemented</string>
+    <string name="not_implemented">This page has not been implemented yet. Please wait for the next iteration!</string>
+    <string name="title_activity_student_main_menu">Main Menu</string>
+    <string name="title_activity_teacher_main_menu">Main Menu</string>
+    <string name="title_activity_grades">GradesActivity</string>
+    <string name="title_activity_classes">ClassesActivity</string>
+    <string name="title_activity_infractions">InfractionsActivity</string>
+    <string name="title_activity_link_accounts">LinkAccountsActivity</string>
+    <string name="title_activity_parental_control">ParentalControlActivity</string>
+    <string name="title_activity_my_list">MyListActivity</string>
 
 </resources>

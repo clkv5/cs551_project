@@ -12,6 +12,7 @@ public class RegisterActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
+		
 	}
 
 	@Override
@@ -25,7 +26,8 @@ public class RegisterActivity extends Activity {
     {
     	// Try to register them. If successful just take them to the MainMenu
     	// If not then report errors
+    	// TODO: Put the account type in extras
     	
-    	//startActivity(new Intent(this, MainMenu.class));
+    	startActivity(new Intent(this, StudentMainMenu.class));
     }
 }
