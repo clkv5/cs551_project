@@ -169,7 +169,7 @@ public class AccountService : System.Web.Services.WebService {
     /*************************************************************
     *  Public Helper Methods
     *************************************************************/
-    public int generateNewID
+    public static int generateNewID
 		(
 		ID_TYPE type	// Type of table (corresponding with an enum value) to generate an ID for
 		)
@@ -212,6 +212,102 @@ public class AccountService : System.Web.Services.WebService {
 
         conn.Close();
         return idNum;
+    }
+
+    public static int getLinkedID
+        (
+        int aID,
+        AccountService.ACCOUNT_TYPE aIDType // The account type aID should be
+        )
+    {
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        conn.Open();
+
+        SqlCommand cmd = new SqlCommand("SELECT * " +
+                                        "FROM Accounts " +
+                                        "WHERE id = " + (int)aID
+                                        , conn);
+
+        SqlDataReader reader = cmd.ExecuteReader();
+        reader.Read();
+
+        int? linkID = -1;
+
+        int? type = reader["accountType"] as int?;
+
+        // Verify that the ID is actually the correct type
+        if (aIDType == (ACCOUNT_TYPE)type.Value)
+        {
+            linkID = reader["linkedID"] as int?;
+        }
+
+        reader.Dispose();
+        cmd.Dispose();
+
+        conn.Close();
+
+        if (linkID.HasValue)
+        {
+            return linkID.Value;
+        }
+
+        return -1;
+    }
+
+    public static bool verifyTeacher
+        (
+        int aTeacherID,				// Account ID to verify
+        string aPassword,			// Account's password
+        SqlConnection aConnection	// Connection to use. Caller must open and close it
+        )
+    {
+        string query = "SELECT accountType " +
+                        "FROM Accounts " +
+                        "WHERE id = " + aTeacherID;
+
+        ACCOUNT_TYPE accountType = ACCOUNT_TYPE.STUDENT;
+        using (SqlCommand cmd = new SqlCommand(query, aConnection))
+        {
+            accountType = (ACCOUNT_TYPE)cmd.ExecuteScalar();
+        }
+
+        bool success = false;
+        if (ACCOUNT_TYPE.STAFF == accountType &&
+             verifyAccount(aTeacherID, aPassword, aConnection))
+        {
+            success = true;
+        }
+
+        return success;
+    }
+
+    public static bool verifyAccount
+        (
+        int aTeacherID,				// Account ID to verify
+        string aPassword,			// Account's password
+        SqlConnection aConnection	// Connection to use. Caller must open and close it
+        )
+    {
+        // Find email using the ID
+        SqlCommand emailCmd = new SqlCommand("SELECT emailAddress " +
+                                             "FROM Accounts " +
+                                             "WHERE id = " + aTeacherID
+                                            , aConnection);
+        string emailAddress = (string)emailCmd.ExecuteScalar();
+        emailCmd.Dispose();
+
+        // Verify that the password is correct for this account
+        AccountService service = new AccountService();
+
+        bool success = false;
+        if ("Login Successful" == service.Login(emailAddress, aPassword))
+        {
+            success = true;
+        }
+
+        service.Dispose();
+
+        return success;
     }
 
 
@@ -357,5 +453,6 @@ public class AccountService : System.Web.Services.WebService {
         conn.Close();
         return type;
     }
+
 
 }
