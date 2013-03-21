@@ -158,6 +158,7 @@ public class Course
 [GenerateScriptType(typeof(Infraction))]
 [GenerateScriptType(typeof(Grade))]
 [GenerateScriptType(typeof(Assignment))]
+[GenerateScriptType(typeof(Course))]
 public class StudentDataService : System.Web.Services.WebService
 {
 
@@ -190,14 +191,14 @@ public class StudentDataService : System.Web.Services.WebService
         SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
         conn.Open();
 
-        bool success = verifyTeacher(aTeacherID, aPassword, conn);
+        bool success = AccountService.verifyTeacher(aTeacherID, aPassword, conn);
         if (success)
         {
             //Get new class ID
-            int classID = generateID(AccountService.ID_TYPE.COURSE_ID);
+            int classID = AccountService.generateNewID(AccountService.ID_TYPE.COURSE_ID);
 
             // Add the class
-            success = generateGenericInsertCommand(conn,
+            success = Utilities.generateGenericInsertCommand(conn,
                                                     "Courses",
                                                     classID.ToString(),
                                                     aTeacherID.ToString(),
@@ -221,7 +222,7 @@ public class StudentDataService : System.Web.Services.WebService
         SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
         conn.Open();
 
-        bool success = verifyTeacher(aTeacherID, aPassword, conn);
+        bool success = AccountService.verifyTeacher(aTeacherID, aPassword, conn);
         if (success)
         {
             SqlCommand classCmd = new SqlCommand("SELECT class1, class2, class3 " +
@@ -353,14 +354,14 @@ public class StudentDataService : System.Web.Services.WebService
         conn.Open();
 
 
-        bool success = verifyTeacher(aTeacherID, aPassword, conn);
+        bool success = AccountService.verifyTeacher(aTeacherID, aPassword, conn);
         if (success)
         {
             // Get new ID
-            int assignmentID = generateID(AccountService.ID_TYPE.ASSIGNMENT_ID);
+            int assignmentID = AccountService.generateNewID(AccountService.ID_TYPE.ASSIGNMENT_ID);
 
             // Add the assignment
-            success = generateGenericInsertCommand(conn,
+            success = Utilities.generateGenericInsertCommand(conn,
                                                     "Assignments",
                                                     assignmentID.ToString(),
                                                     aClassID.ToString(),
@@ -424,14 +425,14 @@ public class StudentDataService : System.Web.Services.WebService
         SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
         conn.Open();
 
-        bool success = verifyTeacher(aTeacherID, aPassword, conn);
+        bool success = AccountService.verifyTeacher(aTeacherID, aPassword, conn);
         if (success)
         {
             // Get new ID
-            int gradeID = generateID(AccountService.ID_TYPE.GRADE_ID);
+            int gradeID = AccountService.generateNewID(AccountService.ID_TYPE.GRADE_ID);
 
             // Add the assignment
-            success = generateGenericInsertCommand(conn,
+            success = Utilities.generateGenericInsertCommand(conn,
                                                     "Grades",
                                                     gradeID.ToString(),
                                                     aAssignmentID.ToString(),
@@ -508,14 +509,14 @@ public class StudentDataService : System.Web.Services.WebService
         SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
         conn.Open();
 
-        bool success = verifyTeacher(aTeacherID, aPassword, conn);
+        bool success = AccountService.verifyTeacher(aTeacherID, aPassword, conn);
         if (success)
         {
             // Get new ID
-            int infractionID = generateID(AccountService.ID_TYPE.INFRACTION_ID);
+            int infractionID = AccountService.generateNewID(AccountService.ID_TYPE.INFRACTION_ID);
 
             // Add the assignment
-            success = generateGenericInsertCommand(conn,
+            success = Utilities.generateGenericInsertCommand(conn,
                                                     "Infractions",
                                                     infractionID.ToString(),
                                                     aStudentID.ToString(),
@@ -567,7 +568,7 @@ public class StudentDataService : System.Web.Services.WebService
         int aStudentID	// Student ID to get the parent for
         )
     {
-        return getLinkedID(aStudentID, AccountService.ACCOUNT_TYPE.STUDENT);
+        return AccountService.getLinkedID(aStudentID, AccountService.ACCOUNT_TYPE.STUDENT);
     }
 
     [WebMethod]
@@ -576,109 +577,7 @@ public class StudentDataService : System.Web.Services.WebService
         int aParentID	// Parent ID to get student for
         )
     {
-        return getLinkedID(aParentID, AccountService.ACCOUNT_TYPE.PARENT);
-    }
-
-    protected int getLinkedID
-        (
-        int aID,
-        AccountService.ACCOUNT_TYPE aIDType // The account type aID should be
-        )
-    {
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
-        conn.Open();
-
-        SqlCommand cmd = new SqlCommand("SELECT * " +
-                                        "FROM Accounts " +
-                                        "WHERE id = " + (int)aID
-                                        , conn);
-
-        SqlDataReader reader = cmd.ExecuteReader();
-        reader.Read();
-
-        int? linkID = -1;
-
-        int? type = reader["accountType"] as int?;
-
-        // Verify that the ID is actually the correct type
-        if (aIDType == (AccountService.ACCOUNT_TYPE)type.Value)
-        {
-            linkID = reader["linkedID"] as int?;
-        }
-
-        reader.Dispose();
-        cmd.Dispose();
-
-        conn.Close();
-
-        if (linkID.HasValue)
-        {
-            return linkID.Value;
-        }
-
-        return -1;
-    }
-
-    protected bool verifyTeacher
-        (
-        int aTeacherID,				// Teacher ID to verify
-        string aPassword,			// Teacher's password
-        SqlConnection aConnection	// Connection to use. Caller must open and close it
-        )
-    {
-        // Find teacher email using the ID
-        SqlCommand emailCmd = new SqlCommand("SELECT emailAddress " +
-                                             "FROM Accounts " +
-                                             "WHERE id = " + aTeacherID
-                                            , aConnection);
-        string emailAddress = (string)emailCmd.ExecuteScalar();
-        emailCmd.Dispose();
-
-        // Verify that the password is correct for this teacher
-        AccountService accountService = new AccountService();
-
-        bool success = false;
-        if ("Login Successful" == accountService.Login(emailAddress, aPassword))
-        {
-            success = true;
-        }
-
-        accountService.Dispose();
-
-        return success;
-    }
-
-    // Assume first is the table name
-    // Returns whether the write was successful
-    protected bool generateGenericInsertCommand
-        (
-        SqlConnection aConnection,	// Connection to execute command with
-        params string[] aList		// Variable length list of parameters
-        )
-    {
-        int count = aList.Length;
-        string command = "INSERT INTO " + aList[0] + " VALUES('";
-        for (int i = 1; i < count; i++)
-        {
-            command += aList[i];
-            command += (i == count - 1) ? "')" : "', '";
-        }
-        SqlCommand cmd = new SqlCommand(command, aConnection);
-        bool ret = (cmd.ExecuteNonQuery() > 0);
-            
-        cmd.Dispose();
-        return ret;
-    }
-
-    protected int generateID
-        (
-        AccountService.ID_TYPE aID	// ID type to generate 
-        )
-    {
-        AccountService accountService = new AccountService();
-        int id = accountService.generateNewID(aID);
-        accountService.Dispose();
-        return id;
+        return AccountService.getLinkedID(aParentID, AccountService.ACCOUNT_TYPE.PARENT);
     }
 
 }
