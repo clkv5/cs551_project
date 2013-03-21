@@ -6,10 +6,50 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
+using System.Xml.Linq;
+using System.Web.Script.Services;
+
+
+[Serializable]
+public class Account
+{
+    public int id;
+    public int accountType;
+    public int linkedID;
+    public string emailAddress;
+    public string password;
+    public string realName;
+
+    public Account
+        (
+        int? acctID,
+        int? type,
+        int? linkID,
+        string email,
+        string pass,
+        string name
+        )
+    {
+        id = acctID.HasValue ? acctID.Value : -1;
+        accountType = type.HasValue ? type.Value : -1;
+        linkedID = linkID.HasValue ? linkID.Value : -1;
+        emailAddress = email;
+        password = pass;
+        realName = name;
+    }
+
+    // Do not use default constructor!
+    public Account()
+    {
+    }
+
+}
+
 
 [WebService(Namespace = "http://tempuri.org/")]
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
-[System.Web.Script.Services.ScriptService]
+[ScriptService]
+[GenerateScriptType(typeof(Account))]
 public class AccountService : System.Web.Services.WebService {
 
 
@@ -91,7 +131,7 @@ public class AccountService : System.Web.Services.WebService {
 
 
     [WebMethod]
-    public string Login
+    public List<Account> Login
 		(
 		string email,		// Email address for the account
 		string password		// Password
@@ -99,13 +139,35 @@ public class AccountService : System.Web.Services.WebService {
     {
         /* Check user exists */
         if ( !accountExists( email ) )
-            return "Error logging in:  Invalid email.";
+            return null;
 
         /* Check user credentials */
         if( !checkCredentials(email, password) )
-            return "Error logging in:  Invalid password.";
+            return null;
 
-        return "Login Successful";
+        /* Retrieve account info */
+        List<Account> account = new List<Account>();
+
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        conn.Open();
+
+        SqlCommand getInfo = new SqlCommand("SELECT * FROM Accounts WHERE emailAddress='" + email + "'", conn);
+        SqlDataReader reader = getInfo.ExecuteReader();
+        reader.Read();
+
+        int? id = reader["id"] as int?;
+        int? type = reader["accountType"] as int?;
+        int? lid = reader["linkedID"] as int?;
+        string name = reader["realName"] as string;
+
+        reader.Close();
+        reader.Dispose();
+        getInfo.Dispose();
+
+        /* Return account data in XML */
+        Account info = new Account( id, type, lid, email, password, name );
+        account.Add(info);
+        return account;
     }
 
 
