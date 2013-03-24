@@ -58,7 +58,7 @@ public class ParentalManagementService : System.Web.Services.WebService {
         DateTime aTime
         )
     {
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
         bool success = AccountService.verifyAccount(aStudentID, aPassword, conn);
@@ -92,7 +92,7 @@ public class ParentalManagementService : System.Web.Services.WebService {
     {
         List<Location> locations = new List<Location>();
 
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
         SqlCommand assignCmd = new SqlCommand("SELECT * " +

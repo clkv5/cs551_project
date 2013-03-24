@@ -188,7 +188,7 @@ public class StudentDataService : System.Web.Services.WebService
         string aClassName	// Name of the class to add
         )
     {
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
         bool success = AccountService.verifyTeacher(aTeacherID, aPassword, conn);
@@ -219,7 +219,7 @@ public class StudentDataService : System.Web.Services.WebService
         int aStudentID		// Student to add
         )
     {
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
         bool success = AccountService.verifyTeacher(aTeacherID, aPassword, conn);
@@ -284,7 +284,7 @@ public class StudentDataService : System.Web.Services.WebService
         )
     {
 
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
         List<int> classes = new List<int>();
@@ -350,7 +350,7 @@ public class StudentDataService : System.Web.Services.WebService
         string aDescription	// Description of the assignment
         )
     {
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
 
@@ -387,7 +387,7 @@ public class StudentDataService : System.Web.Services.WebService
     {
         List<Assignment> assignments = new List<Assignment>();
 
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
         SqlCommand assignCmd = new SqlCommand("SELECT * " +
@@ -422,7 +422,7 @@ public class StudentDataService : System.Web.Services.WebService
         DateTime aDateSubmitted		// Date the student submitted it
         )
     {
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
         bool success = AccountService.verifyTeacher(aTeacherID, aPassword, conn);
@@ -455,7 +455,7 @@ public class StudentDataService : System.Web.Services.WebService
     {
         List<Grade> grades = new List<Grade>();
 
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
         // Get list of assignments for this class
@@ -506,7 +506,7 @@ public class StudentDataService : System.Web.Services.WebService
         DateTime aDate						// Date the infraction occurred
         )
     {
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
         bool success = AccountService.verifyTeacher(aTeacherID, aPassword, conn);
@@ -539,7 +539,7 @@ public class StudentDataService : System.Web.Services.WebService
     {
         List<Infraction> infractions = new List<Infraction>();
 
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
         SqlCommand assignCmd = new SqlCommand("SELECT * " +

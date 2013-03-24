@@ -86,7 +86,7 @@ public class AccountService : System.Web.Services.WebService {
     *************************************************************/
 
     [WebMethod]
-    public string Register
+    public List<Account> Register
 		(
 		string email,			// Email address
 		string password,		// Password
@@ -97,14 +97,14 @@ public class AccountService : System.Web.Services.WebService {
     {
         /* Check user doesn't exist in database */
         if( accountExists( email ) )
-            return "Error registering:  An account already exists with the given email.";
+            return null;
 
         /* Check user credentials */
         if( password != passwordRepeat )
-            return "Error registering:  Password fields do not match.";
+            return null;
 
         /* Open connection to database */
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
         /* Add new account */
@@ -125,8 +125,11 @@ public class AccountService : System.Web.Services.WebService {
 
         conn.Close();
 
-        // Note:  This should return additional information to help link accounts as a parent
-        return "Registration Successful";
+        /* Return account info */
+        List<Account> account = new List<Account>();
+        Account info = new Account(id, type, -1, email, password, realName);
+        account.Add(info);
+        return account;
     }
 
 
@@ -148,7 +151,7 @@ public class AccountService : System.Web.Services.WebService {
         /* Retrieve account info */
         List<Account> account = new List<Account>();
 
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
         SqlCommand getInfo = new SqlCommand("SELECT * FROM Accounts WHERE emailAddress='" + email + "'", conn);
@@ -204,7 +207,7 @@ public class AccountService : System.Web.Services.WebService {
         //TODO:  add security to enforce that links aren't formed to other parents' children
 
         /* Connect to database */
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
         /* Link student to parent */
@@ -249,7 +252,7 @@ public class AccountService : System.Web.Services.WebService {
         };
 
         /* Connect to database */
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
         /* Acquire meta data */
@@ -282,7 +285,7 @@ public class AccountService : System.Web.Services.WebService {
         AccountService.ACCOUNT_TYPE aIDType // The account type aID should be
         )
     {
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
         SqlCommand cmd = new SqlCommand("SELECT * " +
@@ -362,7 +365,7 @@ public class AccountService : System.Web.Services.WebService {
         AccountService service = new AccountService();
 
         bool success = false;
-        if ("Login Successful" == service.Login(emailAddress, aPassword))
+        if (null != service.Login(emailAddress, aPassword))
         {
             success = true;
         }
@@ -383,7 +386,7 @@ public class AccountService : System.Web.Services.WebService {
         )
     {
         /* Connect to database */
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
         /* Check users exist in database */
@@ -418,7 +421,7 @@ public class AccountService : System.Web.Services.WebService {
         )
     {
         /* Connect to database */
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
         /* Get account info  */
@@ -444,7 +447,7 @@ public class AccountService : System.Web.Services.WebService {
         )
     {
         /* Connect to database */
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
         /* Get account info  */
@@ -470,7 +473,7 @@ public class AccountService : System.Web.Services.WebService {
         )
     {
         /* Connect to database */
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
         /* Get account info  */
@@ -496,7 +499,7 @@ public class AccountService : System.Web.Services.WebService {
         )
     {
         /* Connect to database */
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
         conn.Open();
 
         /* Get account info  */
