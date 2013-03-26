@@ -21,6 +21,7 @@ public partial class TableDisplay : System.Web.UI.Page
         "Locations",
         "Meta",
         "Notifications",
+		"Texts"
     };
 
 
@@ -40,11 +41,12 @@ public partial class TableDisplay : System.Web.UI.Page
                 GridView6,
                 GridView7,
                 GridView8,
-                GridView9
+                GridView9,
+				GridView10
             };
 
 
-            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabase"].ConnectionString);
+            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
             conn.Open();
 
             for (int i = 0; i < TABLE_NAMES.Length; i++)
@@ -105,5 +107,10 @@ public partial class TableDisplay : System.Web.UI.Page
     protected void LinkButton9_Click(object sender, EventArgs e)
     {
         GridView9.Visible = !GridView9.Visible;
+    }
+	
+	protected void LinkButton10_Click(object sender, EventArgs e)
+    {
+        GridView10.Visible = !GridView10.Visible;
     }
 }

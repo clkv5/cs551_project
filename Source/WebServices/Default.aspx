@@ -4,14 +4,20 @@
 <asp:Content ID="HeaderContent" runat="server" ContentPlaceHolderID="HeadContent">
 </asp:Content>
 <asp:Content ID="BodyContent" runat="server" ContentPlaceHolderID="MainContent">
-    <h2>
-        Welcome to ASP.NET!
-    </h2>
     <p>
-        To learn more about ASP.NET visit <a href="http://www.asp.net" title="ASP.NET Website">www.asp.net</a>.
+        Web Services:<br />
+        <asp:HyperLink ID="HyperLink1" runat="server" 
+            NavigateUrl="~/AccountService.asmx">AccountService</asp:HyperLink>
+        <br />
+        <asp:HyperLink ID="HyperLink2" runat="server" 
+            NavigateUrl="~/StudentDataService.asmx">StudentDataService</asp:HyperLink>
+        <br />
+        <asp:HyperLink ID="HyperLink3" runat="server" 
+            NavigateUrl="~/ParentalManagementService.asmx">ParentalManagementService</asp:HyperLink>
     </p>
     <p>
-        You can also find <a href="http://go.microsoft.com/fwlink/?LinkID=152368&amp;clcid=0x409"
-            title="MSDN ASP.NET Docs">documentation on ASP.NET at MSDN</a>.
+        Debug:<br />
+        <asp:HyperLink ID="HyperLink4" runat="server" NavigateUrl="~/TableDisplay.aspx">TableDisplay</asp:HyperLink>
+        <br />
     </p>
 </asp:Content>
