@@ -45,32 +45,34 @@ public final class R {
     public static final class layout {
         public static final int activity_assignments=0x7f030000;
         public static final int activity_classes=0x7f030001;
-        public static final int activity_grades=0x7f030002;
-        public static final int activity_infractions=0x7f030003;
-        public static final int activity_link_accounts=0x7f030004;
-        public static final int activity_login=0x7f030005;
-        public static final int activity_my_list=0x7f030006;
-        public static final int activity_not_implemented=0x7f030007;
-        public static final int activity_parent_main_menu=0x7f030008;
-        public static final int activity_parental_control=0x7f030009;
-        public static final int activity_register=0x7f03000a;
-        public static final int activity_student_main_menu=0x7f03000b;
-        public static final int activity_teacher_main_menu=0x7f03000c;
+        public static final int activity_gps=0x7f030002;
+        public static final int activity_grades=0x7f030003;
+        public static final int activity_infractions=0x7f030004;
+        public static final int activity_link_accounts=0x7f030005;
+        public static final int activity_login=0x7f030006;
+        public static final int activity_my_list=0x7f030007;
+        public static final int activity_not_implemented=0x7f030008;
+        public static final int activity_parent_main_menu=0x7f030009;
+        public static final int activity_parental_control=0x7f03000a;
+        public static final int activity_register=0x7f03000b;
+        public static final int activity_student_main_menu=0x7f03000c;
+        public static final int activity_teacher_main_menu=0x7f03000d;
     }
     public static final class menu {
         public static final int assignments=0x7f070000;
         public static final int classes=0x7f070001;
-        public static final int grades=0x7f070002;
-        public static final int infractions=0x7f070003;
-        public static final int link_accounts=0x7f070004;
-        public static final int main=0x7f070005;
-        public static final int main_menu=0x7f070006;
-        public static final int my_list=0x7f070007;
-        public static final int not_implemented=0x7f070008;
-        public static final int parental_control=0x7f070009;
-        public static final int register=0x7f07000a;
-        public static final int student_main_menu=0x7f07000b;
-        public static final int teacher_main_menu=0x7f07000c;
+        public static final int g=0x7f070002;
+        public static final int grades=0x7f070003;
+        public static final int infractions=0x7f070004;
+        public static final int link_accounts=0x7f070005;
+        public static final int main=0x7f070006;
+        public static final int main_menu=0x7f070007;
+        public static final int my_list=0x7f070008;
+        public static final int not_implemented=0x7f070009;
+        public static final int parental_control=0x7f07000a;
+        public static final int register=0x7f07000b;
+        public static final int student_main_menu=0x7f07000c;
+        public static final int teacher_main_menu=0x7f07000d;
     }
     public static final class string {
         public static final int accountType0=0x7f05000c;
@@ -89,6 +91,7 @@ public final class R {
         public static final int replace=0x7f050009;
         public static final int title_activity_assignments=0x7f05000f;
         public static final int title_activity_classes=0x7f050015;
+        public static final int title_activity_gps=0x7f05001a;
         public static final int title_activity_grades=0x7f050014;
         public static final int title_activity_infractions=0x7f050016;
         public static final int title_activity_link_accounts=0x7f050017;

@@ -27,5 +27,6 @@
     <string name="title_activity_link_accounts">LinkAccountsActivity</string>
     <string name="title_activity_parental_control">ParentalControlActivity</string>
     <string name="title_activity_my_list">MyListActivity</string>
+    <string name="title_activity_gps">GPSActivity</string>
 
 </resources>
