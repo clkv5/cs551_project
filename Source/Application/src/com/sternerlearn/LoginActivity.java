@@ -54,7 +54,9 @@ public class LoginActivity extends Activity {
 			}
 			else if( Types.AccountType.STUDENT.ordinal() == acct.mAccountType )
 			{
-				startActivity(new Intent(this, StudentMainMenu.class));	
+				startActivity(new Intent(this, StudentMainMenu.class));
+				//startActivity(new Intent(this, GPSActivity.class) );
+				//startActivity(new Intent(this, SMSActivity.class) );
 			}
 			else
 			{

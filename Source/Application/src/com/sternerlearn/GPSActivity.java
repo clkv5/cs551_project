@@ -7,11 +7,10 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.text.format.Time;
+import java.util.List;
+import java.util.ArrayList;
 
 public class GPSActivity extends Activity {
-
-	/* Web service constants */
-	private static String METHOD_NAME = "AddLocation";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,31 +34,44 @@ public class GPSActivity extends Activity {
 		    	String time = getDateTime();
 		    	
 		    	/* Get student ID and password */
-		    	//TODO
-		    	int id = 0;
-		        String pass = "";
+		    	Account acct = SharedData.getInstance().getAccount();
+		    	int id = acct.mId;
+		        String pass = acct.mPassword;
 		    	
-		    	/* Log to Locations database */
-		    	//TODO
-		    	
+		    	/* Create list of web method parameters */
+		        List<PropertyWrapper> paramList = new ArrayList<PropertyWrapper>();
+		        Object obj = Integer.valueOf(id);
+		        paramList.add( new PropertyWrapper( "aStudentID" , obj ) );
+		        obj = String.valueOf(pass);
+		        paramList.add( new PropertyWrapper( "aPassword" , obj ) );
+		        obj = Double.valueOf(lat);
+		        paramList.add( new PropertyWrapper( "aLatitude" , obj ) );
+		        obj = Double.valueOf(lon);
+		        paramList.add( new PropertyWrapper( "aLongitude" , obj ) );
+		        obj = String.valueOf(time);
+		        paramList.add( new PropertyWrapper( "aTime" , obj ) );
+		        
+		        /* Log to Locations database */
+		        WebServiceWrapper webConn = WebServiceWrapper.getInstance();
+		    	webConn.call(Types.STUDENT_URL, Types.PARENT_ADD_LOCATION, paramList );
 		    }
 
-		    // called when the status of the GPS provider changes
+		    /* Called when GPS is enabled or disabled */
 		    public void onStatusChanged(String provider, int status, Bundle extras) {}
 
-		    // called when the GPS provider is turned on (user turning on the GPS on the phone)
+		    /* Called when GPS is enabled */
 		    public void onProviderEnabled(String provider) {}
 
-	        // called when the GPS provider is turned off (user turning off the GPS on the phone)
+	        /* Called when GPS is disabled */
 		    public void onProviderDisabled(String provider) {}
 		};
 		
 		/* Request updates from manager */
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 100, listener);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 50, listener);
 		
 	}
 	
-	public String getDateTime()
+	public static String getDateTime()
 	{
 		/* Create time object */
     	Time current = new Time();

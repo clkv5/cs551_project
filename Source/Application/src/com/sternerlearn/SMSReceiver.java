@@ -1,5 +1,8 @@
 package com.sternerlearn;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.os.Bundle;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,11 +11,7 @@ import android.telephony.SmsMessage;
 
 public class SMSReceiver extends BroadcastReceiver {
 	
-	/* SMS constants */
 	private static final String SMS_PRTCL ="pdus";
-
-	/* Web service constants */
-    private static String METHOD_NAME = "AddMessage";
 	
 	public void onReceive( Context context, Intent intent ) 
 	{
@@ -34,9 +33,31 @@ public class SMSReceiver extends BroadcastReceiver {
 	            sender = sms.getOriginatingAddress();
 	            message += sms.getMessageBody().toString();     
 	        }
-	         
-	        /* Log to Texts database */
 	        
+	    	/* Get time */
+	    	String time = GPSActivity.getDateTime();
+	        
+	    	/* Get student ID and password */
+	    	Account acct = SharedData.getInstance().getAccount();
+	    	int id = acct.mId;
+	        String pass = acct.mPassword;
+	         
+	    	/* Create list of web method parameters */
+	        List<PropertyWrapper> paramList = new ArrayList<PropertyWrapper>();
+	        Object obj = Integer.valueOf(id);
+	        paramList.add( new PropertyWrapper( "aStudentID" , obj ) );
+	        obj = String.valueOf(pass);
+	        paramList.add( new PropertyWrapper( "aPassword" , obj ) );
+	        obj = String.valueOf(sender);
+	        paramList.add( new PropertyWrapper( "aSender" , obj ) );
+	        obj = Double.valueOf(message);
+	        paramList.add( new PropertyWrapper( "aMessage" , obj ) );
+	        obj = String.valueOf(time);
+	        paramList.add( new PropertyWrapper( "aTime" , obj ) );
+	        
+	        /* Log to Texts database */
+	        WebServiceWrapper webConn = WebServiceWrapper.getInstance();
+	    	webConn.call(Types.STUDENT_URL, Types.PARENT_ADD_MESSAGE, paramList );
 	                
 	    }
 	}
