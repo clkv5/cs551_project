@@ -7,6 +7,9 @@
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="17" />
+    
+    <uses-permission 
+		android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -23,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.sternerlearn.ParentMainMenu"
+            android:name="com.sternerlearn.MainMenu"
             android:label="@string/title_activity_main_menu" >
         </activity>
         <activity
