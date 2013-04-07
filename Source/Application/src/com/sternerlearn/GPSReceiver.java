@@ -4,19 +4,32 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.app.Activity;
+import android.os.IBinder;
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.text.format.Time;
 import java.util.List;
 import java.util.ArrayList;
 
-public class GPSActivity extends Activity {
+public class GPSReceiver extends Service
+{
+
+	private static final int GPS_MIN_TIME = 5000;     /* In milliseconds */
+	private static final int GPS_MIN_DISTANCE = 50;   /* In meters */
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_gps);
-		
+	public IBinder onBind(Intent intent) {
+		return null;
+	}
+
+	@Override
+	public void onCreate() {
+	    super.onCreate();
+	}
+	
+	@Override
+	public void onStart(Intent intent, int startId) { 
 		/* Create GPS manager */
 		LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		
@@ -67,9 +80,10 @@ public class GPSActivity extends Activity {
 		};
 		
 		/* Request updates from manager */
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 50, listener);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, GPS_MIN_TIME, GPS_MIN_DISTANCE, listener);
 		
 	}
+	
 	
 	public static String getDateTime()
 	{
@@ -85,5 +99,6 @@ public class GPSActivity extends Activity {
     	
     	return stamp;
 	}
-
+	
 }
+
