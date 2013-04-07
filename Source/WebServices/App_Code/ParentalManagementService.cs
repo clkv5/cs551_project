@@ -15,8 +15,8 @@ public class Location
         SqlDataReader aReader   // Reader to get data from
         )
     {
-        int? aLatitude = aReader["latitude"] as int?;
-        int? aLongitude = aReader["longitude"] as int?;
+        double? aLatitude = aReader["latitude"] as double?;
+        double? aLongitude = aReader["longitude"] as double?;
         DateTime? aTime = aReader["time"] as DateTime?;
 
         mLatitude = aLatitude.HasValue ? aLatitude.Value : -1;
@@ -30,8 +30,8 @@ public class Location
     }
 
     // Correspond to C# equivalents of the Locations columns
-    public int mLatitude;
-    public int mLongitude;
+    public double mLatitude;
+    public double mLongitude;
     public DateTime mTime;
 
 }
@@ -82,8 +82,8 @@ public class ParentalManagementService : System.Web.Services.WebService {
         (
         int aStudentID,
         string aPassword,
-        int aLatitude,
-        int aLongitude,
+        double aLatitude,
+        double aLongitude,
         DateTime aTime
         )
     {
