@@ -276,6 +276,38 @@ public class StudentDataService : System.Web.Services.WebService
         return success;
     }
 
+    [WebMethod]
+    public List<Course> getTaughtClasses
+        (
+        int aTeacherID // Teacher ID to get classes for
+        )
+    {
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
+        conn.Open();
+
+        string query = "SELECT * " +
+                       "FROM Courses " +
+                       "WHERE staffID = " + aTeacherID;
+
+        // Now get the class names
+        List<Course> courses = new List<Course>();
+
+        using (SqlCommand cmd = new SqlCommand(query, conn))
+        {
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Course assign = new Course(reader);
+                courses.Add(assign);
+            }
+
+            reader.Dispose();
+        }
+
+        conn.Close();
+
+        return courses;
+    }
 
     [WebMethod]
     public List<Course> getClasses
