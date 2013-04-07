@@ -60,18 +60,17 @@ public final class R {
     public static final class menu {
         public static final int assignments=0x7f070000;
         public static final int classes=0x7f070001;
-        public static final int g=0x7f070002;
-        public static final int grades=0x7f070003;
-        public static final int infractions=0x7f070004;
-        public static final int link_accounts=0x7f070005;
-        public static final int main=0x7f070006;
-        public static final int main_menu=0x7f070007;
-        public static final int my_list=0x7f070008;
-        public static final int not_implemented=0x7f070009;
-        public static final int parental_control=0x7f07000a;
-        public static final int register=0x7f07000b;
-        public static final int student_main_menu=0x7f07000c;
-        public static final int teacher_main_menu=0x7f07000d;
+        public static final int grades=0x7f070002;
+        public static final int infractions=0x7f070003;
+        public static final int link_accounts=0x7f070004;
+        public static final int main=0x7f070005;
+        public static final int main_menu=0x7f070006;
+        public static final int my_list=0x7f070007;
+        public static final int not_implemented=0x7f070008;
+        public static final int parental_control=0x7f070009;
+        public static final int register=0x7f07000a;
+        public static final int student_main_menu=0x7f07000b;
+        public static final int teacher_main_menu=0x7f07000c;
     }
     public static final class string {
         public static final int accountType0=0x7f05000c;
