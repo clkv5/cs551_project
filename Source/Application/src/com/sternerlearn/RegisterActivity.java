@@ -33,8 +33,6 @@ public class RegisterActivity extends Activity {
     	
     	AsyncCallRegister task = new AsyncCallRegister();
     	task.execute();
-    	
-    	//startActivity(new Intent(this, StudentMainMenu.class));
     }
     
     public Account register()

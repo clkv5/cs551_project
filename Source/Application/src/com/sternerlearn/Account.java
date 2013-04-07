@@ -96,7 +96,7 @@ public class Account
     	catch(Exception ex)
     	{
     		// Either it's not a valid username and password, or we failed
-    		//mResponse = ex.toString();
+    		mResponse = ex.toString();
     		mValid = false;
 		}				
 	}	
@@ -118,8 +118,6 @@ public class Account
 		properties.add(new PropertyWrapper("type", aAccountType));
 		
 		SoapSerializationEnvelope envelope = WebServiceWrapper.getInstance().call(Types.ACCOUNT_URL, "Register", properties);
-		
-		mResponse = aEmail + " " + aPassword + " " + aPassRepeat + " " + aName + " " + String.valueOf(aAccountType ) + " / ";
     	
     	getAccount( envelope );
 

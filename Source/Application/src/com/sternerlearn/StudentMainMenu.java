@@ -10,12 +10,12 @@ public class StudentMainMenu extends MyListActivity {
 
 	private enum BUTTONS
 	{
-		CLASSES,
+		GRADES,
 		ASSIGNMENTS
 	}
 	
 	private String[] myTitles = {
-			"Classes",
+			"Grades",
 			"Assignments"
 	};
 	
@@ -36,9 +36,9 @@ public class StudentMainMenu extends MyListActivity {
 	
 	protected void onListItemClick( ListView aView, View v, int position, long id )
 	{
-		if( position == BUTTONS.CLASSES.ordinal() )
+		if( position == BUTTONS.GRADES.ordinal() )
 		{
-			startActivity( new Intent(this, ClassesActivity.class));
+			startActivity( new Intent(this, GradesActivity.class));
 		}
 		else if( position == BUTTONS.ASSIGNMENTS.ordinal() )
 		{

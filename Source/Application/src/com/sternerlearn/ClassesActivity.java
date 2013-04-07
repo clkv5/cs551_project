@@ -1,20 +1,16 @@
 package com.sternerlearn;
 
+import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ListView;
 
-public class ClassesActivity extends MyListActivity {
+public class ClassesActivity extends ListActivity {
 
-	
-	private String[] myTitles = {
-			"Placeholder"
-	};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		TITLES = myTitles;
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_classes);
@@ -29,6 +25,7 @@ public class ClassesActivity extends MyListActivity {
 	
 	protected void onListItemClick( ListView aView, View v, int position, long id )
 	{
+		
 	}	
 
 }

@@ -5,6 +5,7 @@ public class SharedData
 	private static SharedData instance = null;
 	
 	private Account mAccount;
+	private Student mStudent;
 	
 	public SharedData()
 	{
@@ -28,5 +29,15 @@ public class SharedData
 	public Account getAccount()
 	{
 		return mAccount;
+	}
+	
+	public void setStudent( Student aStudent )
+	{
+		mStudent = aStudent;
+	}
+	
+	public Student getStudent()
+	{
+		return mStudent;
 	}
 }
