@@ -1,10 +1,10 @@
 package com.sternerlearn;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.view.Menu;
@@ -12,8 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.support.v4.app.NavUtils;
 
 public class GradesActivity extends ListActivity
@@ -78,9 +76,11 @@ public class GradesActivity extends ListActivity
 	{
 		Student s = SharedData.getInstance().getStudent();
 		
-		for( int i = 0; i < s.mClasses.size(); i++ )
+		Set<Course> courses = s.mCourses.keySet();
+		
+		for( Course c : courses )
 		{
-			mListItems.add(s.mClasses.get(i).mClassName);
+			mListItems.add(c.mClassName);
 		}
 		
 		mAdapter.notifyDataSetChanged();
@@ -89,9 +89,22 @@ public class GradesActivity extends ListActivity
 	
 	protected void onListItemClick( ListView aView, View v, int position, long id )
 	{
-		Student student = SharedData.getInstance().getStudent();
+		// Sigh, maybe I should have designed this a bit more intelligently
+		Student s = SharedData.getInstance().getStudent();
+		Set<Course> courses = s.mCourses.keySet();
 		
-		startActivity( new Intent(this, ClassesActivity.class));
+		// Find the class with this name
+		for( Course c : courses )
+		{
+			if( mListItems.get(position) == c.mClassName )
+			{
+				SharedData.getInstance().mCurrentCourse = c;
+				break;
+			}
+		}
+		
+		Intent pg = new Intent(this, ClassesActivity.class);
+		startActivity( pg );
 	}
 	
 	

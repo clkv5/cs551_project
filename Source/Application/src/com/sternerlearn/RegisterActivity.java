@@ -83,7 +83,7 @@ public class RegisterActivity extends Activity {
     	if( error )
     	{
     		CharSequence text = "Error registering";
-    		Toast toast = Toast.makeText(getApplicationContext(), acct.mResponse, Toast.LENGTH_LONG);
+    		Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
     		toast.show();
     	}    	
     }

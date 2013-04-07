@@ -7,6 +7,8 @@ public class SharedData
 	private Account mAccount;
 	private Student mStudent;
 	
+	public Course mCurrentCourse;
+	
 	public SharedData()
 	{
 		
