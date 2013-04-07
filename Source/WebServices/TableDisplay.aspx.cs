@@ -21,7 +21,7 @@ public partial class TableDisplay : System.Web.UI.Page
         "Locations",
         "Meta",
         "Notifications",
-		"Texts"
+		"Messages"
     };
 
 

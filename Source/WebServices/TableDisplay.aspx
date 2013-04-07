@@ -45,7 +45,7 @@
     <asp:GridView ID="GridView9" runat="server">
     </asp:GridView>
     <br />
-    <asp:LinkButton ID="LinkButton10" runat="server" onclick="LinkButton9_Click">Texts</asp:LinkButton>
+    <asp:LinkButton ID="LinkButton10" runat="server" onclick="LinkButton9_Click">Messages</asp:LinkButton>
     <asp:GridView ID="GridView10" runat="server">
     </asp:GridView>
     </div>
