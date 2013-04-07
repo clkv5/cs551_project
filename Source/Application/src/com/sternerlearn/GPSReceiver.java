@@ -20,11 +20,12 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 
 public class GPSReceiver extends Service
 {
+	/* GPS constants */
 	public static final boolean LOG_TO_DATABASE = true;
-	
 	private static final int GPS_MIN_TIME = 300000;    /* In milliseconds */
 	private static final int GPS_MIN_DISTANCE = 0;     /* In meters */
 	
+	/* Debug variables */
 	public static String mResponse = "Initial";
 	private static final boolean DEBUG = false;
 	
@@ -118,7 +119,7 @@ public class GPSReceiver extends Service
         @Override
         protected void onProgressUpdate(Void... values) {}
 
-    }     
+    }
 	
 	@SuppressLint("SimpleDateFormat")
 	public static String getTimestamp()
