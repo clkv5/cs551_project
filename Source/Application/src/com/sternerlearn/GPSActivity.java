@@ -78,7 +78,7 @@ public class GPSActivity extends Activity {
     	current.setToNow();
     	
     	/* Convert fields to string */
-    	String stamp = String.valueOf(current.year) + "-" + String.valueOf(current.month) + "-" +
+    	String stamp = String.valueOf(current.year) + "-" + String.valueOf(current.month) + "/" +
     			       String.valueOf(current.monthDay);
     	stamp += " " + String.valueOf(current.hour) + ":" + String.valueOf(current.minute) + ":" +
     			       String.valueOf(current.second);
