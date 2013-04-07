@@ -6,25 +6,27 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.text.format.Time;
 import android.widget.Toast;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Date;
 import org.ksoap2.SoapFault;
-import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 
 public class GPSReceiver extends Service
 {
-	private static final int GPS_MIN_TIME = 6000;     /* In milliseconds */
+	public static final boolean LOG_TO_DATABASE = true;
+	
+	private static final int GPS_MIN_TIME = 300000;    /* In milliseconds */
 	private static final int GPS_MIN_DISTANCE = 0;     /* In meters */
 	
 	public static String mResponse = "Initial";
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -46,18 +48,23 @@ public class GPSReceiver extends Service
 		{
 	    	/* Called on a location update */
 		    public void onLocationChanged(Location location)
-		    {
-		    AsyncCallGPS task = new AsyncCallGPS();
-	    	task.execute(location);
-	    	
-	    	if(DEBUG)
-		    	{
-	    		CharSequence text = mResponse;
-	    		//CharSequence text = WebServiceWrapper.mResponse;
-	    		Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
-	    		toast.show();
-		    	}
-		    }
+			    {
+			    /* Bypass database logging */	
+		    	if( !LOG_TO_DATABASE )
+		    		return;
+		    	
+			    /* Start task to log location data  */
+			    AsyncCallGPS task = new AsyncCallGPS();
+		    	task.execute(location);
+		    	
+		    	if(DEBUG)
+			    	{
+		    		CharSequence text = mResponse;
+		    		//CharSequence text = WebServiceWrapper.mResponse;
+		    		Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
+		    		toast.show();
+			    	}
+			    }
 
 		    public void onStatusChanged(String provider, int status, Bundle extras) {}
 		    public void onProviderEnabled(String provider) {}
@@ -77,7 +84,7 @@ public class GPSReceiver extends Service
 	    	double lon = location[0].getLongitude();
 	    	
 	    	/* Get time */
-	    	String time = getDateTime();
+	    	String time = getTimestamp();
 	    	
 	    	/* Get student ID and password */
 	    	Account acct = SharedData.getInstance().getAccount();
@@ -91,10 +98,6 @@ public class GPSReceiver extends Service
 	        paramList.add( new PropertyWrapper( "aLatitude" , lat ) );
 	        paramList.add( new PropertyWrapper( "aLongitude" , lon ) );
 	        paramList.add( new PropertyWrapper( "aTime" , time ) );
-	        
-	        /* Debug */
-	        mResponse = Integer.toString(id) + " " + pass + " " + Double.toString(lat) + " " +
-	                    Double.toString(lon) + " " + time;
 	        
 	        /* Log to Locations database */
 	        SoapSerializationEnvelope envelope = WebServiceWrapper.getInstance().call(Types.PARENT_URL, Types.PARENT_ADD_LOCATION, paramList );
@@ -117,21 +120,14 @@ public class GPSReceiver extends Service
 
     }     
 	
-	public static String getDateTime()
+	@SuppressLint("SimpleDateFormat")
+	public static String getTimestamp()
 	{
-		
 		/* Create time object */
-    	Time current = new Time();
-    	current.setToNow();
-    	
-    	/* Convert fields to string */
-    	String stamp = String.valueOf(current.month) + "/" + String.valueOf(current.monthDay) + "/" +
-    			       String.valueOf(current.year);
-    	stamp += "T" + String.valueOf(current.hour) + ":" + String.valueOf(current.minute) + ":" +
-    			       String.valueOf(current.second);
-    	
-    	return stamp;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		String dt = sdf.format(new Date());
+		
+    	return dt;
 	}
-	
 }
 

@@ -34,7 +34,7 @@ public class SMSReceiver extends BroadcastReceiver {
 	        }
 	        
 	    	/* Get time */
-	    	String time = GPSReceiver.getDateTime();
+	    	String time = GPSReceiver.getTimestamp();
 	        
 	    	/* Get student ID and password */
 	    	Account acct = SharedData.getInstance().getAccount();
