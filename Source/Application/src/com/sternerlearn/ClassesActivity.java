@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 public class ClassesActivity extends ListActivity {
 
-	private TwoLineAdapter mAdapter;
+	private GradeAdapter mAdapter;
 	private ArrayList<Grade> mGrades = new ArrayList<Grade>();
 	
 	@Override
@@ -24,7 +24,7 @@ public class ClassesActivity extends ListActivity {
 		AsyncCall task = new AsyncCall();
 		task.execute();
 		
-		mAdapter = new TwoLineAdapter(this, mGrades);
+		mAdapter = new GradeAdapter(this, mGrades);
 		
 		setListAdapter(mAdapter);
 	}

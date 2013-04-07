@@ -24,22 +24,25 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int Login=0x7f080003;
-        public static final int Register=0x7f080004;
-        public static final int action_settings=0x7f08000f;
-        public static final int calendarView1=0x7f080000;
-        public static final int editEmailAddress=0x7f080001;
-        public static final int editPassword=0x7f080002;
-        public static final int emailAddress=0x7f080006;
-        public static final int password=0x7f080007;
-        public static final int passwordRepeat=0x7f080008;
-        public static final int radio0=0x7f08000b;
-        public static final int radio1=0x7f08000c;
-        public static final int radio2=0x7f08000d;
-        public static final int radioGroup1=0x7f08000a;
-        public static final int realName=0x7f080009;
-        public static final int registerButton=0x7f08000e;
-        public static final int scrollView=0x7f080005;
+        public static final int Login=0x7f080002;
+        public static final int Register=0x7f080003;
+        public static final int action_settings=0x7f080012;
+        public static final int date=0x7f080010;
+        public static final int desc=0x7f080011;
+        public static final int editEmailAddress=0x7f080000;
+        public static final int editPassword=0x7f080001;
+        public static final int emailAddress=0x7f080005;
+        public static final int name=0x7f08000e;
+        public static final int password=0x7f080006;
+        public static final int passwordRepeat=0x7f080007;
+        public static final int points=0x7f08000f;
+        public static final int radio0=0x7f08000a;
+        public static final int radio1=0x7f08000b;
+        public static final int radio2=0x7f08000c;
+        public static final int radioGroup1=0x7f080009;
+        public static final int realName=0x7f080008;
+        public static final int registerButton=0x7f08000d;
+        public static final int scrollView=0x7f080004;
     }
     public static final class layout {
         public static final int activity_assignments=0x7f030000;
@@ -56,21 +59,23 @@ public final class R {
         public static final int activity_register=0x7f03000b;
         public static final int activity_student_main_menu=0x7f03000c;
         public static final int activity_teacher_main_menu=0x7f03000d;
+        public static final int assignment_list_item=0x7f03000e;
     }
     public static final class menu {
         public static final int assignments=0x7f070000;
         public static final int classes=0x7f070001;
-        public static final int grades=0x7f070002;
-        public static final int infractions=0x7f070003;
-        public static final int link_accounts=0x7f070004;
-        public static final int main=0x7f070005;
-        public static final int main_menu=0x7f070006;
-        public static final int my_list=0x7f070007;
-        public static final int not_implemented=0x7f070008;
-        public static final int parental_control=0x7f070009;
-        public static final int register=0x7f07000a;
-        public static final int student_main_menu=0x7f07000b;
-        public static final int teacher_main_menu=0x7f07000c;
+        public static final int g=0x7f070002;
+        public static final int grades=0x7f070003;
+        public static final int infractions=0x7f070004;
+        public static final int link_accounts=0x7f070005;
+        public static final int main=0x7f070006;
+        public static final int main_menu=0x7f070007;
+        public static final int my_list=0x7f070008;
+        public static final int not_implemented=0x7f070009;
+        public static final int parental_control=0x7f07000a;
+        public static final int register=0x7f07000b;
+        public static final int student_main_menu=0x7f07000c;
+        public static final int teacher_main_menu=0x7f07000d;
     }
     public static final class string {
         public static final int accountType0=0x7f05000c;

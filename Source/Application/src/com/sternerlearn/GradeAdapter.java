@@ -11,12 +11,12 @@ import android.widget.TextView;
 import android.widget.TwoLineListItem;
 
 @SuppressWarnings("deprecation")
-public class TwoLineAdapter extends BaseAdapter
+public class GradeAdapter extends BaseAdapter
 {
     private Context mContext;
     private ArrayList<Grade> mGrades;
 
-    public TwoLineAdapter(Context context, ArrayList<Grade> grades) {
+    public GradeAdapter(Context context, ArrayList<Grade> grades) {
         this.mContext = context;
         this.mGrades = grades;
     }

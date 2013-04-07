@@ -68,8 +68,12 @@ public class GradesActivity extends ListActivity
 	
 	public Student getStudent()
 	{
-		Student student = new Student( SharedData.getInstance().getAccount() );
-		return student;
+		Student s = SharedData.getInstance().getStudent();
+		if( s == null )
+		{
+			s = new Student( SharedData.getInstance().getAccount() );
+		}
+		return s;
 	}
 	
 	public void finishAsync()

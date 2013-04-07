@@ -2,6 +2,8 @@ package com.sternerlearn;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -16,6 +18,8 @@ public class Student
 	public boolean mValid = false;
 	
 	public HashMap<Course, ArrayList<Grade>> mCourses = new HashMap<Course, ArrayList<Grade>>();
+	
+	public HashMap<Course, ArrayList<Assignment>> mAssignments = new HashMap<Course, ArrayList<Assignment>>();
 	
 	// DEBUG
 	public String mResponse;
@@ -112,6 +116,7 @@ public class Student
     	}
     	catch(Exception ex) {}
     	
+    	mAssignments.put(course, assignments);
     	return assignments;
 		
 	}
@@ -192,6 +197,28 @@ public class Student
 	    	
 	    	mCourses.put( c, grades );
 		}
+		
+	}
+	
+	public ArrayList<Assignment> getFutureAssignments()
+	{
+		Collection<ArrayList<Assignment>> col = mAssignments.values();
+		
+		ArrayList<Assignment> rets = new ArrayList<Assignment>();
+		
+		for( ArrayList<Assignment> li : col )
+		{
+			for( Assignment ass : li )
+			{
+				if( ass.mDueDate.after(new Date()))
+				{
+					// If the due date is later than the current time
+					rets.add(ass);
+				}
+			}
+		}
+		
+		return rets;
 		
 	}
 }

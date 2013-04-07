@@ -31,4 +31,5 @@ public class Assignment
 		mDueDate = date;
 		mTest = test;
 	}
+
 }
