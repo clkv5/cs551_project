@@ -89,7 +89,7 @@ public class Student
     	
     		SoapObject response = (SoapObject)envelope.getResponse();
 
-    		// It's a list of classes
+    		// It's a list of assignments
     		for( int i = 0; i < response.getPropertyCount(); i++ )
     		{
 	    		SoapObject arr = (SoapObject)response.getProperty(i);

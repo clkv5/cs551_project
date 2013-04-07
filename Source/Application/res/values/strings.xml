@@ -28,5 +28,17 @@
     <string name="title_activity_parental_control">ParentalControlActivity</string>
     <string name="title_activity_my_list">MyListActivity</string>
     <string name="title_activity_gps">GPSActivity</string>
+    <string name="title_activity_add_class">AddClassActivity</string>
+    <string name="submit">Submit</string>
+    <string name="title_activity_modify_class">ModifyClassActivity</string>
+    <string name="add_class">Class Name</string>
+    <string name="title_activity_add_infraction">AddInfractionActivity</string>
+    <string name="infraction_desc">Infraction Description</string>
+    <string name="student_name">Student\'s Name</string>
+    <string name="tardy">Tardy</string>
+    <string name="absent">Absent</string>
+    <string name="detention">Detention</string>
+    <string name="suspended">Suspended</string>
+    <string name="expelled">Expelled</string>
 
 </resources>

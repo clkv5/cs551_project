@@ -7,8 +7,10 @@ public class Grade
 {
 	private Assignment mAssignment;
 	
+	@SuppressWarnings("unused")
 	private int mId;
 	private double mPointsReceived;
+	@SuppressWarnings("unused")
 	private Timestamp mDateSub;
 	
 	// Get grade with a student ID and assignment ID, each individual grade also has an assignment ID

@@ -6,6 +6,7 @@ public class SharedData
 	
 	private Account mAccount;
 	private Student mStudent;
+	private Teacher mTeacher;
 	
 	public Course mCurrentCourse;
 	
@@ -41,5 +42,15 @@ public class SharedData
 	public Student getStudent()
 	{
 		return mStudent;
+	}
+	
+	public void setTeacher( Teacher teach )
+	{
+		mTeacher = teach;
+	}
+	
+	public Teacher getTeacher()
+	{
+		return mTeacher;
 	}
 }

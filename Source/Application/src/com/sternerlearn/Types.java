@@ -21,16 +21,17 @@ public class Types {
     
     static final String STUDENT_URL = "http://170.224.169.101/Iteration3/StudentDataService.asmx";
     static final String   STUDENT_ADD_ASSIGNMENT = "addAssignment";
-    static final String   STUDENT_ADD_CLASS = "addAssignment";
-    static final String   STUDENT_ADD_GRADE = "addAssignment";
-    static final String   STUDENT_ADD_INFRACTION = "addAssignment";
-    static final String   STUDENT_ADD_STUDENT_TO_CLASS = "addAssignment";
+    static final String   STUDENT_ADD_CLASS = "addClass";
+    static final String   STUDENT_ADD_GRADE = "addGrade";
+    static final String   STUDENT_ADD_INFRACTION = "addInfraction";
+    static final String   STUDENT_ADD_STUDENT_TO_CLASS = "addStudentToClass";
     static final String   STUDENT_GET_ASSIGNMENTS = "getAssignments";
     static final String   STUDENT_GET_CLASSES = "getClasses";
     static final String   STUDENT_GET_GRADES = "getGrades";
     static final String   STUDENT_GET_INFRACTIONS = "getInfractions";
     static final String   STUDENT_GET_PARENT_ID = "getParentID";
     static final String   STUDENT_GET_STUDENT_ID = "getStudentID";
+    static final String   STUDENT_GET_TAUGHT_CLASSES = "getTaughtClasses";
     
     static final String PARENT_URL = "http://170.224.169.101/Iteration3/ParentalManagementService.asmx";
     static final String   PARENT_ADD_LOCATION = "addLocation";
