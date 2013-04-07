@@ -1,7 +1,9 @@
 package com.sternerlearn;
 
-import java.util.List;
 import java.io.IOException;
+import java.util.List;
+import java.util.Date;
+import org.kobjects.isodate.IsoDate;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.Marshal;
 import org.ksoap2.serialization.PropertyInfo;
@@ -58,9 +60,11 @@ public class WebServiceWrapper
     	envelope.encodingStyle = SoapSerializationEnvelope.XSD;
     	envelope.setOutputSoapObject( soapObject );
     	
-    	/* Register marshal */
-    	MarshalDouble md = new MarshalDouble();
-    	md.register(envelope);
+    	/* Register marshals */
+    	MarshalDouble marshalDouble = new MarshalDouble();
+    	MarshalDate marshalDate = new MarshalDate();
+    	marshalDouble.register(envelope);
+    	marshalDate.register(envelope);
     	
     	/* Call web service */
     	try 
@@ -95,4 +99,24 @@ public class WebServiceWrapper
 	        writer.text(obj.toString());
 	    }
 	}
+	
+	public class MarshalDate implements Marshal
+	{
+        public Object readInstance(XmlPullParser parser, String namespace, String name, 
+                PropertyInfo expected) throws IOException, XmlPullParserException
+        {
+            return IsoDate.stringToDate(parser.nextText(), IsoDate.DATE_TIME);
+        }
+
+        public void register(SoapSerializationEnvelope cm)
+        {
+            cm.addMapping(cm.xsd, "DateTime", Date.class, this);
+        }
+
+        public void writeInstance(XmlSerializer writer, Object obj) throws IOException
+        {
+            writer.text(IsoDate.dateToString((Date) obj, IsoDate.DATE_TIME));
+        }
+	}
+	
 }

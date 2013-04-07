@@ -11,9 +11,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.format.Time;
 import android.widget.Toast;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
+import org.ksoap2.SoapFault;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
 
 public class GPSReceiver extends Service
 {
@@ -21,7 +24,7 @@ public class GPSReceiver extends Service
 	private static final int GPS_MIN_DISTANCE = 0;     /* In meters */
 	
 	public static String mResponse = "Initial";
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -49,8 +52,8 @@ public class GPSReceiver extends Service
 	    	
 	    	if(DEBUG)
 		    	{
-	    		//CharSequence text = mResponse;
-	    		CharSequence text = WebServiceWrapper.mResponse;
+	    		CharSequence text = mResponse;
+	    		//CharSequence text = WebServiceWrapper.mResponse;
 	    		Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
 	    		toast.show();
 		    	}
@@ -94,27 +97,29 @@ public class GPSReceiver extends Service
 	                    Double.toString(lon) + " " + time;
 	        
 	        /* Log to Locations database */
-	        WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.PARENT_ADD_LOCATION, paramList );
-        	return null;
+	        SoapSerializationEnvelope envelope = WebServiceWrapper.getInstance().call(Types.PARENT_URL, Types.PARENT_ADD_LOCATION, paramList );
+	        try {
+				mResponse = envelope.getResponse().toString();
+			} catch (SoapFault e) {
+				mResponse = "SOAP fault on return";
+			}
+	        return null;
         }
 
         @Override
-        protected void onPostExecute(Void value) {
-       	
-        }
+        protected void onPostExecute(Void value) {}
 
         @Override
-        protected void onPreExecute() {
-        }
+        protected void onPreExecute() {}
 
         @Override
-        protected void onProgressUpdate(Void... values) {
-        }
+        protected void onProgressUpdate(Void... values) {}
 
     }     
 	
 	public static String getDateTime()
 	{
+		
 		/* Create time object */
     	Time current = new Time();
     	current.setToNow();
@@ -122,7 +127,7 @@ public class GPSReceiver extends Service
     	/* Convert fields to string */
     	String stamp = String.valueOf(current.month) + "/" + String.valueOf(current.monthDay) + "/" +
     			       String.valueOf(current.year);
-    	stamp += " " + String.valueOf(current.hour) + ":" + String.valueOf(current.minute) + ":" +
+    	stamp += "T" + String.valueOf(current.hour) + ":" + String.valueOf(current.minute) + ":" +
     			       String.valueOf(current.second);
     	
     	return stamp;

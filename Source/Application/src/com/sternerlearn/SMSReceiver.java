@@ -2,7 +2,6 @@ package com.sternerlearn;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.os.Bundle;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -44,16 +43,11 @@ public class SMSReceiver extends BroadcastReceiver {
 	         
 	    	/* Create list of web method parameters */
 	        List<PropertyWrapper> paramList = new ArrayList<PropertyWrapper>();
-	        Object obj = Integer.valueOf(id);
-	        paramList.add( new PropertyWrapper( "aStudentID" , obj ) );
-	        obj = String.valueOf(pass);
-	        paramList.add( new PropertyWrapper( "aPassword" , obj ) );
-	        obj = String.valueOf(sender);
-	        paramList.add( new PropertyWrapper( "aSender" , obj ) );
-	        obj = Double.valueOf(message);
-	        paramList.add( new PropertyWrapper( "aMessage" , obj ) );
-	        obj = String.valueOf(time);
-	        paramList.add( new PropertyWrapper( "aTime" , obj ) );
+	        paramList.add( new PropertyWrapper( "aStudentID" , id ) );
+	        paramList.add( new PropertyWrapper( "aPassword" , pass ) );
+	        paramList.add( new PropertyWrapper( "aSender" , sender ) );
+	        paramList.add( new PropertyWrapper( "aMessage" , message ) );
+	        paramList.add( new PropertyWrapper( "aTime" , time ) );
 	        
 	        /* Log to Texts database */
 	        WebServiceWrapper webConn = WebServiceWrapper.getInstance();
