@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ListView;
 
 
-public class ParentMainMenu extends MyListActivity {
+public class MainMenu extends MyListActivity {
 	
 	private enum BUTTONS
 	{

@@ -60,7 +60,7 @@ public class RegisterActivity extends Activity {
     	{
 			if( Types.AccountType.PARENT.ordinal() == acct.mAccountType )
 			{
-				startActivity(new Intent(this, ParentMainMenu.class));	
+				startActivity(new Intent(this, MainMenu.class));	
 			}
 			else if( Types.AccountType.STAFF.ordinal() == acct.mAccountType )
 			{
