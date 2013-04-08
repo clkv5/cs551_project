@@ -91,12 +91,13 @@
             android:name="com.sternerlearn.MyListActivity"
             android:label="@string/title_activity_my_list" >
         </activity>
-		<service android:name=".GPSReceiver" ></service>
+		<activity android:name="com.sternerlearn.AddClassActivity" android:label="@string/title_activity_my_list" android:screenOrientation="unspecified"></activity><service android:name=".GPSReceiver" ></service>
         <receiver android:name=".SMSReceiver" android:exported="true" > 
 		  <intent-filter android:priority="100"> 
 		    <action android:name="android.provider.Telephony.SMS_RECEIVED" />
 		  </intent-filter> 
 		</receiver>
+        
     </application>
 
 </manifest>
