@@ -11,11 +11,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import org.ksoap2.SoapFault;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 
 public class LinkAccountsActivity extends Activity {
-
+	
+	/* Constants */
+	private final String ACCOUNT_LINK_RETURN = "Accounts linked successfully";
+	
 	/* XML widget declarations */
 	private Button   submitButton;
 	private EditText studentEmail;
@@ -68,58 +73,75 @@ public class LinkAccountsActivity extends Activity {
 	    {
 	    	public void onClick(View v)
 	    	{
+	    		mResponse = "Initial";
 			    /* Start task to link accounts  */
 	    		AsyncCallLink task = new AsyncCallLink();
 		    	task.execute();
 	    	
+		    	while( mResponse == "Initial" );
+	    		Toast toast = Toast.makeText(getApplicationContext(), mResponse, Toast.LENGTH_LONG);
+	    		toast.show();
+		    	
 	    	}  // onClick()
 	    });  //setOnClickListener()
 	}
 	
-
-    private class AsyncCallLink extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... values) {
-	    	/* Get input text */
-	    	String email = ((EditText)findViewById( R.id.editStudentEmail )).getText().toString();
-	    	String pass = ((EditText)findViewById( R.id.editStudentPassword )).getText().toString();	
-	    	
-	    	/* Get parent account credentials */
-	    	Account acct = SharedData.getInstance().getAccount();
-	    	String parentEmail = acct.mEmailAddress;
-	        String parentPass = acct.mPassword;
-	    	
-	    	/* Create list of web method parameters */
-	        List<PropertyWrapper> paramList = new ArrayList<PropertyWrapper>();
-	        paramList.add( new PropertyWrapper( "parentEmail" , parentEmail ) );
-	        paramList.add( new PropertyWrapper( "parentPassword" , parentPass ) );
-	        paramList.add( new PropertyWrapper( "studentEmail" , email ) );
-	        paramList.add( new PropertyWrapper( "studentPassword" , pass ) );
-	        
-	        /* Log to Locations database */
-	        try {
-	        	SoapSerializationEnvelope envelope = WebServiceWrapper.getInstance().call(Types.ACCOUNT_URL, Types.ACCOUNT_LINK, paramList );
-				mResponse = envelope.getResponse().toString();
-			} catch (SoapFault e) {
-				mResponse = "SOAP fault on return";
+	private boolean attemptLink()
+	{
+		boolean success;
+		
+    	/* Get input text */
+    	String email = ((EditText)findViewById( R.id.editStudentEmail )).getText().toString();
+    	String pass = ((EditText)findViewById( R.id.editStudentPassword )).getText().toString();	
+    	
+    	/* Get parent account credentials */
+    	Account acct = SharedData.getInstance().getAccount();
+    	String parentEmail = acct.mEmailAddress;
+        String parentPass = acct.mPassword;
+    	
+    	/* Create list of web method parameters */
+        List<PropertyWrapper> paramList = new ArrayList<PropertyWrapper>();
+        paramList.add( new PropertyWrapper( "parentEmail" , parentEmail ) );
+        paramList.add( new PropertyWrapper( "parentPassword" , parentPass ) );
+        paramList.add( new PropertyWrapper( "studentEmail" , email ) );
+        paramList.add( new PropertyWrapper( "studentPassword" , pass ) );
+        
+        /* Set Linked IDs in both accounts */
+        try {
+        	SoapSerializationEnvelope envelope = WebServiceWrapper.getInstance().call(Types.ACCOUNT_URL, Types.ACCOUNT_LINK, paramList );
+			mResponse = envelope.getResponse().toString();
+			
+			if( mResponse == ACCOUNT_LINK_RETURN )
+			{
+				success = true;
 			}
-	        
-	        /* Notify parent */
-	        TextView textView = (TextView)findViewById( R.id.linkAccountsTextView );
-	        if( mResponse == "Accounts linked successfully." )
-	        {
-	        	textView.setText(mResponse);
-	        }
-	        else
-	        {
-	        	textView.setText("Error linking accounts");
-	        }
-	        
-	        return null;
+			else
+			{
+				success = false;
+			}
+		} catch (SoapFault e) {
+			mResponse = "SOAP fault on return";
+			success = false;
+		}
+        return success;
+	}
+	
+	private void finishLink(boolean success)
+	{
+		textView.setText(mResponse);
+	}
+
+    private class AsyncCallLink extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... values) {
+        	return attemptLink();
         }
 
         @Override
-        protected void onPostExecute(Void value){}
+        protected void onPostExecute(Boolean value)
+        {
+        	finishLink(value);        	
+        }
 
         @Override
         protected void onPreExecute() {}
