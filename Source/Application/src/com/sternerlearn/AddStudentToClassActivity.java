@@ -3,12 +3,16 @@ package com.sternerlearn;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AddStudentToClassActivity extends Activity {
 
@@ -41,16 +45,36 @@ public class AddStudentToClassActivity extends Activity {
     	
     	String name = ((TextView)findViewById(R.id.editText)).getText().toString();
     	
-		List<PropertyWrapper> properties = new ArrayList<PropertyWrapper>();
-		properties.add(new PropertyWrapper("aTeacherID", a.mId));
-		properties.add(new PropertyWrapper("aPassword", a.mPassword));
-		properties.add(new PropertyWrapper("aClassID", c.mId));
-		
-		// TODO: Get student id from name
-		int studentID = 1002;
-		properties.add(new PropertyWrapper("aStudentID", studentID));
-		
-		WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.STUDENT_ADD_STUDENT_TO_CLASS, properties);    	
+    	// Try to get the student ID
+    	int studentID = -1;
+		try
+		{
+			List<PropertyWrapper> properties = new ArrayList<PropertyWrapper>();
+			properties.add(new PropertyWrapper("aTeacherID", a.mId));
+			properties.add(new PropertyWrapper("aPassword", a.mPassword));
+			properties.add(new PropertyWrapper("aStudentName", name));
+			
+			SoapSerializationEnvelope env = WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.STUDENT_GET_STUDENT, properties);
+			
+			// TODO: Fix all of these.
+			// I don't think getStudent is working properly
+			// Also it doesn't like this cast.
+			studentID = java.lang.Integer.parseInt( ((SoapObject)env.getResponse()).toString() );
+			
+		}
+		catch( Exception ex ) {}
+    	
+		// TODO: error handling
+    	if( studentID > 0 )
+    	{
+			List<PropertyWrapper> properties = new ArrayList<PropertyWrapper>();
+			properties.add(new PropertyWrapper("aTeacherID", a.mId));
+			properties.add(new PropertyWrapper("aPassword", a.mPassword));
+			properties.add(new PropertyWrapper("aClassID", c.mId));
+			properties.add(new PropertyWrapper("aStudentID", studentID));
+			
+			WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.STUDENT_ADD_STUDENT_TO_CLASS, properties);
+    	}
 	}
 	
 	void finishAsync()

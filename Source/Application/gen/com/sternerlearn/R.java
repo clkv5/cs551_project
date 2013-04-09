@@ -24,38 +24,34 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int Login=0x7f080015;
-        public static final int Register=0x7f080016;
-        public static final int action_settings=0x7f08001f;
-        public static final int date=0x7f08001e;
-        public static final int datePicker1=0x7f080010;
+        public static final int Login=0x7f080011;
+        public static final int Register=0x7f080012;
+        public static final int action_settings=0x7f08001b;
+        public static final int date=0x7f08001a;
         public static final int desc=0x7f08000a;
-        public static final int editEmailAddress=0x7f080013;
-        public static final int editPassword=0x7f080014;
+        public static final int editEmailAddress=0x7f08000f;
+        public static final int editPassword=0x7f080010;
         public static final int editStudentEmail=0x7f08000d;
         public static final int editStudentPassword=0x7f08000c;
         public static final int editText=0x7f080000;
-        public static final int emailAddress=0x7f080017;
+        public static final int emailAddress=0x7f080013;
         public static final int linkAccountsButton=0x7f08000b;
         public static final int linkAccountsTextView=0x7f08000e;
-        public static final int name=0x7f08001c;
-        public static final int password=0x7f080018;
-        public static final int passwordRepeat=0x7f080019;
-        public static final int points=0x7f08001d;
+        public static final int name=0x7f080018;
+        public static final int password=0x7f080014;
+        public static final int passwordRepeat=0x7f080015;
+        public static final int points=0x7f080019;
         public static final int radio0=0x7f080005;
         public static final int radio1=0x7f080006;
         public static final int radio2=0x7f080007;
         public static final int radio3=0x7f080008;
         public static final int radio4=0x7f080009;
         public static final int radioGroup1=0x7f080004;
-        public static final int realName=0x7f08001a;
-        public static final int registerButton=0x7f08001b;
+        public static final int realName=0x7f080016;
+        public static final int registerButton=0x7f080017;
         public static final int scrollView=0x7f080002;
         public static final int student_name=0x7f080003;
         public static final int submit=0x7f080001;
-        public static final int textView1=0x7f08000f;
-        public static final int timePicker1=0x7f080011;
-        public static final int timePicker2=0x7f080012;
     }
     public static final class layout {
         public static final int activity_add_class=0x7f030000;
@@ -110,8 +106,6 @@ public final class R {
         public static final int action_settings=0x7f050001;
         public static final int add_class=0x7f05001e;
         public static final int app_name=0x7f050000;
-        public static final int choose_the_date_and_time_interval_=0x7f05002f;
-        public static final int choose_the_date_you_wish_to_view_=0x7f05002e;
         public static final int detention=0x7f050024;
         public static final int emailHint=0x7f050003;
         public static final int expelled=0x7f050026;

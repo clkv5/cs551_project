@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
-    
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -91,12 +91,18 @@
             android:name="com.sternerlearn.MyListActivity"
             android:label="@string/title_activity_my_list" >
         </activity>
-		<service android:name=".GPSReceiver" ></service>
-        <receiver android:name=".SMSReceiver" android:exported="true" > 
-		  <intent-filter android:priority="100"> 
-		    <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-		  </intent-filter> 
-		</receiver>
+
+        <service android:name="com.sternerlearn.GPSReceiver" >
+        </service>
+
+        <receiver
+            android:name="com.sternerlearn.SMSReceiver"
+            android:exported="true" >
+            <intent-filter android:priority="100" >
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name="com.sternerlearn.AddClassActivity"
             android:label="@string/title_activity_my_list" >
@@ -113,7 +119,6 @@
             android:name="com.sternerlearn.AddStudentToClassActivity"
             android:label="@string/title_activity_add_student_to_class" >
         </activity>
-        
         <activity
             android:name="com.sternerlearn.MessagesActivity"
             android:label="@string/title_activity_messages" >
@@ -122,8 +127,14 @@
             android:name="com.sternerlearn.LocationsActivity"
             android:label="@string/title_activity_locations" >
         </activity>
-        
-
+        <activity
+            android:name="com.sternerlearn.AddAssignmentActivity"
+            android:label="@string/title_activity_add_assignment" >
+        </activity>
+        <activity
+            android:name="com.sternerlearn.AddGradeActivity"
+            android:label="@string/title_activity_add_grade" >
+        </activity>
     </application>
 
 </manifest>

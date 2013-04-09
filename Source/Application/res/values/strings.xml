@@ -48,6 +48,10 @@
     <string name="textview">TextView</string>
     <string name="title_activity_add_student_to_class">AddStudentToClassActivity</string>
     <string name="choose_the_date_you_wish_to_view_">Choose the date you wish to view.</string>
-    <string name="choose_the_date_and_time_interval_">Choose the date and time interval.</string>    
+    <string name="choose_the_date_and_time_interval_">Choose the date and time interval.</string>        
+    <string name="title_activity_add_assignment">Add Assignment</string>
+    <string name="assign_name">Assignment Name</string>
+    <string name="class_desc">Description</string>
+    <string name="title_activity_add_grade">Add Grade</string>
 
 </resources>
