@@ -8,9 +8,43 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".LinkAccountsActivity" >
 
-    <TextView
+    <EditText
+        android:id="@+id/editStudentPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignLeft="@+id/editStudentEmail"
+        android:layout_below="@+id/editStudentEmail"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/student_password" android:inputType="textPassword"/>
+
+    <Button
+        android:id="@+id/linkAccountsButton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editStudentPassword"
+        android:layout_below="@+id/editStudentPassword"
+        android:layout_marginTop="18dp"
+        android:text="@string/link_accounts" />
+
+    <EditText
+        android:id="@+id/editStudentEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:ems="10"
+        android:hint="@string/student_email" android:inputType="textEmailAddress"/>
+
+    <TextView
+        android:id="@+id/linkAccountsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editStudentEmail"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="54dp"
+        android:text="@string/textview" />
 
 </RelativeLayout>

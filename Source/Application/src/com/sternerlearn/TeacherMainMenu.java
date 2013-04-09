@@ -28,7 +28,7 @@ public class TeacherMainMenu extends ListActivity {
 		setListAdapter( mAdapter );
 		
 		mTask = new AsyncCall();
-		mTask.execute();		
+		mTask.execute();
 	}
 
 	@Override

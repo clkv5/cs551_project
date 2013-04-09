@@ -40,5 +40,11 @@
     <string name="detention">Detention</string>
     <string name="suspended">Suspended</string>
     <string name="expelled">Expelled</string>
+    <string name="title_activity_messages">MessagesActivity</string>
+    <string name="title_activity_locations">LocationsActivity</string>
+    <string name="student_password">Student password</string>
+    <string name="link_accounts">Link Accounts</string>
+    <string name="student_email">Student email</string>
+    <string name="textview">TextView</string>
 
 </resources>
