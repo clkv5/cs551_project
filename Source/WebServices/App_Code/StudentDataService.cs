@@ -280,7 +280,13 @@ public class StudentDataService : System.Web.Services.WebService
 
             for (int j = 0; j < count; j++)
             {
-                classes[j] = reader[j] as int?;
+                classes[j] = null;
+
+                try
+                {
+                    classes[j] = reader[j] as int?;
+                }
+                catch { }
             }
 
             reader.Dispose();
@@ -301,7 +307,9 @@ public class StudentDataService : System.Web.Services.WebService
                 columnName += (i+1).ToString();
 
                 using( SqlCommand cmd = new SqlCommand("UPDATE Students " +
-                                                        "SET " + columnName + " = " + aClassID, conn ) )
+                                                        "SET " + columnName + " = " + aClassID + " " + 
+                                                        "WHERE id = " + aStudentID
+                                                        ,conn ) )
                 {
                     cmd.ExecuteNonQuery();
                 }
