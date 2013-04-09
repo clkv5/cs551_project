@@ -50,9 +50,22 @@ public class TeacherMainMenu extends ListActivity {
 		{
 			// Decrement position to account for the fake thing and set the current course
 			position--;
-			SharedData.getInstance().mCurrentCourse = SharedData.getInstance().getTeacher().mCourses.get(position);
-			
-			startActivity(new Intent(this, ModifyClassActivity.class));
+			Teacher t = SharedData.getInstance().getTeacher();
+			ArrayList<Course> courses;
+			try
+			{
+				courses = t.getCourses();
+			}
+			catch( Exception ex )
+			{
+				courses = null;
+			}
+			if( position < courses.size() )
+			{
+				SharedData.getInstance().mCurrentCourse = courses.get(position);
+				startActivity(new Intent(this, ModifyClassActivity.class));
+				// TODO: add some more error handling
+			}
 		}
 	}	
 	
@@ -66,6 +79,8 @@ public class TeacherMainMenu extends ListActivity {
 		{
 			if( mTask == null || AsyncTask.Status.RUNNING != mTask.getStatus() )
 			{
+				mListItems.clear();
+				mAdapter.notifyDataSetChanged();
 				mTask = new AsyncCall();
 				mTask.execute();
 			}
@@ -80,7 +95,11 @@ public class TeacherMainMenu extends ListActivity {
 			t = new Teacher( SharedData.getInstance().getAccount() );
 		}
 		
-		t.updateClasses();
+		try
+		{
+			t.updateClasses();
+		}
+		catch( Exception ex ){}
 		
 		return t;
 	}

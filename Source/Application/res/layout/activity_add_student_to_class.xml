@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".AddClassActivity" >
+    tools:context=".AddStudentToClassActivity" >
 
     <EditText
         android:id="@+id/editText"
@@ -15,7 +15,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="44dp"
-        android:hint="@string/add_class" 
+        android:hint="@string/student_name" 
         android:ems="10"
         android:inputType="textPersonName" >
 
@@ -30,6 +30,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="18dp"
         android:text="@string/submit" 
-        android:onClick="handleSubmit" />
-
+        android:onClick="handleSubmit" />    
+    
 </RelativeLayout>

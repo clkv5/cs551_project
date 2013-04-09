@@ -3,6 +3,7 @@ package com.sternerlearn;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -13,13 +14,26 @@ public class Teacher
 	
 	public ArrayList<Course> mCourses = new ArrayList<Course>();
 	
+	// TODO: Make this work a bit better. Also probably need similar protection elsewhere....
+	public final Semaphore mLock = new Semaphore(1, true );
+	
 	public Teacher( Account acct )
 	{
 		mAccount = acct;
 	}
 	
-	public void updateClasses()
+	public ArrayList<Course> getCourses() throws InterruptedException
 	{
+		ArrayList<Course> tmp;
+		mLock.acquire();
+		tmp = mCourses;
+		mLock.release();
+		return tmp;
+	}
+	
+	public void updateClasses() throws InterruptedException
+	{
+		mLock.acquire();
 		mCourses.clear();
 		
 		List<PropertyWrapper> properties = new ArrayList<PropertyWrapper>();
@@ -49,7 +63,9 @@ public class Teacher
 		   		}
     		}
     	}
-    	catch(Exception ex) {}				
+    	catch(Exception ex) {}		
+    	
+    	mLock.release();
 	}
 	
 	public void addClass(String className)
@@ -62,6 +78,10 @@ public class Teacher
 		WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.STUDENT_ADD_CLASS, properties);
 		
 		// Just ignore the return value and call updateClasses to refresh our class list
-		updateClasses();
+		try
+		{
+			updateClasses();
+		}
+		catch( Exception ex ) {}
 	}
 }
