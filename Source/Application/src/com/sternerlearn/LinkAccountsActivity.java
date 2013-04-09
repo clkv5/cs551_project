@@ -77,10 +77,6 @@ public class LinkAccountsActivity extends Activity {
 			    /* Start task to link accounts  */
 	    		AsyncCallLink task = new AsyncCallLink();
 		    	task.execute();
-	    	
-		    	while( mResponse == "Initial" );
-	    		Toast toast = Toast.makeText(getApplicationContext(), mResponse, Toast.LENGTH_LONG);
-	    		toast.show();
 		    	
 	    	}  // onClick()
 	    });  //setOnClickListener()
@@ -111,7 +107,7 @@ public class LinkAccountsActivity extends Activity {
         	SoapSerializationEnvelope envelope = WebServiceWrapper.getInstance().call(Types.ACCOUNT_URL, Types.ACCOUNT_LINK, paramList );
 			mResponse = envelope.getResponse().toString();
 			
-			if( mResponse == ACCOUNT_LINK_RETURN )
+			if( mResponse == ACCOUNT_LINK_RETURN + "  Please login again." )
 			{
 				success = true;
 			}
