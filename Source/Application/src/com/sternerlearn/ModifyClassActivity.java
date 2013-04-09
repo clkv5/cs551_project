@@ -48,7 +48,7 @@ public class ModifyClassActivity extends MyListActivity {
 		}
 		else if( position == BUTTONS.STUDENT.ordinal() )
 		{
-			//startActivity( new Intent(this, AddStudentToClassActivity.class));
+			startActivity( new Intent(this, AddStudentToClassActivity.class));
 		}
 		else if( position == BUTTONS.ASSIGNMENT.ordinal() )
 		{
