@@ -211,6 +211,49 @@ public class StudentDataService : System.Web.Services.WebService
     }
 
     [WebMethod]
+    public int getStudent
+        (
+        int aTeacherID,         // Teacher ID used to verify
+        string aPassword,       // Teacher's password
+        string aStudentName     // Student's name
+        )
+    {
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
+        conn.Open();
+
+        bool success = AccountService.verifyTeacher(aTeacherID, aPassword, conn);
+        int id = -1;
+        if (success)
+        {
+            string query = "SELECT id, accountType " +
+                           "FROM Accounts " +
+                           "WHERE realName LIKE '" + aStudentName + "'";
+
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                SqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+
+                int? studentId = reader["id"] as int?;
+                int? accountType = reader["accountType"] as int?;
+
+                if (accountType.HasValue && AccountService.ACCOUNT_TYPE.STUDENT == (AccountService.ACCOUNT_TYPE)accountType.Value &&
+                    studentId.HasValue)
+                {
+                    id = studentId.Value;
+                }
+
+                reader.Dispose();
+            }
+        }
+
+        conn.Close();
+
+        return id;
+    }
+
+
+    [WebMethod]
     public bool addStudentToClass
         (
         int aTeacherID,		// Teacher ID used to verify
@@ -533,7 +576,7 @@ public class StudentDataService : System.Web.Services.WebService
         int aTeacherID,						// Teacher ID to verify
         string aPassword,					// Password to verify
         int aStudentID,						// Student ID to add infraction to
-        INFRACTION_TYPE aInfractionType,	// Type of infraction
+        int aInfractionType,	// Type of infraction
         string aDescription,				// Description of infraction
         DateTime aDate						// Date the infraction occurred
         )
@@ -552,7 +595,7 @@ public class StudentDataService : System.Web.Services.WebService
                                                     "Infractions",
                                                     infractionID.ToString(),
                                                     aStudentID.ToString(),
-                                                    ((int)aInfractionType).ToString(),
+                                                    aInfractionType.ToString(),
                                                     aDescription,
                                                     aDate.ToString());
 
