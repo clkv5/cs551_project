@@ -128,6 +128,7 @@ public class GPSReceiver extends Service
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		String dt = sdf.format(new Date());
 		
+		/* Returns current time */
     	return dt;
 	}
 }

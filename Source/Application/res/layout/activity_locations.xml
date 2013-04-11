@@ -9,25 +9,25 @@
     tools:context=".LocationsActivity" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/messageEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/choose_the_date_and_time_interval_" />
 
     <DatePicker
-        android:id="@+id/datePicker1"
+        android:id="@+id/messageDatePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
+        android:layout_alignLeft="@+id/messageEditText"
+        android:layout_below="@+id/messageEditText"
         android:layout_marginTop="20dp" />
 
     <TimePicker
         android:id="@+id/timePicker1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/datePicker1"
-        android:layout_below="@+id/datePicker1"
+        android:layout_alignLeft="@+id/messageDatePicker"
+        android:layout_below="@+id/messageDatePicker"
         android:layout_marginTop="34dp" />
 
     <TimePicker

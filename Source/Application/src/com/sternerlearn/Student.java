@@ -21,6 +21,8 @@ public class Student
 	
 	public HashMap<Course, ArrayList<Assignment>> mAssignments = new HashMap<Course, ArrayList<Assignment>>();
 	
+	public List<Message> mMessages = new ArrayList<Message>();
+	
 	// DEBUG
 	public String mResponse;
 
