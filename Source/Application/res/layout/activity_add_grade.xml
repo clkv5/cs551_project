@@ -1,0 +1,56 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".AddGradeActivity" >
+
+    <EditText
+        android:id="@+id/student_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="55dp"
+        android:ems="10"
+        android:hint="@string/student_name"
+        android:inputType="textPersonName"  >
+     
+     <requestFocus />
+     
+     </EditText>
+
+    <EditText
+        android:id="@+id/assign_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/student_name"
+        android:layout_below="@+id/student_name"
+        android:ems="10"
+        android:hint="@string/assign_name"
+        android:inputType="textPersonName" >
+
+
+    </EditText>
+
+    <NumberPicker
+        android:id="@+id/numberPicker1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/assign_name"
+        android:layout_below="@+id/assign_name" />
+    
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/numberPicker1"
+        android:layout_below="@+id/numberPicker1"
+        android:onClick="handleSubmit"
+        android:text="@string/submit" />       
+
+</RelativeLayout>

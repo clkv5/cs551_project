@@ -32,6 +32,7 @@ public class Types {
     static final String   STUDENT_GET_PARENT_ID = "getParentID";
     static final String   STUDENT_GET_STUDENT_ID = "getStudentID";
     static final String   STUDENT_GET_TAUGHT_CLASSES = "getTaughtClasses";
+    static final String   STUDENT_GET_STUDENT = "getStudent";
     
     static final String PARENT_URL = "http://170.224.169.101/Iteration3/ParentalManagementService.asmx";
     static final String   PARENT_ADD_LOCATION = "addLocation";

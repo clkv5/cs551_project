@@ -52,11 +52,11 @@ public class ModifyClassActivity extends MyListActivity {
 		}
 		else if( position == BUTTONS.ASSIGNMENT.ordinal() )
 		{
-			//startActivity( new Intent(this, AddAssignmentActivity.class));
+			startActivity( new Intent(this, AddAssignmentActivity.class));
 		}
 		else if( position == BUTTONS.GRADE.ordinal() )
 		{
-			//startActivity( new Intent(this, AddGradeActivity.class));
+			startActivity( new Intent(this, AddGradeActivity.class));
 		}		
 	}	
 
