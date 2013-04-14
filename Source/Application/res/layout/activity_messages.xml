@@ -15,18 +15,6 @@
         android:text="@string/choose_the_date_you_wish_to_view_" />
 
     <EditText
-        android:id="@+id/messageMM"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/messageEditText"
-        android:layout_below="@+id/messageEditText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="31dp"
-        android:ems="10"
-        android:hint="@string/mm"
-        android:inputType="number" />
-
-    <EditText
         android:id="@+id/messageDD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,20 +25,6 @@
         android:hint="@string/dd"
         android:inputType="number" />
 
-    <EditText
-        android:id="@+id/messageYYYY"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/messageDD"
-        android:layout_below="@+id/messageDD"
-        android:layout_marginTop="25dp"
-        android:ems="10"
-        android:hint="@string/yyyy"
-        android:inputType="numberPassword" >
-
-        <requestFocus />
-    </EditText>
-
     <Button
         android:id="@+id/messageGoButton"
         android:layout_width="wrap_content"
@@ -59,5 +33,30 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="36dp"
         android:text="@string/go" />
+
+    <EditText
+        android:id="@+id/messageMM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/messagesEditText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:ems="10"
+        android:hint="@string/mm"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/messageYYYY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/messageDD"
+        android:layout_below="@+id/messageDD"
+        android:layout_marginTop="27dp"
+        android:ems="10"
+        android:hint="@string/yyyy"
+        android:inputType="numberPassword" >
+
+        <requestFocus />
+    </EditText>
 
 </RelativeLayout>
