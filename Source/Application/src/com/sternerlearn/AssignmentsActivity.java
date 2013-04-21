@@ -21,7 +21,7 @@ public class AssignmentsActivity extends ListActivity {
 		
 		mAdapter = new AssignmentAdapter(this, null);
 		
-		setListAdapter(mAdapter);		
+		setListAdapter(mAdapter);
 	}
 
 	@Override

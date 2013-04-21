@@ -1,15 +1,17 @@
 package com.sternerlearn;
 
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.DatePicker;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,6 +29,7 @@ public class MessagesActivity extends Activity {
 	/* Page widgets */
 	private Button   submitButton;
 	private TextView textView;
+	private DatePicker datePicker;
 	
 	/* Debug variables */
 	public String mResponse = "Initial";
@@ -39,6 +42,14 @@ public class MessagesActivity extends Activity {
 		/* Create button click event */
 		submitButton = (Button)findViewById( R.id.messageGoButton );
 		textView = (TextView)findViewById( R.id.messagesEditText );
+		
+		/* Set datePicker params */
+		datePicker = (DatePicker)findViewById( R.id.messageDatePicker );
+		datePicker.setCalendarViewShown(false);
+		Calendar calendar = Calendar.getInstance();
+		
+		datePicker.setMaxDate(calendar.getTimeInMillis());
+		
 		createButtonListener();
 	}
 
@@ -62,110 +73,115 @@ public class MessagesActivity extends Activity {
 	    });  //setOnClickListener()
 	}
 	
-	
 	@SuppressLint("SimpleDateFormat")
 	public void viewMessagesFromDate()
 	{
-		int year, month, day;
-		String aYear, aMonth, aDay;
+		int day, month, year;
+		String dateString;
 		
 		/* Get input info */
 		try {
-			aYear = ((EditText)findViewById( R.id.messageYYYY )).getText().toString();
-			year = Integer.parseInt( aYear );
-			aMonth = ((EditText)findViewById( R.id.messageMM )).getText().toString();
-			month = Integer.parseInt( aMonth );
-			aDay = ((EditText)findViewById( R.id.messageDD )).getText().toString();
-			day = Integer.parseInt( aDay );
+			datePicker = (DatePicker)findViewById( R.id.messageDatePicker );
+			day = datePicker.getDayOfMonth();
+			month = datePicker.getMonth() + 1;
+			year = datePicker.getYear();
 		}
 		catch(Exception ex) {
-			textView.setText("Unable to retrieve info.");
-			return;
-		}
-		
-		/* Get input info and current date */
-
-		Date request;
-		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			request = sdf.parse( aYear + "-" + aMonth + "-" + aDay );
-		}
-		catch(ParseException ex) {
-			textView.setText("Please enter a valid date.");
-			return;
-		}
-		
-		/* Get current date and query database if request is valid */
-		Date current = new Date();
-		if( request.compareTo(current) > 0 )
-		{
-			textView.setText("Please enter a valid date.");
-		}
-		else
-		{
-			String date = convertToTimestamp( day, month, year );
-			
-			AsyncCallGetMessages task = new AsyncCallGetMessages();
-			task.execute(date);
-			
-			
-			while(mResponse == "Initial");
-    		Toast toast = Toast.makeText(getApplicationContext(), mResponse, Toast.LENGTH_LONG);
+    		CharSequence text = "Error parsing date.";
+    		Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
     		toast.show();
+			return;
 		}
+		
+		/* Convert input to timestamp */
+		dateString = convertToTimestamp(year, month, day, 0, 0, 0);
+		
+		/* Query database */
+		AsyncCallGetMessages task = new AsyncCallGetMessages();
+		task.execute(dateString);
+
 	}
 	
-    private class AsyncCallGetMessages extends AsyncTask<String, Void, Boolean > {
+    private class AsyncCallGetMessages extends AsyncTask< String, Void, Boolean > {
         @Override
-        protected Boolean doInBackground(String... time) {
-        	
-        	boolean success;
-        	
-        	/* Get student's ID */
+        protected Boolean doInBackground(String... date) {
+
+        	/* Get web service params */
     		Account acct = SharedData.getInstance().getAccount();
     		int studentID = acct.mLinkedId;
-
-        	/* Get current time */
-    		String currTime = GPSReceiver.getTimestamp();
-
+    		String endTime = date[0].substring(0, 11);   //Include T
+    		endTime += "23:59:59.000000000";             //Go to end of day
+    		
+	        /* Get student account */
+	        Student stuAcc = SharedData.getInstance().getStudent();
+	        if( stuAcc == null)
+	        {
+	        	stuAcc = new Student( SharedData.getInstance().getAccount() );
+	        	SharedData.getInstance().setStudent(stuAcc);
+	        }
+	        stuAcc.mMessages = new ArrayList<Message>();
+    		
 	    	/* Create list of web method parameters */
 	        List<PropertyWrapper> paramList = new ArrayList<PropertyWrapper>();
 	        paramList.add( new PropertyWrapper( "aStudentID" , studentID ) );
-	        paramList.add( new PropertyWrapper( "aStartTime" , time[0] ) );
-	        paramList.add( new PropertyWrapper( "aEndTime" , currTime ) );
-	        //TODO:  convert currTime to a timestamp
+	        paramList.add( new PropertyWrapper( "aStartTime" , date[0] ) );     
+	        paramList.add( new PropertyWrapper( "aEndTime" , endTime ) );
 
-	        try {
+	        try
+	        {
 	        	/* Call web service */
-	        	SoapSerializationEnvelope envelope = WebServiceWrapper.getInstance().call(Types.PARENT_URL, Types.PARENT_GET_LOCATIONS, paramList );
+	        	SoapSerializationEnvelope envelope = WebServiceWrapper.getInstance().call(Types.PARENT_URL, Types.PARENT_GET_MESSAGES, paramList );
 	    		SoapObject response = (SoapObject)envelope.getResponse();
-	    		mResponse = response.toString() + " " + response.getPropertyCount();
-				
-	    		/* Parse XML return */
-	    		List<Message> mMessages = new ArrayList<Message>();
-	    		for( int i = 0; i < response.getPropertyCount(); i++ )
+	    		if( response == null )
 	    		{
-		    		SoapObject arr = (SoapObject)response.getProperty(i);
-		    		
-		   			String aSender = arr.getProperty("aSender").toString();
-		   			String aMessage = arr.getProperty("aMessage").toString();
-		   			String aTime = arr.getProperty("mTime").toString();
-		   			
-		   			mMessages.add( new Message( aSender, aMessage, aTime) );
+	    			mResponse = "No web response received"; 
+	    			return false;
 	    		}
-	    		
-	    		/* Put list in Student account */
-	    		Student stuAcc = SharedData.getInstance().getStudent();
-	    		stuAcc.mMessages = mMessages;
-	    		
-	    		success = true;
-	    		
-			} catch (Exception ex) {
-				mResponse = ex.toString();
-				success = false;
+	    		else
+	    		{
+	    			/* Parse XML return */
+	    			if( response.getPropertyCount() > 0 )
+	    			{
+			    		for( int i = 0; i < response.getPropertyCount(); i++ )
+			    		{
+				    		SoapObject arr = (SoapObject)response.getProperty(i);
+				    		if( arr == null )
+				    		{
+				    			mResponse = "Property null:  " + Integer.toString(i);
+				    			return false;
+				    		}
+				    		
+					   		if( !arr.hasProperty("aSender") ||
+						   		!arr.hasProperty("aMessage") ||
+						   		!arr.hasProperty("mTime") )
+						   	{
+					   			mResponse = "Property info null:  " + Integer.toString(i);
+						   	}
+					   		else
+					   		{
+					   			String aSender = arr.getProperty("aSender").toString();
+					   			String aMessage = arr.getProperty("aMessage").toString();
+					   			String aTime = arr.getProperty("mTime").toString();
+					   			
+					   			stuAcc.mMessages.add( new Message( aSender, aMessage, aTime) );
+					   		}
+			    		}
+			    		mResponse = "Property count:  " + Integer.toString( response.getPropertyCount() );
+		    			return true;
+	    			}
+	    			/* no messages received */
+	    			else
+	    			{
+	    				mResponse = "No messages exist for this date";
+	    				return false;
+	    			}
+	    		}
 			}
-	        
-	        return success;
+	        catch (Exception ex)
+	        {
+				mResponse = ex.toString();
+				return false;
+			}
         }
 
         @Override
@@ -173,7 +189,14 @@ public class MessagesActivity extends Activity {
         {
         	if(success)
         	{
-        	
+        		/* launch DisplayMessagesActivity */
+        		Intent page = new Intent(getApplicationContext(), DisplayMessagesActivity.class);
+        		startActivity(page);
+        	}
+        	else
+        	{
+        		Toast toast = Toast.makeText(getApplicationContext(), mResponse, Toast.LENGTH_LONG);
+        		toast.show();
         	}
         }
 
@@ -185,17 +208,26 @@ public class MessagesActivity extends Activity {
 
     }
 
-	@SuppressLint("SimpleDateFormat")
-	public static String convertToTimestamp( int year, int month, int day )
+	public static String convertToTimestamp( int year, int month, int day, int hour, int minute, int second )
 	{
-		/* Create time object */
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-		Calendar calendar = new GregorianCalendar();
-		calendar.set(year, month, day, 0, 0, 0 );
-		sdf.setCalendar(calendar);
-		String dt = sdf.format( calendar.getTime() ); 
+		/*  Note:  does not check for improper bounds */
 		
-    	return dt;
+		String ret;
+		try {
+			String aDay = (day < 10) ? "0" + Integer.toString(day) : Integer.toString(day);
+			String aMonth =  (month < 10) ? "0" + Integer.toString(month) : Integer.toString(month);
+			String aYear = Integer.toString(year);
+			String aHour = (hour < 10) ? "0" + Integer.toString(hour) : Integer.toString(hour);
+			String aMinute = (minute < 10) ? "0" + Integer.toString(minute) : Integer.toString(minute);
+			String aSecond = (second < 10) ? "0" + Integer.toString(second) : Integer.toString(second);
+			
+			ret = aYear + "-" + aMonth + "-" + aDay + "T" + aHour + ":" + aMinute + ":" + aSecond + ".000000000";
+		}
+		catch(Exception ex) {
+			ret = ex.toString();
+		}
+		
+    	return ret;
 	}
     
 }

@@ -135,6 +135,10 @@
             android:name="com.sternerlearn.AddGradeActivity"
             android:label="@string/title_activity_add_grade" >
         </activity>
+        <activity
+            android:name="com.sternerlearn.DisplayMessagesActivity"
+            android:label="@string/title_activity_display_messages" >
+        </activity>
     </application>
 
 </manifest>

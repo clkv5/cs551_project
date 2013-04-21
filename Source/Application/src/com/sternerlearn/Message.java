@@ -15,6 +15,14 @@ public class Message {
 		time = aTime.replaceFirst("T", " ");
 	}
 	
+	// default constructor is used to indicate there are no messages for the date
+	public Message()
+	{
+		sender = "";
+		message = "";
+		time = "";
+	}
+	
 	public String getSender()
 	{
 		return sender;

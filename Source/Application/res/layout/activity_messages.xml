@@ -14,49 +14,21 @@
         android:layout_height="wrap_content"
         android:text="@string/choose_the_date_you_wish_to_view_" />
 
-    <EditText
-        android:id="@+id/messageDD"
+    <DatePicker
+        android:id="@+id/messageDatePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/messageMM"
-        android:layout_below="@+id/messageMM"
-        android:layout_marginTop="19dp"
-        android:ems="10"
-        android:hint="@string/dd"
-        android:inputType="number" />
+        android:layout_alignLeft="@+id/messagesEditText"
+        android:layout_below="@+id/messagesEditText"
+        android:layout_marginTop="14dp" />
 
     <Button
         android:id="@+id/messageGoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/messageYYYY"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp"
+        android:layout_alignLeft="@+id/messageDatePicker"
+        android:layout_below="@+id/messageDatePicker"
+        android:layout_marginTop="73dp"
         android:text="@string/go" />
-
-    <EditText
-        android:id="@+id/messageMM"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/messagesEditText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="17dp"
-        android:ems="10"
-        android:hint="@string/mm"
-        android:inputType="number" />
-
-    <EditText
-        android:id="@+id/messageYYYY"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/messageDD"
-        android:layout_below="@+id/messageDD"
-        android:layout_marginTop="27dp"
-        android:ems="10"
-        android:hint="@string/yyyy"
-        android:inputType="numberPassword" >
-
-        <requestFocus />
-    </EditText>
 
 </RelativeLayout>
