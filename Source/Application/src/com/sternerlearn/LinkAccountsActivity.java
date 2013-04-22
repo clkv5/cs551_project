@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.ksoap2.SoapFault;
 import org.ksoap2.serialization.SoapSerializationEnvelope;

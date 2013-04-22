@@ -56,7 +56,6 @@ public class LoginActivity extends Activity {
 			{
 				startActivity(new Intent(this, StudentMainMenu.class));
 				startService(new Intent(this, GPSReceiver.class));
-				//TODO:  isolate SMSReceiver to student
 			}
 			else
 			{

@@ -9,33 +9,43 @@
     tools:context=".LocationsActivity" >
 
     <TextView
-        android:id="@+id/messageEditText"
+        android:id="@+id/TextView01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/choose_the_date_and_time_interval_" />
+        android:layout_alignRight="@+id/messageEditText"
+        android:layout_below="@+id/locationsDatePicker"
+        android:layout_marginTop="34dp"
+        android:text="@string/choose_a_time_" />
+
+    <TimePicker
+        android:id="@+id/locationsTimePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/TextView01"
+        android:layout_below="@+id/TextView01" />
 
     <DatePicker
-        android:id="@+id/messageDatePicker"
+        android:id="@+id/locationsDatePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/messageEditText"
-        android:layout_below="@+id/messageEditText"
-        android:layout_marginTop="20dp" />
+        android:layout_below="@+id/messageEditText" />
 
-    <TimePicker
-        android:id="@+id/timePicker1"
+    <TextView
+        android:id="@+id/messageEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/messageDatePicker"
-        android:layout_below="@+id/messageDatePicker"
-        android:layout_marginTop="34dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="19dp"
+        android:text="@string/choose_a_date_" />
 
-    <TimePicker
-        android:id="@+id/timePicker2"
+    <Button
+        android:id="@+id/locationsGoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/timePicker1"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="37dp" />
+        android:layout_alignTop="@+id/messageEditText"
+        android:layout_toRightOf="@+id/locationsTimePicker"
+        android:text="@string/go" />
 
 </RelativeLayout>

@@ -15,20 +15,20 @@
         android:text="@string/choose_the_date_you_wish_to_view_" />
 
     <DatePicker
-        android:id="@+id/messageDatePicker"
+        android:id="@+id/messagesDatePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/messagesEditText"
         android:layout_below="@+id/messagesEditText"
-        android:layout_marginTop="14dp" />
+        android:layout_marginTop="56dp" />
 
     <Button
         android:id="@+id/messageGoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/messageDatePicker"
-        android:layout_below="@+id/messageDatePicker"
-        android:layout_marginTop="73dp"
+        android:layout_alignLeft="@+id/messagesDatePicker"
+        android:layout_below="@+id/messagesDatePicker"
+        android:layout_marginTop="58dp"
         android:text="@string/go" />
 
 </RelativeLayout>

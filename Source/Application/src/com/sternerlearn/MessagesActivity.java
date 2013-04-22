@@ -8,17 +8,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.DatePicker;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.ksoap2.serialization.SoapObject;
@@ -28,7 +21,6 @@ public class MessagesActivity extends Activity {
 
 	/* Page widgets */
 	private Button   submitButton;
-	private TextView textView;
 	private DatePicker datePicker;
 	
 	/* Debug variables */
@@ -41,10 +33,9 @@ public class MessagesActivity extends Activity {
 
 		/* Create button click event */
 		submitButton = (Button)findViewById( R.id.messageGoButton );
-		textView = (TextView)findViewById( R.id.messagesEditText );
 		
 		/* Set datePicker params */
-		datePicker = (DatePicker)findViewById( R.id.messageDatePicker );
+		datePicker = (DatePicker)findViewById( R.id.messagesDatePicker );
 		datePicker.setCalendarViewShown(false);
 		Calendar calendar = Calendar.getInstance();
 		
@@ -81,7 +72,7 @@ public class MessagesActivity extends Activity {
 		
 		/* Get input info */
 		try {
-			datePicker = (DatePicker)findViewById( R.id.messageDatePicker );
+			datePicker = (DatePicker)findViewById( R.id.messagesDatePicker );
 			day = datePicker.getDayOfMonth();
 			month = datePicker.getMonth() + 1;
 			year = datePicker.getYear();

@@ -59,5 +59,8 @@
     <string name="title_activity_add_grade">Add Grade</string>
     <string name="yyyy">YYYY</string>
     <string name="title_activity_display_messages">DisplayMessagesActivity</string>
+    <string name="choose_a_date_">Choose a date:</string>
+    <string name="choose_a_time_">Choose a time:</string>
+    <string name="title_activity_display_locations">DisplayLocationsActivity</string>
 
 </resources>

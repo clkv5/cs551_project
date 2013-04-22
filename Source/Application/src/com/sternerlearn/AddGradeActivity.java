@@ -83,7 +83,7 @@ public class AddGradeActivity extends Activity {
 			}
 			catch( Exception ex )
 			{
-				String tmp = "WHYYYY";
+				//String tmp = "WHYYYY";
 			}
 	    	
 			// TODO: error handling

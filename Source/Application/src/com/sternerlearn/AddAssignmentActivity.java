@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.NumberPicker;
-import android.widget.RadioGroup;
 
 public class AddAssignmentActivity extends Activity {
 
