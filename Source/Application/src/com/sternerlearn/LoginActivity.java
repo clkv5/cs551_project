@@ -5,18 +5,19 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 public class LoginActivity extends Activity {
-	
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+     
     }
 
 
@@ -32,14 +33,16 @@ public class LoginActivity extends Activity {
     	View aView
     	)
     {
+    	String email = ((EditText)findViewById( R.id.editEmailAddress )).getText().toString();
+    	String password = ((EditText)findViewById( R.id.editPassword )).getText().toString();
+    	
     	AsyncCallLogin task = new AsyncCallLogin();
-    	task.execute();
+    	task.execute( email, password );
     }  
     
-    public void finishLogin()
+    public void finishLogin(Account acct)
     {
-    	Account acct = SharedData.getInstance().getAccount();
-    	
+		SharedData.getInstance().setAccount(acct);
     	boolean error = false;
     
     	if( acct.mValid )
@@ -73,16 +76,42 @@ public class LoginActivity extends Activity {
     		Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
     		toast.show();
     	}
+    	else
+    	{
+    		// Save their login information
+    		SharedPreferences settings = getSharedPreferences(Types.PREFS_FILE, MODE_PRIVATE);
+    		
+    		SharedPreferences.Editor editor = settings.edit();
+    		editor.putString(Types.LOGIN_KEY, acct.mEmailAddress );
+    		editor.putString(Types.PW_KEY, acct.mPassword );
+    		
+    		editor.commit();
+    	}
     }
     
-    public Account login()
+    public Account login(String[] params)
     {
     	// Need to attempt to log them in
     	// If it succeeds, then send the account type to the MainMenu
-    	String email = ((EditText)findViewById( R.id.editEmailAddress )).getText().toString();
-    	String password = ((EditText)findViewById( R.id.editPassword )).getText().toString();
-    	
-        Account account = new Account( email, password ); 
+        Account account = new Account( params[0], params[1] );
+        
+        if( Types.AccountType.PARENT.ordinal() == account.mAccountType )
+        {
+        	// If we're a parent, check if we have a student saved off
+        	SharedPreferences settings = getSharedPreferences(Types.PREFS_FILE, MODE_PRIVATE);
+        	
+    		String login = settings.getString(Types.STUDENT_LOGIN_KEY, "null");
+    		if( login != "null" )
+    		{
+    			// If we have stored data for them, go ahead and log them in
+    			String pw = settings.getString(Types.STUDENT_PW_KEY, "null");
+    			
+    			// Use the student account instead of the parent account
+    	    	account = new Account( login, pw );			
+    		}
+    		
+    		// If they aren't linked then don't bother doing anything
+        }          
     	
     	return account;
     }
@@ -92,16 +121,15 @@ public class LoginActivity extends Activity {
     	startActivity(new Intent(this, RegisterActivity.class));
     }
     
-    private class AsyncCallLogin extends AsyncTask<Void, Void, Account> {
+    private class AsyncCallLogin extends AsyncTask<String, Void, Account> {
         @Override
-        protected Account doInBackground(Void... params) {
-            return login();
+        protected Account doInBackground(String... params) {
+            return login(params);
         }
 
         @Override
         protected void onPostExecute(Account result) {
-    		SharedData.getInstance().setAccount(result);
-    		finishLogin();        	
+    		finishLogin( result );        	
         }
 
         @Override

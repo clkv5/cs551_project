@@ -2,6 +2,7 @@ package com.sternerlearn;
 
 import android.os.Bundle;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ListView;
@@ -11,17 +12,21 @@ public class MainMenu extends MyListActivity {
 	
 	private enum BUTTONS
 	{
+		LOGOUT,
 		LINK_ACCOUNT,
-		CLASSES,
+		GRADES,
+		ASSIGNMENTS,
 		INFRACTIONS,
-		PARENTAL_CONTROLS
+		PARENTAL_CONTROLS,
 	}
 	
 	private String[] myTitles = {
+			"Log Out",
 			"Link Accounts",
-			"Classes",
+			"Grades",
+			"Assignments",
 			"Infractions",
-			"Parental Controls"
+			"Parental Controls",
 	};		
 
 	@Override
@@ -46,10 +51,14 @@ public class MainMenu extends MyListActivity {
 		{
 			startActivity( new Intent(this, LinkAccountsActivity.class));
 		}
-		else if( position == BUTTONS.CLASSES.ordinal() )
+		else if( position == BUTTONS.GRADES.ordinal() )
 		{
-			startActivity( new Intent(this, ClassesActivity.class));
+			startActivity( new Intent(this, GradesActivity.class));
 		}
+		else if( position == BUTTONS.ASSIGNMENTS.ordinal() )
+		{
+			startActivity( new Intent(this, AssignmentsActivity.class));
+		}		
 		else if( position == BUTTONS.INFRACTIONS.ordinal() )
 		{
 			startActivity( new Intent(this, InfractionsActivity.class));
@@ -57,6 +66,21 @@ public class MainMenu extends MyListActivity {
 		else if( position == BUTTONS.PARENTAL_CONTROLS.ordinal() )
 		{
 			startActivity( new Intent(this, ParentalControlActivity.class));
+		}
+		else if( position == BUTTONS.LOGOUT.ordinal() )
+		{
+			// Log them out. TODO!
+			SharedPreferences settings = getSharedPreferences(Types.PREFS_FILE, MODE_PRIVATE);
+			SharedPreferences.Editor editor = settings.edit();
+			editor.clear();
+			editor.commit();
+			
+			SharedData.getInstance().clear();
+			
+			// Pop to the powerup page
+			Intent intent = new Intent(this, PowerupActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
+			startActivity(intent);
 		}
 	}
 

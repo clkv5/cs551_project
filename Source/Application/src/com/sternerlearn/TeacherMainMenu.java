@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -42,9 +43,25 @@ public class TeacherMainMenu extends ListActivity {
 	{
 		if( 0 == position )
 		{
+			// Log them out.
+			SharedPreferences settings = getSharedPreferences(Types.PREFS_FILE, MODE_PRIVATE);
+			SharedPreferences.Editor editor = settings.edit();
+			editor.clear();
+			editor.commit();
+			
+			SharedData.getInstance().clear();
+			
+			// Pop the stack and go to the powerup page (which will push the login page)
+			Intent intent = new Intent(this, PowerupActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
+			startActivity(intent);
+			
+		}
+		else if( 1 == position )
+		{
 			// This is the "Add Class" option
 			// Push a page to create a new class in the DB
-			startActivity(new Intent(this, AddClassActivity.class));
+			startActivity(new Intent(this, AddClassActivity.class));			
 		}
 		else
 		{
@@ -107,6 +124,7 @@ public class TeacherMainMenu extends ListActivity {
 	void finishAsync()
 	{
 		mListItems.clear();
+		mListItems.add("Log Out");
 		mListItems.add("Add Class");
 		
 		Teacher t = SharedData.getInstance().getTeacher();

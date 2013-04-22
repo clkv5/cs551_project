@@ -62,5 +62,9 @@
     <string name="choose_a_date_">Choose a date:</string>
     <string name="choose_a_time_">Choose a time:</string>
     <string name="title_activity_display_locations">DisplayLocationsActivity</string>
+    <string name="title_activity_powerup">Powering Up</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="powering_up">Powering Up....</string>
 
 </resources>

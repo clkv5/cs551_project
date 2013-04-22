@@ -6,6 +6,7 @@ import java.util.List;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -118,6 +119,24 @@ public class LinkAccountsActivity extends Activity {
 			mResponse = "SOAP fault on return";
 			success = false;
 		}
+        
+        if( success )
+        {
+        	Account studentAccount = new Account(email, pass);
+        	
+    		// Set the account to the student's account so that future operations will be done using the student's info
+        	// This is pretty hacky but I really don't want to redo more things
+    		SharedData.getInstance().setAccount( studentAccount );
+	    	
+    		// Save the student's login information
+    		SharedPreferences settings = getSharedPreferences(Types.PREFS_FILE, MODE_PRIVATE);
+    		
+    		SharedPreferences.Editor editor = settings.edit();
+    		editor.putString(Types.STUDENT_LOGIN_KEY, email );
+    		editor.putString(Types.STUDENT_PW_KEY, pass );
+    		
+    		editor.commit();    		
+        }
         return success;
 	}
 	

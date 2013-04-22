@@ -25,6 +25,14 @@ public class SharedData
 		return instance;
 	}
 	
+	public void clear()
+	{
+		mAccount = null;
+		mStudent = null;
+		mTeacher = null;
+		mParent = null;
+	}
+	
 	public void setAccount( Account aAccount )
 	{
 		mAccount = aAccount;
@@ -33,7 +41,8 @@ public class SharedData
 	public Account getAccount()
 	{
 		return mAccount;
-	}
+	} 
+	
 	
 	public void setStudent( Student aStudent )
 	{

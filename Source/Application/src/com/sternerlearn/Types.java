@@ -40,4 +40,12 @@ public class Types {
     static final String   PARENT_ADD_MESSAGE = "addMessage";
     static final String   PARENT_GET_MESSAGES = "getMessages";
     
+    static final String PREFS_FILE = "MY_PREFERENCES_FILE_NAME";
+    
+    static final String LOGIN_KEY = "LOGIN_KEY";
+    static final String PW_KEY = "PASSWORD_KEY";
+    
+    static final String STUDENT_LOGIN_KEY = "STUDENT_LOGIN_KEY";
+    static final String STUDENT_PW_KEY = "STUDENT_PASSWORD_KEY";
+    
 }

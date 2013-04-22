@@ -89,7 +89,7 @@ public class Account
     		}
     		else
     		{
-    			mResponse = "NO ACCOUNT RETURNED WTF";
+    			mResponse = "NO ACCOUNT RETURNED??";
     			mValid = false;
     		}
     	}
