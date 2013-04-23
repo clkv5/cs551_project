@@ -42,7 +42,7 @@ public class Student
     	/* Call web service */
     	try 
     	{		
-    		SoapSerializationEnvelope envelope = WebServiceWrapper.getInstance().call(Types.STUDENT_URL, "getClasses", properties);
+    		SoapSerializationEnvelope envelope = WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.STUDENT_GET_CLASSES, properties);
     	
 	
     		SoapObject response = (SoapObject)envelope.getResponse();

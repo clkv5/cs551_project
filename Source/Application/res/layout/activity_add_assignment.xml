@@ -9,21 +9,6 @@
     tools:context=".AddAssignmentActivity" >
 
     <EditText
-        android:id="@+id/className"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="22dp"
-        android:layout_marginTop="44dp"
-        android:ems="10"
-        android:hint="@string/assign_name"
-        android:inputType="textPersonName" >
-
-        <requestFocus />
-    </EditText>
-
-    <EditText
         android:id="@+id/desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,16 +21,54 @@
         android:id="@+id/numberPicker1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/desc"
+        android:layout_alignRight="@+id/desc"
         android:layout_below="@+id/desc" />
-    
-    <Button
-        android:id="@+id/linkAccountsButton"
+
+    <DatePicker
+        android:id="@+id/datePicker1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/numberPicker1"
-        android:layout_below="@+id/numberPicker1"
+        android:layout_alignRight="@+id/numberPicker1"
+        android:layout_below="@+id/numberPicker1" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/datePicker1"
+        android:layout_alignBottom="@+id/datePicker1"
+        android:layout_toLeftOf="@+id/datePicker1"
+        android:text="@string/date_due" />
+
+    <EditText
+        android:id="@+id/className"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:ems="10"
+        android:hint="@string/assign_name"
+        android:inputType="textPersonName" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/numberPicker1"
+        android:layout_marginBottom="56dp"
+        android:layout_toLeftOf="@+id/numberPicker1"
+        android:text="@string/points_worth" />
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/datePicker1"
         android:onClick="handleSubmit"
-        android:text="@string/submit" />    
+        android:text="@string/submit" />
 
 </RelativeLayout>

@@ -14,12 +14,13 @@ public class Types {
 	
     static final String NAMESPACE = "http://tempuri.org/";
     
-    static final String ACCOUNT_URL = "http://170.224.169.101/Iteration3/AccountService.asmx";
+    static final String ACCOUNT_URL = "http://170.224.169.101/SternerLearn/AccountService.asmx";
     static final String   ACCOUNT_LOGIN = "Login";
     static final String   ACCOUNT_REGISTER = "Register";
     static final String   ACCOUNT_LINK = "LinkAccounts";
+    static final String   ACCOUNT_GET_LINK = "getLinkedAccount";
     
-    static final String STUDENT_URL = "http://170.224.169.101/Iteration3/StudentDataService.asmx";
+    static final String STUDENT_URL = "http://170.224.169.101/SternerLearn/StudentDataService.asmx";
     static final String   STUDENT_ADD_ASSIGNMENT = "addAssignment";
     static final String   STUDENT_ADD_CLASS = "addClass";
     static final String   STUDENT_ADD_GRADE = "addGrade";
@@ -34,7 +35,7 @@ public class Types {
     static final String   STUDENT_GET_TAUGHT_CLASSES = "getTaughtClasses";
     static final String   STUDENT_GET_STUDENT = "getStudent";
     
-    static final String PARENT_URL = "http://170.224.169.101/Iteration3/ParentalManagementService.asmx";
+    static final String PARENT_URL = "http://170.224.169.101/SternerLearn/ParentalManagementService.asmx";
     static final String   PARENT_ADD_LOCATION = "addLocation";
     static final String   PARENT_GET_LOCATIONS = "getLocations";
     static final String   PARENT_ADD_MESSAGE = "addMessage";

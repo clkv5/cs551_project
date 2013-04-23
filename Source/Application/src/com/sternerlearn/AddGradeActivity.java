@@ -15,6 +15,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -24,6 +25,15 @@ public class AddGradeActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_grade);
+		
+		// Don't show the calendar view
+		DatePicker datePicker = (DatePicker)findViewById( R.id.datePicker1 );
+		datePicker.setCalendarViewShown(false);
+		
+		NumberPicker numberPicker = (NumberPicker)findViewById( R.id.numberPicker1 );
+		numberPicker.setMinValue( 0 );
+		numberPicker.setMaxValue( 1000 );
+		numberPicker.setWrapSelectorWheel( false );		
 	}
 
 	@Override
@@ -65,6 +75,7 @@ public class AddGradeActivity extends Activity {
     		}
     	}
     	
+    	// TODO: This doesn't seem to be working
     	if( assignID > 0 )
     	{
 	    	// Try to get the student ID
@@ -81,17 +92,22 @@ public class AddGradeActivity extends Activity {
 				studentID = java.lang.Integer.parseInt( ((SoapObject)env.getResponse()).toString() );
 				
 			}
-			catch( Exception ex )
-			{
-				//String tmp = "WHYYYY";
-			}
+			catch( Exception ex ) {}
 	    	
 			// TODO: error handling
-			// TODO: Test this once you get the student ID thing working again
 	    	if( studentID > 0 )
 	    	{
 	        	NumberPicker picker = (NumberPicker)findViewById(R.id.numberPicker1);
 	        	double val = (double)picker.getValue();
+	        	
+	    		// Selected date
+	    		DatePicker datePicker = (DatePicker)findViewById( R.id.datePicker1 );
+	    		int day = datePicker.getDayOfMonth();
+	    		int month = datePicker.getMonth() + 1;
+	    		int year = datePicker.getYear();
+	    		
+	    		// Convert input to timestamp
+	    		String timeString = MessagesActivity.convertToTimestamp(year, month, day, 0, 0, 0);    		        	
 	    		
 	        	// TODO: Fix the NumberPicker and add the date
 				List<PropertyWrapper> properties = new ArrayList<PropertyWrapper>();
@@ -100,23 +116,12 @@ public class AddGradeActivity extends Activity {
 				properties.add(new PropertyWrapper("aStudentID", studentID));
 				properties.add(new PropertyWrapper("aAssignmentID", assignID));
 				properties.add(new PropertyWrapper("aPointsReceived", val));
-				properties.add(new PropertyWrapper("aDateSubmitted", getTimestamp()));
+				properties.add(new PropertyWrapper("aDateSubmitted", timeString));
 				
 				WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.STUDENT_ADD_GRADE, properties);
 	    	}    	
     	}
     }
-    
-    // TODO: consolidate these
-	@SuppressLint("SimpleDateFormat")
-	public static String getTimestamp()
-	{
-		/* Create time object */
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-		String dt = sdf.format(new Date());
-		
-    	return dt;
-	}
 	
 	void finishAsync()
 	{

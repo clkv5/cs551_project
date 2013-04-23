@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 
@@ -21,6 +22,15 @@ public class AddAssignmentActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_assignment);
+		
+		// Don't show the calendar view
+		DatePicker datePicker = (DatePicker)findViewById( R.id.datePicker1 );
+		datePicker.setCalendarViewShown(false);
+		
+		NumberPicker numberPicker = (NumberPicker)findViewById( R.id.numberPicker1 );
+		numberPicker.setMinValue( 0 );
+		numberPicker.setMaxValue( 1000 );
+		numberPicker.setWrapSelectorWheel( false );
 	}
 
 	@Override
@@ -46,8 +56,15 @@ public class AddAssignmentActivity extends Activity {
     	
     	NumberPicker picker = (NumberPicker)findViewById(R.id.numberPicker1);
     	double val = (double)picker.getValue();
-
-    	// TODO: Add due date and isTest
+    	
+		// Selected date
+		DatePicker datePicker = (DatePicker)findViewById( R.id.datePicker1 );
+		int day = datePicker.getDayOfMonth();
+		int month = datePicker.getMonth() + 1;
+		int year = datePicker.getYear();
+		
+		// Convert input to timestamp
+		String timeString = MessagesActivity.convertToTimestamp(year, month, day, 0, 0, 0);    	
     	
     	Account a = SharedData.getInstance().getAccount();
     	
@@ -62,22 +79,12 @@ public class AddAssignmentActivity extends Activity {
         paramList.add( new PropertyWrapper( "aClassID" , c.mId ) );
         paramList.add( new PropertyWrapper( "aTotalPoints" , val ) );
         paramList.add( new PropertyWrapper( "aTest" , "false" ) );
-        paramList.add( new PropertyWrapper( "aDateDue" , getTimestamp() ) );
+        paramList.add( new PropertyWrapper( "aDateDue" , timeString ) );
         paramList.add( new PropertyWrapper( "aName" , name ) );
         paramList.add( new PropertyWrapper( "aDescription" , desc ) );
         
         /* Log to database */
         WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.STUDENT_ADD_ASSIGNMENT, paramList );		
-	}
-	
-	@SuppressLint("SimpleDateFormat")
-	public static String getTimestamp()
-	{
-		/* Create time object */
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-		String dt = sdf.format(new Date());
-		
-    	return dt;
 	}
 	
 	void finishAsync()

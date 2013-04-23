@@ -69,7 +69,7 @@ public class MainMenu extends MyListActivity {
 		}
 		else if( position == BUTTONS.LOGOUT.ordinal() )
 		{
-			// Log them out. TODO!
+			// Log them out.
 			SharedPreferences settings = getSharedPreferences(Types.PREFS_FILE, MODE_PRIVATE);
 			SharedPreferences.Editor editor = settings.edit();
 			editor.clear();

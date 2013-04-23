@@ -66,5 +66,9 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="powering_up">Powering Up....</string>
+    <string name="points_worth">Total Points: </string>
+    <string name="date_due">Due Date: </string>
+    <string name="date_submitted">Date Submitted: </string>
+    <string name="points_received">Points Received: </string>
 
 </resources>

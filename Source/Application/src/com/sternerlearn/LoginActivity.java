@@ -42,21 +42,25 @@ public class LoginActivity extends Activity {
     
     public void finishLogin(Account acct)
     {
-		SharedData.getInstance().setAccount(acct);
+		
     	boolean error = false;
     
     	if( acct.mValid )
     	{
 			if( Types.AccountType.PARENT.ordinal() == acct.mAccountType )
 			{
+				// Use the linked account since it contains the student information
+				SharedData.getInstance().setAccount(acct.mLinkedAccount);
 				startActivity(new Intent(this, MainMenu.class));	
 			}
 			else if( Types.AccountType.STAFF.ordinal() == acct.mAccountType )
 			{
+				SharedData.getInstance().setAccount(acct);
 				startActivity(new Intent(this, TeacherMainMenu.class));	
 			}
 			else if( Types.AccountType.STUDENT.ordinal() == acct.mAccountType )
 			{
+				SharedData.getInstance().setAccount(acct);
 				startActivity(new Intent(this, StudentMainMenu.class));
 				startService(new Intent(this, GPSReceiver.class));
 			}
@@ -106,8 +110,13 @@ public class LoginActivity extends Activity {
     			// If we have stored data for them, go ahead and log them in
     			String pw = settings.getString(Types.STUDENT_PW_KEY, "null");
     			
-    			// Use the student account instead of the parent account
-    	    	account = new Account( login, pw );			
+    	    	Account student = new Account( login, pw );		
+    	    	account.mLinkedAccount = student;
+    		}
+    		else
+    		{
+    			// Call web service to get linked information
+    			account.updateLinkedAccount();
     		}
     		
     		// If they aren't linked then don't bother doing anything

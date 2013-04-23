@@ -17,6 +17,8 @@ public class Account
 	public String mRealName;
 	public boolean mValid;
 	
+	Account mLinkedAccount = null;
+	
 	// DEBUG
 	public String mResponse = "BLAH BLAH";
 	
@@ -51,6 +53,58 @@ public class Account
 		)
 	{
 		register( aEmail, aPassword, aPassRepeat, aName, aAccountType );
+	}
+	
+	void updateLinkedAccount()
+	{
+		List<PropertyWrapper> properties = new ArrayList<PropertyWrapper>();
+		properties.add(new PropertyWrapper("aEmail", mEmailAddress));
+		properties.add(new PropertyWrapper("aPassword", mPassword));
+		
+		SoapSerializationEnvelope envelope = WebServiceWrapper.getInstance().call(Types.ACCOUNT_URL, Types.ACCOUNT_GET_LINK, properties);
+		
+		Account acct = null;
+		
+    	// Call web service
+    	try 
+    	{	
+    		SoapObject response = (SoapObject)envelope.getResponse();
+    		mResponse = response.toString();
+
+	    		
+	   		if( !response.hasProperty("id") ||
+	   			!response.hasProperty("accountType") ||
+	   			!response.hasProperty("linkedID") ||
+	   			!response.hasProperty("emailAddress") ||
+	   			!response.hasProperty("password") ||
+	   			!response.hasProperty("realName") )
+	   		{
+	   			mValid = false;
+	   		}
+	   		else
+	   		{
+	   			mValid = true;
+	   			
+	   			// Sigh could have planned this better...
+	   			acct = new Account();
+	   			
+	   			acct.mValid = true;
+	   			acct.mId = java.lang.Integer.parseInt( response.getProperty("id").toString() );
+	   			acct.mAccountType = java.lang.Integer.parseInt( response.getProperty("accountType").toString() );
+	   			acct.mLinkedId = java.lang.Integer.parseInt( response.getProperty("linkedID").toString() );
+	   			acct.mEmailAddress = response.getProperty("emailAddress").toString();
+	   			acct.mPassword = response.getProperty("password").toString();
+	   			acct.mRealName = response.getProperty("realName").toString();
+	   		}
+    	}
+    	catch(Exception ex)
+    	{
+    		// Either it's not a valid username and password, or we failed
+    		mResponse = ex.toString();
+    		mValid = false;
+		}		
+    	
+    	mLinkedAccount = acct;
 	}
 	
 	void getAccount( SoapSerializationEnvelope envelope )
@@ -117,7 +171,7 @@ public class Account
 		properties.add(new PropertyWrapper("realName", aName));
 		properties.add(new PropertyWrapper("type", aAccountType));
 		
-		SoapSerializationEnvelope envelope = WebServiceWrapper.getInstance().call(Types.ACCOUNT_URL, "Register", properties);
+		SoapSerializationEnvelope envelope = WebServiceWrapper.getInstance().call(Types.ACCOUNT_URL, Types.ACCOUNT_REGISTER, properties);
     	
     	getAccount( envelope );
 
@@ -131,7 +185,7 @@ public class Account
 		properties.add(new PropertyWrapper("email", aEmail));
 		properties.add(new PropertyWrapper("password", aPassword));
 
-        SoapSerializationEnvelope envelope = WebServiceWrapper.getInstance().call(Types.ACCOUNT_URL, "Login", properties);
+        SoapSerializationEnvelope envelope = WebServiceWrapper.getInstance().call(Types.ACCOUNT_URL, Types.ACCOUNT_LOGIN, properties);
     	
     	getAccount( envelope );
 	}

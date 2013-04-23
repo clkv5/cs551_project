@@ -65,8 +65,8 @@ public class TeacherMainMenu extends ListActivity {
 		}
 		else
 		{
-			// Decrement position to account for the fake thing and set the current course
-			position--;
+			// Decrement position to account for the fake things and set the current course
+			position = position - 2;
 			Teacher t = SharedData.getInstance().getTeacher();
 			ArrayList<Course> courses;
 			try
