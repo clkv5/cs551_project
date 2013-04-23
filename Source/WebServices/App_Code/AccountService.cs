@@ -13,9 +13,9 @@ using System.Web.Script.Services;
 [Serializable]
 public class Account
 {
-    public int id;
-    public int accountType;
-    public int linkedID;
+    public int id = -1;
+    public int accountType = -1;
+    public int linkedID = -1;
     public string emailAddress;
     public string password;
     public string realName;
@@ -230,6 +230,65 @@ public class AccountService : System.Web.Services.WebService {
         return "Accounts linked successfully.";
     }
 
+    [WebMethod]
+    public Account getLinkedAccount
+        (
+        string aEmail,		// Email address for the original account
+        string aPassword	// Password for the account
+        )
+    {
+        Account acct = null;
+
+        /* Connect to database */
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjectDatabaseString"].ConnectionString);
+        conn.Open();
+
+        /* Check users exist in database */
+        if( accountExists( aEmail ) )
+        {
+            SqlCommand getInfo = new SqlCommand("SELECT * FROM Accounts WHERE emailAddress='" + aEmail + "'", conn);
+            SqlDataReader reader = getInfo.ExecuteReader();
+            reader.Read();
+
+            int? lid = reader["linkedID"] as int?;
+        
+            reader.Close();
+            reader.Dispose();
+            getInfo.Dispose();
+
+            if (lid != -1)
+            {
+
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Accounts WHERE id='" + lid.Value + "'", conn);
+                SqlDataReader r2 = cmd.ExecuteReader();
+                r2.Read();
+
+                // Basic sanity check
+                if (r2["id"] != null)
+                {
+
+                    int? id = r2["id"] as int?;
+                    int? type = r2["accountType"] as int?;
+                    int? linkedId = r2["linkedID"] as int?;
+                    string email = r2["emailAddress"] as string;
+                    string pw = r2["password"] as string;
+                    string name = r2["realName"] as string;
+
+
+                    /* Return account data in XML */
+                    acct = new Account(id, type, linkedId, email, pw, name);
+                }
+
+                r2.Close();
+                r2.Dispose();
+                cmd.Dispose();
+            }
+        }
+
+        conn.Close();
+        
+        return acct;
+    }
 
     /*************************************************************
     *  Public Helper Methods
