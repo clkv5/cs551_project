@@ -61,6 +61,12 @@ public class PowerupActivity extends Activity {
     			// Use the student account instead of the parent account
     	    	account = new Account( login, pw );			
     		}
+    		else
+    		{
+    			// It doesn't seem like this should happen, but just in case...
+    			// Call web service to get linked information
+    			account.updateLinkedAccount();
+    		}    		
     		
     		// If they aren't linked then don't bother doing anything
         }  
@@ -77,14 +83,17 @@ public class PowerupActivity extends Activity {
     	{
 			if( Types.AccountType.PARENT.ordinal() == acct.mAccountType )
 			{
+				SharedData.getInstance().setAccount( acct.mLinkedAccount );
 				startActivity(new Intent(this, MainMenu.class));	
 			}
 			else if( Types.AccountType.STAFF.ordinal() == acct.mAccountType )
 			{
+				SharedData.getInstance().setAccount( acct );
 				startActivity(new Intent(this, TeacherMainMenu.class));	
 			}
 			else if( Types.AccountType.STUDENT.ordinal() == acct.mAccountType )
 			{
+				SharedData.getInstance().setAccount( acct );
 				startActivity(new Intent(this, StudentMainMenu.class));
 				startService(new Intent(this, GPSReceiver.class));
 			}
@@ -102,11 +111,6 @@ public class PowerupActivity extends Activity {
     	{
     		// Just let them log in if somehow our saved login failed
     		end();
-    	}
-    	else
-    	{
-    		// Their login information should already be saved, but set the shared data
-    		SharedData.getInstance().setAccount( acct );
     	}
 	}
 	
