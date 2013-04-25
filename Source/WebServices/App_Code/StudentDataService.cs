@@ -62,13 +62,13 @@ public class Infraction
     {
         int? aInfractionID = aReader["infractionID"] as int?;
         int? aStudentID = aReader["studentID"] as int?;
-        StudentDataService.INFRACTION_TYPE? aInfractionType = aReader["infractionType"] as StudentDataService.INFRACTION_TYPE?;
+        int? aInfractionType = aReader["infractionType"] as int?;
         string aDesc = aReader["description"] as string;
         DateTime? aDate = aReader["date"] as DateTime?;
 
         mInfractionID = aInfractionID.HasValue ? aInfractionID.Value : -1;
         mStudentID = aStudentID.HasValue ? aStudentID.Value : -1;
-        mInfractionType = aInfractionType.HasValue ? aInfractionType.Value : StudentDataService.INFRACTION_TYPE.INFRACTION_COUNT;
+        mInfractionType = aInfractionType.HasValue ? aInfractionType.Value : (int)StudentDataService.INFRACTION_TYPE.INFRACTION_COUNT;
         mDescription = aDesc;
         mDate = aDate.HasValue ? aDate.Value : DateTime.Now;
     }
@@ -81,7 +81,7 @@ public class Infraction
 	// Correspond to C# equivalents of the Infractions columns
     public int mInfractionID;
     public int mStudentID;
-    public StudentDataService.INFRACTION_TYPE mInfractionType;
+    public int mInfractionType;
     public string mDescription;
     public DateTime mDate;
 }
