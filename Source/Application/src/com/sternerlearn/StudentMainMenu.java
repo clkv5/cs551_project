@@ -28,6 +28,8 @@ public class StudentMainMenu extends MyListActivity {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_student_main_menu);
+		
+		setTitle( SharedData.getInstance().getAccount().mRealName );
 	}
 
 	@Override

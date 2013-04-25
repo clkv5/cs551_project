@@ -36,6 +36,8 @@ public class MainMenu extends MyListActivity {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_parent_main_menu);
+		
+		setTitle( SharedData.getInstance().getAccount().mRealName );
 	}
 
 	@Override
