@@ -21,7 +21,7 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 public class GPSReceiver extends Service
 {
 	/* GPS constants */
-	public static final boolean LOG_TO_DATABASE = false;
+	public static final boolean LOG_TO_DATABASE = true;
 	private static final int GPS_MIN_TIME = 300000;    /* In milliseconds */
 	private static final int GPS_MIN_DISTANCE = 0;     /* In meters */
 	
