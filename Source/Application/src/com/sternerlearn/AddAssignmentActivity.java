@@ -1,14 +1,11 @@
 package com.sternerlearn;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
