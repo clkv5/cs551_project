@@ -176,7 +176,7 @@ public class LocationsActivity extends Activity {
 	    			/* no messages received */
 	    			else
 	    			{
-	    				mResponse = "No locations exist for this time span";
+	    				mResponse = "No locations exist for the given time";
 	    				return false;
 	    			}
 	    		}
@@ -191,17 +191,17 @@ public class LocationsActivity extends Activity {
         @Override
         protected void onPostExecute(Boolean success)
         {
-        	if(success)
-        	{
+        	//if(success)
+        	//{
         		/* launch DisplayLocationsActivity */
         		Intent page = new Intent(getApplicationContext(), DisplayLocationsActivity.class);
         		startActivity(page);
-        	}
-        	else
-        	{
-        		Toast toast = Toast.makeText(getApplicationContext(), mResponse, Toast.LENGTH_LONG);
-        		toast.show();
-        	}
+        	//}
+        	//else
+        	//{
+        		//Toast toast = Toast.makeText(getApplicationContext(), mResponse, Toast.LENGTH_LONG);
+        		//toast.show();
+        	//}
         }
         
         @Override
