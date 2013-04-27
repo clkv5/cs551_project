@@ -112,11 +112,16 @@ public class LoginActivity extends Activity {
     			
     	    	Account student = new Account( login, pw );		
     	    	account.mLinkedAccount = student;
+    	    	student.mLinkedAccount = account;
     		}
     		else
     		{
     			// Call web service to get linked information
     			account.updateLinkedAccount();
+    			if( account.mLinkedAccount != null )
+    			{
+    				account.mLinkedAccount.mLinkedAccount = account;
+    			}
     		}
     		
     		// If they aren't linked then don't bother doing anything

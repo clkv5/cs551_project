@@ -9,12 +9,8 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Activity;
 import android.app.ListActivity;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
-import android.support.v4.app.NavUtils;
 
 public class InfractionsActivity extends ListActivity {
 	
@@ -90,9 +86,6 @@ public class InfractionsActivity extends ListActivity {
 		mAdapter.setData(infractions);
 		mAdapter.notifyDataSetChanged();
 		
-		CharSequence text = "Finished getting infractions";
-		Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
-		toast.show();		
 	}
 	
     private class AsyncCall extends AsyncTask<Void, Void, ArrayList<Infraction>> {

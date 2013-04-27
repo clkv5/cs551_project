@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.ListActivity;
 import android.view.Menu;
-import android.widget.Toast;
 
 public class AssignmentsActivity extends ListActivity {
 
@@ -51,11 +50,7 @@ public class AssignmentsActivity extends ListActivity {
 		Student s = SharedData.getInstance().getStudent();
 		
 		mAdapter.setGrades(s.getFutureAssignments());
-		mAdapter.notifyDataSetChanged();
-		
-		CharSequence text = "Finished getting assigns";
-		Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
-		toast.show();		
+		mAdapter.notifyDataSetChanged();	
 	}
 	
     private class AsyncCall extends AsyncTask<Void, Void, Student> {

@@ -1,11 +1,15 @@
 package com.sternerlearn;
 
+import org.ksoap2.serialization.SoapPrimitive;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AddClassActivity extends Activity {
 
@@ -31,32 +35,50 @@ public class AddClassActivity extends Activity {
 		task.execute();
 	} 
     
-    public Teacher addClass()
+    public String addClass()
     {
     	Teacher t = SharedData.getInstance().getTeacher();
     	
     	String name = ((TextView)findViewById(R.id.editText)).getText().toString();
     	
-    	t.addClass( name );
+    	SoapSerializationEnvelope envelope = t.addClass( name );
     	
-    	return t;
+        String ret = "Successfully added class!";
+        
+        try
+        {
+        	SoapPrimitive primitive = (SoapPrimitive)envelope.getResponse();
+        	
+        	if( primitive.toString().compareTo("false") == 0 )
+        	{
+        		ret = "Error creating class";
+        	}
+        }
+        catch( Exception ex) {}
+        
+        SharedData.getInstance().setTeacher(t);
+        
+        return ret;    	
     }
     
-    public void finishAsync()
+    public void finishAsync(String res)
     {
+		Toast toast = Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG);
+		toast.show();	    	
+    	
     	finish();
     }
 
-    private class AsyncCall extends AsyncTask<Void, Void, Teacher> {
+    private class AsyncCall extends AsyncTask<Void, Void, String> {
         @Override
-        protected Teacher doInBackground(Void... params) {
+        protected String doInBackground(Void... params) {
             return addClass();
         }
 
         @Override
-        protected void onPostExecute(Teacher result) {
-    		SharedData.getInstance().setTeacher(result);
-    		finishAsync();        	
+        protected void onPostExecute(String result) {
+    		
+    		finishAsync( result );        	
         }
 
         @Override

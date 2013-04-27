@@ -3,7 +3,7 @@ package com.sternerlearn;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 
 import android.os.AsyncTask;
@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AddStudentToClassActivity extends Activity {
 
@@ -37,7 +38,7 @@ public class AddStudentToClassActivity extends Activity {
 		task.execute();
 	} 	
 	
-	void addStudent()
+	String addStudent()
 	{
     	Account a = SharedData.getInstance().getAccount();
     	Course c = SharedData.getInstance().mCurrentCourse;
@@ -54,16 +55,15 @@ public class AddStudentToClassActivity extends Activity {
 			properties.add(new PropertyWrapper("aStudentName", name));
 			
 			SoapSerializationEnvelope env = WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.STUDENT_GET_STUDENT, properties);
+			SoapPrimitive p = (SoapPrimitive)env.getResponse();
 			
-			// TODO: Fix all of these.
-			// I don't think getStudent is working properly
-			// Also it doesn't like this cast.
-			studentID = java.lang.Integer.parseInt( ((SoapObject)env.getResponse()).toString() );
+			studentID = java.lang.Integer.parseInt( p.toString() );
 			
 		}
 		catch( Exception ex ) {}
+		
+		String ret = "Error adding student to class";
     	
-		// TODO: error handling
     	if( studentID > 0 )
     	{
 			List<PropertyWrapper> properties = new ArrayList<PropertyWrapper>();
@@ -72,25 +72,40 @@ public class AddStudentToClassActivity extends Activity {
 			properties.add(new PropertyWrapper("aClassID", c.mId));
 			properties.add(new PropertyWrapper("aStudentID", studentID));
 			
-			WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.STUDENT_ADD_STUDENT_TO_CLASS, properties);
+			SoapSerializationEnvelope envelope = WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.STUDENT_ADD_STUDENT_TO_CLASS, properties);
+			
+	        try
+	        {
+	        	SoapPrimitive primitive = (SoapPrimitive)envelope.getResponse();
+	        	
+	        	if( primitive.toString().compareTo("true") == 0 )
+	        	{
+	        		ret = "Successfully added student to class!";
+	        	}
+	        }
+	        catch( Exception ex) {}	   
     	}
+    	
+    	return ret;
 	}
 	
-	void finishAsync()
+	void finishAsync( String res )
 	{
+		Toast toast = Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG);
+		toast.show();	
+		
 		finish();
 	}
 
-    private class AsyncCall extends AsyncTask<Void, Void, Void> {
+    private class AsyncCall extends AsyncTask<Void, Void, String> {
         @Override
-        protected Void doInBackground(Void... params) {
-            addStudent();
-            return null;
+        protected String doInBackground(Void... params) {
+            return addStudent();
         }
 
         @Override
-        protected void onPostExecute(Void result) {
-    		finishAsync();        	
+        protected void onPostExecute(String result) {
+    		finishAsync( result );        	
         }
 
         @Override

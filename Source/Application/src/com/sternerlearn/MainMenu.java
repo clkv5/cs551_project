@@ -30,14 +30,17 @@ public class MainMenu extends MyListActivity {
 	};		
 
 	@Override
-	// TODO: Need to be able to disable/remove list items when they are not valid
 	protected void onCreate(Bundle savedInstanceState) {
 		TITLES = myTitles;
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_parent_main_menu);
 		
-		setTitle( SharedData.getInstance().getAccount().mRealName );
+		// Use the linked account (e.g. the parent's account) to get the name
+		if( SharedData.getInstance().getAccount().mLinkedAccount != null )
+		{
+			setTitle( SharedData.getInstance().getAccount().mLinkedAccount.mRealName );
+		}
 	}
 
 	@Override

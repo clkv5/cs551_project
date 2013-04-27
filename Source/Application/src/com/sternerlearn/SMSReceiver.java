@@ -25,8 +25,9 @@ public class SMSReceiver extends BroadcastReceiver {
 	{
 		/* Return if not student account */
 		Account acct = SharedData.getInstance().getAccount();
-		if( ( Types.AccountType.STUDENT.ordinal() != acct.mAccountType )
-	        || (LOG_TO_DATABASE == false) )
+		if( acct == null || 
+			( Types.AccountType.STUDENT.ordinal() != acct.mAccountType ) ||
+	        (LOG_TO_DATABASE == false) )
 		{
 			mResponse = "Wrong account type";
 			return;

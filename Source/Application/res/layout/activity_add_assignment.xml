@@ -24,22 +24,6 @@
         android:layout_alignRight="@+id/desc"
         android:layout_below="@+id/desc" />
 
-    <DatePicker
-        android:id="@+id/datePicker1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/numberPicker1"
-        android:layout_below="@+id/numberPicker1" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/datePicker1"
-        android:layout_alignBottom="@+id/datePicker1"
-        android:layout_toLeftOf="@+id/datePicker1"
-        android:text="@string/date_due" />
-
     <EditText
         android:id="@+id/className"
         android:layout_width="wrap_content"
@@ -53,21 +37,37 @@
         <requestFocus />
     </EditText>
 
+    <DatePicker
+        android:id="@+id/datePicker1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/numberPicker1"
+        android:layout_toLeftOf="@+id/numberPicker1" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/datePicker1"
+        android:layout_below="@+id/datePicker1"
+        android:text="@string/date_due" />
+
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/numberPicker1"
-        android:layout_marginBottom="56dp"
-        android:layout_toLeftOf="@+id/numberPicker1"
+        android:layout_alignLeft="@+id/numberPicker1"
+        android:layout_alignRight="@+id/numberPicker1"
+        android:layout_below="@+id/numberPicker1"
+        android:gravity="right"
         android:text="@string/points_worth" />
 
     <Button
         android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/datePicker1"
+        android:layout_alignRight="@+id/textView1"
+        android:layout_below="@+id/textView1"
         android:onClick="handleSubmit"
         android:text="@string/submit" />
 

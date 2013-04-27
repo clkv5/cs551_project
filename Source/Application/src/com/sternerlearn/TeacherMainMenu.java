@@ -83,7 +83,6 @@ public class TeacherMainMenu extends ListActivity {
 			{
 				SharedData.getInstance().mCurrentCourse = courses.get(position);
 				startActivity(new Intent(this, ModifyClassActivity.class));
-				// TODO: add some more error handling
 			}
 		}
 	}	

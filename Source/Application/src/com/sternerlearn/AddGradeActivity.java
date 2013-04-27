@@ -3,7 +3,7 @@ package com.sternerlearn;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 
 
@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AddGradeActivity extends Activity {
 
@@ -49,11 +50,8 @@ public class AddGradeActivity extends Activity {
 		task.execute();
 	} 	
     
-    public void addGrade()
-    {
-    	// TODO: The methods we have for them to select users/assignments is really bad
-    	// Improve it...but probably not in the scope for this project
-    	
+    public String addGrade()
+    {	
     	Course c = SharedData.getInstance().mCurrentCourse;
     	Account a = SharedData.getInstance().getAccount();
     	
@@ -72,7 +70,8 @@ public class AddGradeActivity extends Activity {
     		}
     	}
     	
-    	// TODO: This doesn't seem to be working
+    	String ret = "Error assigning grade";
+    	
     	if( assignID > 0 )
     	{
 	    	// Try to get the student ID
@@ -86,12 +85,11 @@ public class AddGradeActivity extends Activity {
 				
 				SoapSerializationEnvelope env = WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.STUDENT_GET_STUDENT, properties);
 				
-				studentID = java.lang.Integer.parseInt( ((SoapObject)env.getResponse()).toString() );
+				studentID = java.lang.Integer.parseInt( ((SoapPrimitive)env.getResponse()).toString() );
 				
 			}
 			catch( Exception ex ) {}
 	    	
-			// TODO: error handling
 	    	if( studentID > 0 )
 	    	{
 	        	NumberPicker picker = (NumberPicker)findViewById(R.id.numberPicker1);
@@ -106,7 +104,6 @@ public class AddGradeActivity extends Activity {
 	    		// Convert input to timestamp
 	    		String timeString = MessagesActivity.convertToTimestamp(year, month, day, 0, 0, 0);    		        	
 	    		
-	        	// TODO: Fix the NumberPicker and add the date
 				List<PropertyWrapper> properties = new ArrayList<PropertyWrapper>();
 				properties.add(new PropertyWrapper("aTeacherID", a.mId));
 				properties.add(new PropertyWrapper("aPassword", a.mPassword));
@@ -115,27 +112,42 @@ public class AddGradeActivity extends Activity {
 				properties.add(new PropertyWrapper("aPointsReceived", val));
 				properties.add(new PropertyWrapper("aDateSubmitted", timeString));
 				
-				WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.STUDENT_ADD_GRADE, properties);
+				SoapSerializationEnvelope envelope = WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.STUDENT_ADD_GRADE, properties);
+				
+		        try
+		        {
+		        	SoapPrimitive primitive = (SoapPrimitive)envelope.getResponse();
+		        	
+		        	if( primitive.toString().compareTo("true") == 0 )
+		        	{
+		        		ret = "Successfully assigned grade!";
+		        	}
+		        }
+		        catch( Exception ex) {}
 	    	}    	
     	}
+    	
+    	return ret;
     }
 	
-	void finishAsync()
+	void finishAsync( String result )
 	{
+		Toast toast = Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG);
+		toast.show();	 
+		
 		finish();
 	}
 	
 	
-    private class AsyncCall extends AsyncTask<Void, Void, Void> {
+    private class AsyncCall extends AsyncTask<Void, Void, String> {
         @Override
-        protected Void doInBackground(Void... params) {
-            addGrade();
-            return null;
+        protected String doInBackground(Void... params) {
+            return addGrade();
         }
 
         @Override
-        protected void onPostExecute(Void result) {
-    		finishAsync();        	
+        protected void onPostExecute(String result) {
+    		finishAsync( result );        	
         }
 
         @Override

@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 
 import android.os.AsyncTask;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 public class AddInfractionActivity extends Activity {
 
@@ -42,7 +44,7 @@ public class AddInfractionActivity extends Activity {
 		task.execute();
 	} 	
     
-    void addInfraction()
+    String addInfraction()
     {
     	/* Get time */
     	String time = getTimestamp();
@@ -54,6 +56,8 @@ public class AddInfractionActivity extends Activity {
         
         // Get name and infraction description
     	String name = ((EditText)findViewById( R.id.student_name )).getText().toString();
+    	
+    	String ret = "Error adding infraction";
     	
     	// Try to get the student ID
     	int studentID = -1;
@@ -71,7 +75,6 @@ public class AddInfractionActivity extends Activity {
 		}
 		catch( Exception ex ) {}
 		
-		// TODO: error handling
 		if( studentID > 0 )
 		{
 	    	String desc = ((EditText)findViewById( R.id.desc )).getText().toString();  
@@ -85,21 +88,33 @@ public class AddInfractionActivity extends Activity {
 	        paramList.add( new PropertyWrapper( "aTeacherID" , id ) );
 	        paramList.add( new PropertyWrapper( "aPassword" , pass ) );
 	        
-	        //TODO: Get student ID from the name
 	        paramList.add( new PropertyWrapper( "aStudentID" , studentID ) );
 	        paramList.add( new PropertyWrapper( "aInfractionType" , type ) );
 	        paramList.add( new PropertyWrapper( "aDescription" , desc ) );
 	        paramList.add( new PropertyWrapper( "aDate" , time ) );
 	        
 	        /* Log to database */
-	        WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.STUDENT_ADD_INFRACTION, paramList );
-	    
-	        // Don't worry about the return value
+	        SoapSerializationEnvelope envelope = WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.STUDENT_ADD_INFRACTION, paramList );
+	        try
+	        {
+	        	SoapPrimitive primitive = (SoapPrimitive)envelope.getResponse();
+	        	
+	        	if( primitive.toString().compareTo("true") == 0 )
+	        	{
+	        		ret = "Successfully added infraction!";
+	        	}
+	        }
+	        catch( Exception ex) {}	    
 		}
+		
+		return ret;
     }
     
-    void finishAsync()
+    void finishAsync( String res )
     {
+		Toast toast = Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG);
+		toast.show();	   
+		
     	finish();
     }
     
@@ -113,16 +128,15 @@ public class AddInfractionActivity extends Activity {
     	return dt;
 	}
     
-    private class AsyncCall extends AsyncTask<Void, Void, Void> {
+    private class AsyncCall extends AsyncTask<Void, Void, String> {
         @Override
-        protected Void doInBackground(Void... params) {
-            addInfraction();
-            return null;
+        protected String doInBackground(Void... params) {
+            return addInfraction();
         }
 
         @Override
-        protected void onPostExecute(Void result) {
-    		finishAsync();        	
+        protected void onPostExecute(String result) {
+    		finishAsync( result );        	
         }
 
         @Override

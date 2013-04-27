@@ -59,13 +59,20 @@ public class PowerupActivity extends Activity {
     			String pw = settings.getString(Types.STUDENT_PW_KEY, "null");
     			
     			// Use the student account instead of the parent account
-    	    	account = new Account( login, pw );			
+    	    	Account student = new Account( login, pw );	
+    	    	account.mLinkedAccount = student;
+    	    	student.mLinkedAccount = account;
     		}
     		else
     		{
     			// It doesn't seem like this should happen, but just in case...
     			// Call web service to get linked information
     			account.updateLinkedAccount();
+    			
+    			if( account.mLinkedAccount != null )
+    			{
+    				account.mLinkedAccount.mLinkedAccount = account;
+    			}
     		}    		
     		
     		// If they aren't linked then don't bother doing anything

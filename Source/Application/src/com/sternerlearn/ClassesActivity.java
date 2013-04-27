@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class ClassesActivity extends ListActivity {
 
@@ -59,10 +58,6 @@ public class ClassesActivity extends ListActivity {
 		
 		mAdapter.setGrades(mGrades);
 		mAdapter.notifyDataSetChanged();
-		
-		CharSequence text = "Finished getting grades";
-		Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
-		toast.show();
 	}
 	
     private class AsyncCall extends AsyncTask<Void, Void, Student> {

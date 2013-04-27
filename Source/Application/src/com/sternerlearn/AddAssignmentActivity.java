@@ -3,6 +3,9 @@ package com.sternerlearn;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ksoap2.serialization.SoapPrimitive;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +15,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 public class AddAssignmentActivity extends Activity {
 
@@ -46,7 +50,7 @@ public class AddAssignmentActivity extends Activity {
 		task.execute();
 	} 		
 	
-	void addAssign()
+	String addAssign()
 	{
     	String name = ((EditText)findViewById( R.id.className )).getText().toString();  
     	String desc = ((EditText)findViewById( R.id.desc )).getText().toString(); 
@@ -67,8 +71,6 @@ public class AddAssignmentActivity extends Activity {
     	
     	Course c = SharedData.getInstance().mCurrentCourse;
     	
-    	// TODO: add error handling to all these pages, and give them some sort of recognition
-    	
     	/* Create list of web method parameters */
         List<PropertyWrapper> paramList = new ArrayList<PropertyWrapper>();
         paramList.add( new PropertyWrapper( "aTeacherID" , a.mId ) );
@@ -81,24 +83,41 @@ public class AddAssignmentActivity extends Activity {
         paramList.add( new PropertyWrapper( "aDescription" , desc ) );
         
         /* Log to database */
-        WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.STUDENT_ADD_ASSIGNMENT, paramList );		
+        SoapSerializationEnvelope envelope = WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.STUDENT_ADD_ASSIGNMENT, paramList );
+        
+        String ret = "Successfully added assignment!";
+        
+        try
+        {
+        	SoapPrimitive primitive = (SoapPrimitive)envelope.getResponse();
+        	
+        	if( primitive.toString().compareTo("false") == 0 )
+        	{
+        		ret = "Error creating assignment.";
+        	}
+        }
+        catch( Exception ex) {}
+        
+        return ret;
 	}
 	
-	void finishAsync()
+	void finishAsync( String res )
 	{
+		Toast toast = Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG);
+		toast.show();	
+		
 		finish();
 	}
 
-    private class AsyncCall extends AsyncTask<Void, Void, Void> {
+    private class AsyncCall extends AsyncTask<Void, Void, String> {
         @Override
-        protected Void doInBackground(Void... params) {
-            addAssign();
-            return null;
+        protected String doInBackground(Void... params) {
+            return addAssign();
         }
 
         @Override
-        protected void onPostExecute(Void result) {
-    		finishAsync();        	
+        protected void onPostExecute(String result) {
+    		finishAsync( result );        	
         }
 
         @Override

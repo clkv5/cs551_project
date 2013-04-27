@@ -18,6 +18,7 @@ int color black_overlay 0x7f060000
 int dimen activity_horizontal_margin 0x7f070000
 int dimen activity_vertical_margin 0x7f070001
 int drawable ic_launcher 0x7f020000
+int drawable sternerlearn_launcher 0x7f020001
 int id Login 0x7f040023
 int id Register 0x7f040024
 int id TextView01 0x7f04001c

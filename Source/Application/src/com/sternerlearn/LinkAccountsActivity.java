@@ -123,6 +123,7 @@ public class LinkAccountsActivity extends Activity {
         if( success )
         {
         	Account studentAccount = new Account(email, pass);
+        	studentAccount.mLinkedAccount = SharedData.getInstance().getAccount();
         	
     		// Set the account to the student's account so that future operations will be done using the student's info
         	// This is pretty hacky but I really don't want to redo more things

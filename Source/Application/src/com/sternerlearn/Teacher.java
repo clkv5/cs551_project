@@ -12,8 +12,7 @@ public class Teacher
 	public Account mAccount;
 	
 	public ArrayList<Course> mCourses = new ArrayList<Course>();
-	
-	// TODO: Make this work a bit better. Also probably need similar protection elsewhere....
+
 	public final Semaphore mLock = new Semaphore(1, true );
 	
 	public Teacher( Account acct )
@@ -67,20 +66,22 @@ public class Teacher
     	mLock.release();
 	}
 	
-	public void addClass(String className)
+	public SoapSerializationEnvelope addClass(String className)
 	{
 		List<PropertyWrapper> properties = new ArrayList<PropertyWrapper>();
 		properties.add(new PropertyWrapper("aTeacherID", mAccount.mId));
 		properties.add(new PropertyWrapper("aPassword", mAccount.mPassword));
 		properties.add(new PropertyWrapper("aClassName", className));
 		
-		WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.STUDENT_ADD_CLASS, properties);
+		SoapSerializationEnvelope envelope = WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.STUDENT_ADD_CLASS, properties);
 		
-		// Just ignore the return value and call updateClasses to refresh our class list
+		// Call updateClasses to refresh our class list
 		try
 		{
 			updateClasses();
 		}
 		catch( Exception ex ) {}
+		
+		return envelope;
 	}
 }
