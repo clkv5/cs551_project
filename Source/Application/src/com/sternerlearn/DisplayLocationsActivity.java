@@ -16,7 +16,6 @@ import java.util.ArrayList;
 public class DisplayLocationsActivity extends android.support.v4.app.FragmentActivity {
 
 	/* Constants */
-	private final int MICRODEGREE = 1000000;
 	private final int INITIAL_ZOOM = 15;
 	
 	/* Variables */
@@ -65,15 +64,38 @@ public class DisplayLocationsActivity extends android.support.v4.app.FragmentAct
 			LatLng loc = new LatLng( locs.get(0).getLatitude(), locs.get(0).getLongitude() );
 			map.moveCamera( CameraUpdateFactory.newLatLngZoom(loc, INITIAL_ZOOM) );
 			}
+		else
+			{
+			CharSequence text = "List is empty";
+    		Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
+    		toast.show();
+			}
 		
 		/* Create Marker list */
 		ArrayList<MarkerOptions> markers = new ArrayList<MarkerOptions>();
 		for( int i = 0; i < locs.size(); i++)
 			{
 			Location loc = locs.get(i);
+			String title;
+			int hour = Integer.parseInt( loc.getDate().substring(11, 13) );
+			if( hour > 12 )
+				{
+				title = Integer.toString( Integer.parseInt( loc.getDate().substring(11, 13) ) - 12 )
+						+ loc.getDate().substring(13, 16)
+						+ " PM";
+				}
+			else if( hour == 12)
+				{
+				title = loc.getDate().substring(11, 16) + " PM";
+				}
+			else
+				{
+				title = loc.getDate().substring(11, 16) + " AM";
+				}
+			
 			markers.add(new MarkerOptions().position(new LatLng( loc.getLatitude(),
 					                                             loc.getLongitude()
-					                                            )).title(loc.getDate().substring(11, 16)));
+					                                            )).title(title));
 			}
 		
 		/* Display markers on map */

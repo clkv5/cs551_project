@@ -155,11 +155,12 @@ public class LocationsActivity extends Activity {
 				    			return false;
 				    		}
 				    		
-					   		if( !arr.hasProperty("aSender") ||
-						   		!arr.hasProperty("aMessage") ||
+					   		if( !arr.hasProperty("mLatitude")  ||
+						   		!arr.hasProperty("mLongitude") ||
 						   		!arr.hasProperty("mTime") )
 						   	{
 					   			mResponse = "Property info null:  " + Integer.toString(i);
+					   			return false;
 						   	}
 					   		else
 					   		{

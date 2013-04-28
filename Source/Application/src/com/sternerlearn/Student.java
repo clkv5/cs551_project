@@ -23,7 +23,8 @@ public class Student
 	
 	public ArrayList<Message> mMessages = new ArrayList<Message>();
 	
-	public ArrayList<Location> mLocations = new ArrayList<Location>();
+	//public ArrayList<Location> mLocations = new ArrayList<Location>();
+	public ArrayList<Location> mLocations;
 	
 	// DEBUG
 	public String mResponse;
