@@ -93,7 +93,7 @@ public class PowerupActivity extends Activity {
 				Account ourAccount = acct;
 				if( acct.mLinkedAccount != null )
 				{
-					ourAccount.mLinkedAccount = acct.mLinkedAccount;
+					ourAccount = acct.mLinkedAccount;
 				}
 				SharedData.getInstance().setAccount(ourAccount);
 				startActivity(new Intent(this, MainMenu.class));	
