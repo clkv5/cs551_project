@@ -50,7 +50,12 @@ public class LoginActivity extends Activity {
 			if( Types.AccountType.PARENT.ordinal() == acct.mAccountType )
 			{
 				// Use the linked account since it contains the student information
-				SharedData.getInstance().setAccount(acct.mLinkedAccount);
+				Account ourAccount = acct;
+				if( acct.mLinkedAccount != null )
+				{
+					ourAccount.mLinkedAccount = acct.mLinkedAccount;
+				}
+				SharedData.getInstance().setAccount(ourAccount);
 				startActivity(new Intent(this, MainMenu.class));	
 			}
 			else if( Types.AccountType.STAFF.ordinal() == acct.mAccountType )

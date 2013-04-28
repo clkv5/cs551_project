@@ -72,18 +72,13 @@ public class Account
     		mResponse = response.toString();
 
 	    		
-	   		if( !response.hasProperty("id") ||
-	   			!response.hasProperty("accountType") ||
-	   			!response.hasProperty("linkedID") ||
-	   			!response.hasProperty("emailAddress") ||
-	   			!response.hasProperty("password") ||
-	   			!response.hasProperty("realName") )
+	   		if( response.hasProperty("id") &&
+	   			response.hasProperty("accountType") &&
+	   			response.hasProperty("linkedID") &&
+	   			response.hasProperty("emailAddress") &&
+	   			response.hasProperty("password") &&
+	   			response.hasProperty("realName") )
 	   		{
-	   			mValid = false;
-	   		}
-	   		else
-	   		{
-	   			mValid = true;
 	   			
 	   			// Sigh could have planned this better...
 	   			acct = new Account();
@@ -101,8 +96,7 @@ public class Account
     	{
     		// Either it's not a valid username and password, or we failed
     		mResponse = ex.toString();
-    		mValid = false;
-		}		
+    	}		
     	
     	mLinkedAccount = acct;
 	}

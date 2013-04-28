@@ -41,6 +41,10 @@ public class MainMenu extends MyListActivity {
 		{
 			setTitle( SharedData.getInstance().getAccount().mLinkedAccount.mRealName );
 		}
+		else
+		{
+			setTitle( SharedData.getInstance().getAccount().mRealName );
+		}
 	}
 
 	@Override
