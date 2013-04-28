@@ -152,7 +152,6 @@ public class Student
 			   					break;
 			   				}
 			   			}
-			   			assignments.remove(ours);
 			   			
 			   			grades.add( new Grade( ours, gradeId, pointsEarned, time ) );
 			   		

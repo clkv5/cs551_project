@@ -70,7 +70,7 @@ public class AddInfractionActivity extends Activity {
 			
 			SoapSerializationEnvelope env = WebServiceWrapper.getInstance().call(Types.STUDENT_URL, Types.STUDENT_GET_STUDENT, properties);
 			
-			studentID = java.lang.Integer.parseInt( ((SoapObject)env.getResponse()).toString() );
+			studentID = java.lang.Integer.parseInt( ((SoapPrimitive)env.getResponse()).toString() );
 			
 		}
 		catch( Exception ex ) {}
