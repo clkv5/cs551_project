@@ -42,21 +42,18 @@ public class MessageAdapter extends BaseAdapter {
         if (v == null) 
         {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = inflater.inflate( R.layout.assignment_list_item, null);
+            v = inflater.inflate( R.layout.message_list_item, null);
         } 
         
 		Message m = mMessages.get(position);
-		
-		//TODO:  change IDs
-        TextView msgField = (TextView)v.findViewById(R.id.name);
-        TextView senderField = (TextView)v.findViewById(R.id.points);
+
+        TextView msgField = (TextView)v.findViewById(R.id.message);
+        TextView senderField = (TextView)v.findViewById(R.id.sender);
         TextView dateField = (TextView)v.findViewById(R.id.date);
-        TextView descField = (TextView)v.findViewById(R.id.desc);
         
         msgField.setText( m.getMessage() );
         senderField.setText(m.getSender() );
-        dateField.setText( m.getDate() );
-        descField.setText("");
+        dateField.setText( m.getDate() );;
 		
         return v;
 	}

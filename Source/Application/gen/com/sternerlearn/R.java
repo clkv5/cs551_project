@@ -157,7 +157,7 @@ containing a value of this type.
         public static final int Login=0x7f040023;
         public static final int Register=0x7f040024;
         public static final int TextView01=0x7f04001c;
-        public static final int action_settings=0x7f040031;
+        public static final int action_settings=0x7f040033;
         public static final int assign_name=0x7f04000e;
         public static final int className=0x7f040006;
         public static final int date=0x7f040030;
@@ -177,6 +177,7 @@ containing a value of this type.
         public static final int locationsGoButton=0x7f040020;
         public static final int locationsTimePicker=0x7f04001f;
         public static final int map=0x7f040018;
+        public static final int message=0x7f040031;
         public static final int messageEditText=0x7f04001d;
         public static final int messageGoButton=0x7f040027;
         public static final int messagesDatePicker=0x7f040026;
@@ -198,6 +199,7 @@ containing a value of this type.
         public static final int registerButton=0x7f04002d;
         public static final int satellite=0x7f040002;
         public static final int scrollView=0x7f040010;
+        public static final int sender=0x7f040032;
         public static final int student_name=0x7f04000f;
         public static final int submit=0x7f04000d;
         public static final int submitButton=0x7f04000b;
@@ -233,6 +235,7 @@ containing a value of this type.
         public static final int activity_teacher_main_menu=0x7f030018;
         public static final int assignment_list_item=0x7f030019;
         public static final int infraction_list_item=0x7f03001a;
+        public static final int message_list_item=0x7f03001b;
     }
     public static final class menu {
         public static final int add_assignment=0x7f090000;
