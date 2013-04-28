@@ -1,0 +1,11 @@
+http://www.techsmith.com/camtasia.html
+
+
+The video should contain the introduction of the project, the necessary architecture diagrams and the working screens of the project and a thank you screen at the end. You may use text displays to identify the name of the project.
+
+
+what I did not do:
+
+- link accounts (brute forced)
+- Upcoming assignments (was empty)
+- Proper points worth (saw 40/0)
