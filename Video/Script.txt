@@ -1,0 +1,23 @@
+This is Sterner Learn, a mobile android app that allows parents more control over their child's education.  We are Group 1, Devin Turner and Connor Ledgerwood.
+
+I'll start with a brief description of our sequence diagrams.  Although the app is mainly directed at parents, there are separate account types and main menu screens for students and instructors as well.
+
+Teacher accounts are able to drive creation of classes, grades, and disciplinary notifications to the parent which we call infractions.
+
+Currently the student account page may only act as a schedule, displaying grades for each class and a list of any upcoming assignments.
+
+The parent page also has the assignment display as well as any reported infractions.  Lastly, the parent has the ability to view their child's text messages and recent GPS locations should they act under poor conduct.
+
+
+[ Devin's stuff goes here ]
+
+
+Finally, onto the parent account.  First we log in with Sonny's father Albert's account.  Here we once again view the Parent home page.  Since the accounts are already set up, we'll go to check grades... and upcoming assignments...
+
+Now we look at his infractions.  Here we see a day that Sonny decided to skip school.  Backing up, I now navigate to the Parental Control menu to view his texts and see where he went.
+
+On the View Messages screen, we are able to choose a particular date.  The web service returns a list of texts if any exist and displays them.  
+
+Going back to the View Locations page, I specify a time frame.  The student device periodically logs GPS coordinates to our database so the parent device can pull them up on a Google map instance, like so.  These markers show the specific time that the student was at a location.
+
+Thank you for listening.
